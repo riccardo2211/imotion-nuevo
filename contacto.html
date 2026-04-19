@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto | i-Motion Tenerife EMS</title>
+<meta name="description" content="Contacta con i-Motion Tenerife EMS. Reserva tu primera sesión gratuita de entrenamiento EMS en Costa Adeje, Tenerife.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="50"></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="quienes-somos.html">Quiénes somos</a></li>
+      <li><a href="imotion-sport.html">i-Motion Sport</a></li>
+      <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
+      <li><a href="contacto.html" class="nav-cta active">Reservar sesión</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="tag">Empezar es gratis</span>
+    <h1>RESERVA TU <span class="accent">SESIÓN</span></h1>
+    <p style="color:rgba(255,255,255,0.55); max-width:500px; margin:16px auto 0;">Primera sesión de prueba completamente gratuita y sin compromiso. Descubre el poder del EMS.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid reveal">
+      <div>
+        <span class="tag">Escríbenos</span>
+        <h2 style="margin-bottom:32px;">Ponte en <span class="accent">contacto</span></h2>
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/info@imotiontenerife-ems.com" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre *</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="apellidos">Apellidos</label>
+              <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="600 000 000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="programa">Programa de interés</label>
+            <select id="programa" name="programa">
+              <option value="">Seleccionar...</option>
+              <option value="sport">i-Motion Sport (rendimiento deportivo)</option>
+              <option value="esthetic">i-Shape Esthetic (transformación corporal)</option>
+              <option value="ambos">Ambos programas / No lo sé todavía</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos tu objetivo o cualquier pregunta que tengas..."></textarea>
+          </div>
+          <div class="form-group" style="flex-direction:row; align-items:center; gap:10px;">
+            <input type="checkbox" id="privacidad" name="privacidad" required style="width:18px; height:18px; flex-shrink:0;">
+            <label for="privacidad" style="font-size:0.82rem; color:rgba(255,255,255,0.5); cursor:pointer;">Acepto la <a href="politica-privacidad.html" style="color:var(--accent);">política de privacidad</a></label>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Enviar mensaje</button>
+        </form>
+      </div>
+
+      <div>
+        <span class="tag">Información</span>
+        <h2 style="margin-bottom:32px;">Encuéntranos <span class="accent">aquí</span></h2>
+        <div class="contact-info-block">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+            <div><h4>Teléfono</h4><p><a href="tel:643986544">643 986 544</a></p></div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <div><h4>Email</h4><p><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></p></div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div><h4>Dirección</h4><p>Costa Adeje, Tenerife</p></div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+            </div>
+            <div><h4>Horario</h4><p>Lunes a Viernes: 8:00 – 21:00<br>Sábados: 9:00 – 14:00</p></div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px; background:var(--dark-2); border-radius:12px; overflow:hidden; border:1px solid var(--border); height:240px;">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14303.254395938!2d-16.73441!3d28.07972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc6a9ad0e3c3b591%3A0x4ee2faf3f7e2c879!2sCosta%20Adeje%2C%20Santa%20Cruz%20de%20Tenerife!5e0!3m2!1ses!2ses!4v1700000000000"
+            width="100%" height="240" style="border:0;" allowfullscreen="" loading="lazy" title="Ubicación i-Motion Tenerife EMS"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="55"><p>Centro de entrenamiento especializado en electroestimulación muscular en Costa Adeje, Tenerife.</p></div>
+      <div class="footer-col"><h4>Navegación</h4><ul><li><a href="index.html">Inicio</a></li><li><a href="quienes-somos.html">Quiénes somos</a></li><li><a href="imotion-sport.html">i-Motion Sport</a></li><li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul class="contact-list"><li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li><li><a href="tel:643986544">643 986 544</a></li><li>Costa Adeje, Tenerife</li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 i-Motion Tenerife EMS · Todos los derechos reservados</p><div class="footer-legal"><a href="aviso-legal.html">Aviso Legal</a><a href="politica-privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a></div></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
