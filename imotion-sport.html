@@ -3,18 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>i-Motion Sport | Centro EMS Tenerife</title>
-<meta name="description" content="Programa de entrenamiento deportivo con EMS en Costa Adeje. Mejora tu fuerza, resistencia y rendimiento con electroestimulación muscular.">
+<title>i-Motion Sport | i-Motion EMS Tenerife</title>
+<meta name="description" content="Programa de entrenamiento deportivo con EMS en Top Training, Costa Adeje. Traje cuerpo entero o inferior para máximo rendimiento.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.traje-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+.traje-card { background: var(--dark-3); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); text-align: center; transition: 0.3s; }
+.traje-card:hover { border-color: rgba(77,166,224,0.4); transform: translateY(-4px); }
+.traje-card.featured { border-color: rgba(77,166,224,0.5); }
+.traje-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; margin: 16px 0 8px; }
+.traje-card img { width: 100%; height: 320px; object-fit: contain; background: #0a0a0a; padding: 20px; }
+.traje-card h3 { font-size: 1.4rem; padding: 0 20px 8px; }
+.traje-card p { font-size: 0.88rem; color: rgba(255,255,255,0.6); padding: 0 20px 24px; }
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+.result-img { width: 100%; border-radius: 12px; display: block; }
+@media(max-width:900px) { .traje-grid, .results-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 
 <nav class="navbar scrolled" id="navbar">
   <div class="nav-container">
-    <a href="index.html" class="nav-logo"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="50"></a>
+    <a href="index.html" class="nav-logo"><img src="images/logo_i-motion_trans.png" alt="i-Motion EMS Tenerife" height="50"></a>
     <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Inicio</a></li>
@@ -34,14 +47,15 @@
   </div>
 </section>
 
+<!-- INTRO -->
 <section class="section">
   <div class="container">
     <div class="intro-grid reveal">
       <div class="intro-text">
         <span class="tag">El programa</span>
         <h2>Lleva tu rendimiento al <span class="accent">siguiente nivel</span></h2>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">El programa i-Motion Sport está diseñado para deportistas y atletas que buscan superar sus límites. Combinamos entrenamiento funcional con electroestimulación muscular de alta intensidad para maximizar la fuerza, la resistencia y la potencia.</p>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">Nuestros entrenadores especializados diseñan programas adaptados a tu deporte específico: running, ciclismo, natación, artes marciales, fútbol, atletismo y mucho más.</p>
+        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">El programa i-Motion Sport está diseñado para deportistas y atletas que buscan superar sus límites. Combinamos entrenamiento funcional con electroestimulación muscular de alta intensidad.</p>
+        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">Disponemos de dos modalidades de equipo: el <strong style="color:#fff;">traje cuerpo entero</strong> (el más completo y demandado) y el <strong style="color:#fff;">traje inferior</strong> para trabajar específicamente piernas, glúteos y zona lumbar.</p>
         <a href="contacto.html" class="btn btn-primary">Empezar ahora</a>
       </div>
       <div class="intro-visual">
@@ -53,7 +67,33 @@
   </div>
 </section>
 
+<!-- TRAJES -->
 <section class="section dark-section">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="tag">Equipamiento</span>
+      <h2>Elige tu <span class="accent">traje EMS</span></h2>
+      <p>Dos opciones adaptadas a tus objetivos deportivos</p>
+    </div>
+    <div class="traje-grid reveal">
+      <div class="traje-card featured">
+        <img src="images/TRAJE-V24-PNG.png" alt="Traje cuerpo entero i-motion">
+        <div class="traje-badge">⭐ El más demandado</div>
+        <h3>Traje Cuerpo Entero</h3>
+        <p>Activa simultáneamente toda la musculatura del cuerpo. Ideal para rendimiento general, fuerza y resistencia. El equipo más completo para resultados máximos.</p>
+      </div>
+      <div class="traje-card">
+        <img src="images/pantalon-EMS-v25.png" alt="Traje inferior i-motion">
+        <div class="traje-badge" style="background:rgba(77,166,224,0.3); color:var(--accent);">Tren inferior</div>
+        <h3>Traje Inferior</h3>
+        <p>Especializado en piernas, glúteos, isquiotibiales y zona lumbar. Perfecto para corredores, ciclistas y deportistas que necesitan potencia en el tren inferior.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="section">
   <div class="container">
     <div class="section-header center reveal">
       <span class="tag">Beneficios</span>
@@ -61,48 +101,38 @@
     </div>
     <div class="benefits-list reveal" style="max-width:800px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
       <div class="benefit-item"><div class="benefit-icon">⚡</div><div><strong>Fuerza explosiva</strong><p>Aumenta la potencia muscular hasta un 30% en 8 semanas</p></div></div>
-      <div class="benefit-item"><div class="benefit-icon">🏃</div><div><strong>Mayor resistencia</strong><p>Mejora el rendimiento cardiovascular y retarda la fatiga muscular</p></div></div>
-      <div class="benefit-item"><div class="benefit-icon">🔄</div><div><strong>Recuperación rápida</strong><p>Reduce el tiempo de recuperación entre entrenamientos intensos</p></div></div>
-      <div class="benefit-item"><div class="benefit-icon">🎯</div><div><strong>Prevención de lesiones</strong><p>Fortalece la musculatura estabilizadora y reduce el riesgo de lesión</p></div></div>
-      <div class="benefit-item"><div class="benefit-icon">🧠</div><div><strong>Conexión neuromuscular</strong><p>Mejora la coordinación y la activación muscular específica</p></div></div>
-      <div class="benefit-item"><div class="benefit-icon">⏱️</div><div><strong>Eficiencia máxima</strong><p>Resultados en 25 minutos que requieren horas de gym convencional</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">🏃</div><div><strong>Mayor resistencia</strong><p>Mejora el rendimiento cardiovascular y retarda la fatiga</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">🔄</div><div><strong>Recuperación rápida</strong><p>Reduce el tiempo de recuperación entre entrenamientos</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">🎯</div><div><strong>Prevención de lesiones</strong><p>Fortalece la musculatura estabilizadora</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">🧠</div><div><strong>Conexión neuromuscular</strong><p>Mejora la coordinación y activación muscular específica</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">⏱️</div><div><strong>Eficiencia máxima</strong><p>25 minutos = 90 minutos de gym convencional</p></div></div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<!-- ANTES Y DESPUÉS SPORT -->
+<section class="section dark-section">
   <div class="container">
-    <div class="benefits-grid reveal">
-      <div>
-        <img src="images/imotionv25-pesa.png" alt="Entrenamiento con pesas y EMS" style="border-radius:12px; width:100%;">
-      </div>
-      <div class="benefits-content">
-        <span class="tag">Cómo funciona</span>
-        <h2>Tecnología <span class="accent">EMS</span> para el deporte</h2>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">El sistema i-motion Pro V25 envía impulsos eléctricos a través del traje especial que llevas durante el entrenamiento. Estos impulsos activan simultáneamente hasta el 90% de tus fibras musculares mientras realizas ejercicios funcionales adaptados a tu deporte.</p>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:24px;">El resultado: una activación muscular imposible de conseguir con el entrenamiento convencional, que se traduce en mejoras significativas en muy poco tiempo.</p>
-        <div class="testi-grid" style="grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px;">
-          <div class="testi-card" style="padding:16px;">
-            <div class="stat-num" style="font-size:1.8rem;">+30%</div>
-            <p style="font-size:0.82rem; margin:4px 0 0; color:rgba(255,255,255,0.55);">Mejora de fuerza</p>
-          </div>
-          <div class="testi-card" style="padding:16px;">
-            <div class="stat-num" style="font-size:1.8rem;">2x/sem</div>
-            <p style="font-size:0.82rem; margin:4px 0 0; color:rgba(255,255,255,0.55);">Frecuencia ideal</p>
-          </div>
-        </div>
-        <a href="contacto.html" class="btn btn-primary">Reservar sesión de prueba</a>
-      </div>
+    <div class="section-header center reveal">
+      <span class="tag">Transformaciones reales</span>
+      <h2>Antes y después con <span class="accent">i-Motion Sport</span></h2>
+      <p>Resultados reales de deportistas que entrenan con EMS</p>
+    </div>
+    <div class="results-grid reveal">
+      <img src="images/i-motion-antes-y-depues-resultados.webp" alt="Antes y después i-Motion Sport" class="result-img">
+      <img src="images/i-motion-before-and-after-3.webp" alt="Antes y después i-Motion Sport" class="result-img">
+      <img src="images/i-motion-before-and-after-4.webp" alt="Antes y después i-Motion Sport" class="result-img">
     </div>
   </div>
 </section>
 
+<!-- CTA -->
 <section class="cta-section">
-  <div class="cta-bg"><img src="images/balon_medicinal2.png" alt="" class="cta-bg-img"><div class="cta-overlay"></div></div>
+  <div class="cta-bg"><img src="images/corredor-v25.png" alt="" class="cta-bg-img"><div class="cta-overlay"></div></div>
   <div class="container">
-    <div class="cta-content">
+    <div class="cta-content reveal">
       <h2>¿Preparado para entrenar como un <span class="accent">profesional</span>?</h2>
-      <p>Primera sesión de prueba gratuita. Sin compromiso.</p>
+      <p>Primera sesión de prueba gratuita en Top Training, Costa Adeje.</p>
       <a href="contacto.html" class="btn btn-primary btn-large">Reservar ahora</a>
     </div>
   </div>
@@ -111,11 +141,11 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="55"><p>Centro de entrenamiento especializado en electroestimulación muscular en Av. Los Acantilados s/n, La Caleta, Costa Adeje.</p></div>
+      <div class="footer-brand"><img src="images/logo_i-motion_trans.png" alt="i-Motion EMS Tenerife" height="55"><p>Centro de entrenamiento EMS en <strong style="color:#fff;">Top Training</strong>, La Caleta, Costa Adeje, Tenerife.</p></div>
       <div class="footer-col"><h4>Navegación</h4><ul><li><a href="index.html">Inicio</a></li><li><a href="quienes-somos.html">Quiénes somos</a></li><li><a href="imotion-sport.html">i-Motion Sport</a></li><li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
-      <div class="footer-col"><h4>Contacto</h4><ul class="contact-list"><li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li><li><a href="tel:643986544">643 986 544</a></li><li>Av. Los Acantilados s/n, La Caleta, Costa Adeje</li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul class="contact-list"><li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li><li><a href="tel:643986544">643 986 544</a></li><li>Top Training · Av. Los Acantilados s/n<br>La Caleta, Costa Adeje, Tenerife</li></ul></div>
     </div>
-    <div class="footer-bottom"><p>© 2025 i-Motion Tenerife EMS · Todos los derechos reservados</p><div class="footer-legal"><a href="aviso-legal.html">Aviso Legal</a><a href="politica-privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a></div></div>
+    <div class="footer-bottom"><p>© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p><div class="footer-legal"><a href="aviso-legal.html">Aviso Legal</a><a href="politica-privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a></div></div>
   </div>
 </footer>
 <script src="js/main.js"></script>
