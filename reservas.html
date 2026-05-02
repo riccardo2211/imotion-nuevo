@@ -301,6 +301,7 @@ function selectDate(dt,ds,el){
   loadSlots(ds);
 }
 
+// ✅ CORREGIDO: ahora siempre consulta los slots al Google Script
 function loadSlots(dateStr){
   const sec=document.getElementById('slotsSection');
   const grid=document.getElementById('slotsGrid');
@@ -309,7 +310,6 @@ function loadSlots(dateStr){
   document.getElementById('slotsTitle').textContent=`Horarios — ${dt.toLocaleDateString('es-ES',opts)}`;
   grid.innerHTML='<div class="loading-slots"><div class="spinner"></div> Cargando horarios...</div>';
   sec.style.display='block';
-  if(SCRIPT_URL==='https://script.google.com/macros/s/AKfycbyQgPynT0mOu4Ydo6DcFj6NqhhnMF5oEy1EHG3DAtB7fLYdfVx3lj-mjgPu2IZtZlCv/exec'){renderSlots(dateStr,[]);return;}
   window._slotsCallback=data=>renderSlots(dateStr,data.occupied||[]);
   const scr=document.createElement('script');
   scr.src=`${SCRIPT_URL}?action=getSlots&date=${dateStr}&callback=_slotsCallback`;
@@ -358,6 +358,7 @@ function goStep(n){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ✅ CORREGIDO: siempre envía los datos a Google Sheets
 async function confirmar(){
   const btn=document.getElementById('btnConfirm');btn.disabled=true;btn.textContent='Enviando...';
   const nombre=document.getElementById('iNombre').value.trim();
@@ -369,11 +370,14 @@ async function confirmar(){
   const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
   const fechaFmt=S.fecha.toLocaleDateString('es-ES',opts);
 
-  if(SCRIPT_URL!=='https://script.google.com/macros/s/AKfycbyQgPynT0mOu4Ydo6DcFj6NqhhnMF5oEy1EHG3DAtB7fLYdfVx3lj-mjgPu2IZtZlCv/exec'){
-    try{
-      await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'createReservation',programa:S.programa,fecha:S.fechaStr,hora:S.hora,nombre,apellidos,email,telefono:tel,como,notas}),headers:{'Content-Type':'application/json'}});
-    }catch(e){}
-  }
+  try{
+    await fetch(SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      body:JSON.stringify({action:'createReservation',programa:S.programa,fecha:S.fechaStr,hora:S.hora,nombre,apellidos,email,telefono:tel,como,notas}),
+      headers:{'Content-Type':'application/json'}
+    });
+  }catch(e){console.log('Error al guardar reserva:',e);}
 
   const waMsg=encodeURIComponent(`⚡ NUEVA RESERVA — i-Motion EMS Tenerife\n\n👤 ${nombre} ${apellidos}\n📱 ${tel}\n📧 ${email}\n🎯 ${S.programa}\n📅 ${fechaFmt}\n⏰ ${S.hora}`+(notas?`\n📝 ${notas}`:''));
   window.open(`https://wa.me/34643986544?text=${waMsg}`,'_blank');
