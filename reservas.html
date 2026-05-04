@@ -256,7 +256,7 @@ a{text-decoration:none;color:inherit;}
 </a>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQgPynT0mOu4Ydo6DcFj6NqhhnMF5oEy1EHG3DAtB7fLYdfVx3lj-mjgPu2IZtZlCv/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYw7T7BFIjoGqkBn5JDrMWzLC3v5ur7xSC7ry0AQYh6dXzJCs7Fu_L-0N6-X-_HLIe/exec';
 const S = {programa:null,fecha:null,fechaStr:null,hora:null,curMonth:new Date().getMonth(),curYear:new Date().getFullYear()};
 
 function genSlots(){const s=[];let h=8,m=0;while(h<19||(h===19&&m===0)){const st=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;m+=40;if(m>=60){h++;m-=60;}const en=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;s.push(`${st} - ${en}`);if(h>=19)break;}return s;}
