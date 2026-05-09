@@ -17,241 +17,65 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'Outfit',sans-serif;}
 
-.hero{
-  position:relative;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  background:#0d0d0d;
-}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:#0d0d0d;}
 
-/* Fondo con gradiente animado simulando energía EMS */
-.hero-bg{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(77,166,224,0.15) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(77,166,224,0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(41,128,185,0.12) 0%, transparent 55%),
-    linear-gradient(135deg, #0a0a0a 0%, #0d1a2a 50%, #0a0a0a 100%);
-  animation: bgPulse 6s ease-in-out infinite;
-}
-@keyframes bgPulse{
-  0%,100%{opacity:1;}
-  50%{opacity:0.85;}
-}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(77,166,224,0.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(77,166,224,0.1) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(41,128,185,0.12) 0%,transparent 55%),linear-gradient(135deg,#0a0a0a 0%,#0d1a2a 50%,#0a0a0a 100%);animation:bgPulse 6s ease-in-out infinite;}
+@keyframes bgPulse{0%,100%{opacity:1;}50%{opacity:0.85;}}
 
-/* Líneas de energía decorativas */
-.energy-lines{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-}
-.e-line{
-  position:absolute;
-  height:1px;
-  background:linear-gradient(90deg, transparent, rgba(77,166,224,0.4), transparent);
-  animation: scanLine 4s ease-in-out infinite;
-}
+.energy-lines{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.e-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(77,166,224,0.4),transparent);animation:scanLine 4s ease-in-out infinite;}
 .e-line:nth-child(1){width:60%;top:25%;left:-60%;animation-delay:0s;}
 .e-line:nth-child(2){width:40%;top:50%;left:-40%;animation-delay:1.5s;}
 .e-line:nth-child(3){width:70%;top:75%;left:-70%;animation-delay:3s;}
-@keyframes scanLine{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(250%);}
-}
+@keyframes scanLine{0%{transform:translateX(0);}100%{transform:translateX(250%);}}
 
-/* Partículas flotantes */
 .particles{position:absolute;inset:0;pointer-events:none;}
-.particle{
-  position:absolute;
-  width:3px;height:3px;
-  border-radius:50%;
-  background:rgba(77,166,224,0.6);
-  animation:float linear infinite;
-}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(77,166,224,0.6);animation:float linear infinite;}
 .particle:nth-child(1){left:10%;animation-duration:8s;animation-delay:0s;top:80%;}
 .particle:nth-child(2){left:25%;animation-duration:12s;animation-delay:2s;top:90%;}
 .particle:nth-child(3){left:40%;animation-duration:9s;animation-delay:4s;top:85%;}
 .particle:nth-child(4){left:60%;animation-duration:11s;animation-delay:1s;top:95%;}
 .particle:nth-child(5){left:75%;animation-duration:7s;animation-delay:3s;top:88%;}
 .particle:nth-child(6){left:90%;animation-duration:10s;animation-delay:5s;top:92%;}
-@keyframes float{
-  0%{transform:translateY(0) scale(1);opacity:0.6;}
-  50%{opacity:1;transform:translateY(-40vh) scale(1.5);}
-  100%{transform:translateY(-80vh) scale(0.5);opacity:0;}
-}
+@keyframes float{0%{transform:translateY(0) scale(1);opacity:0.6;}50%{opacity:1;transform:translateY(-40vh) scale(1.5);}100%{transform:translateY(-80vh) scale(0.5);opacity:0;}}
 
-/* Contenido principal */
-.content{
-  position:relative;
-  z-index:10;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:40px 24px;
-  text-align:center;
-  max-width:420px;
-  width:100%;
-}
+/* Selector de idioma */
+.lang-switch{position:absolute;top:20px;right:20px;z-index:100;display:flex;gap:6px;}
+.lang-btn{padding:6px 12px;border-radius:20px;border:1.5px solid rgba(77,166,224,0.3);background:rgba(13,13,13,0.8);color:rgba(255,255,255,0.5);font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
+.lang-btn.active{border-color:#4da6e0;color:#4da6e0;background:rgba(77,166,224,0.1);}
+.lang-btn:hover{border-color:#4da6e0;color:#4da6e0;}
 
-.logo-wrap{
-  margin-bottom:32px;
-  animation: fadeDown 0.8s ease;
-}
-.logo-wrap img{
-  height:90px;
-  filter:drop-shadow(0 0 20px rgba(77,166,224,0.5));
-}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;max-width:420px;width:100%;}
 
-@keyframes fadeDown{
-  from{opacity:0;transform:translateY(-20px);}
-  to{opacity:1;transform:translateY(0);}
-}
+.logo-wrap{margin-bottom:32px;animation:fadeDown 0.8s ease;}
+.logo-wrap img{height:90px;filter:drop-shadow(0 0 20px rgba(77,166,224,0.5));}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  background:rgba(77,166,224,0.12);
-  border:1px solid rgba(77,166,224,0.3);
-  border-radius:20px;
-  padding:5px 14px;
-  font-size:0.72rem;
-  font-weight:600;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:#4da6e0;
-  margin-bottom:20px;
-  animation: fadeUp 0.8s ease 0.2s both;
-}
-.badge-dot{
-  width:6px;height:6px;
-  border-radius:50%;
-  background:#4da6e0;
-  animation:blink 1.5s ease-in-out infinite;
-}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(77,166,224,0.12);border:1px solid rgba(77,166,224,0.3);border-radius:20px;padding:5px 14px;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4da6e0;margin-bottom:20px;animation:fadeUp 0.8s ease 0.2s both;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#4da6e0;animation:blink 1.5s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-.headline{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:3rem;
-  letter-spacing:3px;
-  line-height:1.1;
-  color:#fff;
-  margin-bottom:16px;
-  animation: fadeUp 0.8s ease 0.4s both;
-}
-.headline span{
-  color:#4da6e0;
-  display:block;
-}
+.headline{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:3px;line-height:1.1;color:#fff;margin-bottom:16px;animation:fadeUp 0.8s ease 0.4s both;}
+.headline span{color:#4da6e0;display:block;}
 
-.sub{
-  font-size:0.95rem;
-  color:rgba(255,255,255,0.5);
-  line-height:1.7;
-  margin-bottom:40px;
-  animation: fadeUp 0.8s ease 0.6s both;
-}
+.sub{font-size:0.95rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:40px;animation:fadeUp 0.8s ease 0.6s both;}
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
-.btn-reservar{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  width:100%;
-  max-width:320px;
-  padding:18px 32px;
-  border-radius:12px;
-  background:linear-gradient(135deg, #4da6e0, #2980b9);
-  color:#fff;
-  font-family:'Outfit',sans-serif;
-  font-size:1rem;
-  font-weight:700;
-  letter-spacing:1px;
-  text-decoration:none;
-  border:none;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  box-shadow:0 8px 32px rgba(77,166,224,0.35);
-  animation: fadeUp 0.8s ease 0.8s both;
-  position:relative;
-  overflow:hidden;
-}
-.btn-reservar::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-  opacity:0;
-  transition:opacity 0.3s;
-}
-.btn-reservar:hover{
-  transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(77,166,224,0.5);
-}
+.btn-reservar{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:320px;padding:18px 32px;border-radius:12px;background:linear-gradient(135deg,#4da6e0,#2980b9);color:#fff;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-decoration:none;border:none;cursor:pointer;transition:all 0.3s ease;box-shadow:0 8px 32px rgba(77,166,224,0.35);animation:fadeUp 0.8s ease 0.8s both;position:relative;overflow:hidden;}
+.btn-reservar::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);opacity:0;transition:opacity 0.3s;}
+.btn-reservar:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(77,166,224,0.5);}
 .btn-reservar:hover::before{opacity:1;}
-.btn-reservar:active{transform:translateY(0);}
-
 .btn-icon{font-size:1.2rem;}
 
-.stats{
-  display:flex;
-  gap:32px;
-  margin-top:48px;
-  animation: fadeUp 0.8s ease 1s both;
-}
+.stats{display:flex;gap:32px;margin-top:48px;animation:fadeUp 0.8s ease 1s both;}
 .stat{text-align:center;}
-.stat-num{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.8rem;
-  letter-spacing:2px;
-  color:#4da6e0;
-  line-height:1;
-}
-.stat-label{
-  font-size:0.7rem;
-  color:rgba(255,255,255,0.4);
-  letter-spacing:1px;
-  text-transform:uppercase;
-  margin-top:3px;
-}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:2px;color:#4da6e0;line-height:1;}
+.stat-label{font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
 
-.footer-note{
-  position:absolute;
-  bottom:24px;
-  left:0;right:0;
-  text-align:center;
-  font-size:0.72rem;
-  color:rgba(255,255,255,0.2);
-  letter-spacing:1px;
-}
+.footer-note{position:absolute;bottom:24px;left:0;right:0;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.2);letter-spacing:1px;}
 
-/* Banner instalación */
-.install-banner{
-  display:none;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  z-index:9999;
-  background:rgba(20,20,20,0.98);
-  backdrop-filter:blur(12px);
-  border-top:1px solid rgba(77,166,224,0.2);
-  padding:16px 20px;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  animation:slideUp 0.4s ease;
-}
+.install-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(20,20,20,0.98);backdrop-filter:blur(12px);border-top:1px solid rgba(77,166,224,0.2);padding:16px 20px;align-items:center;justify-content:space-between;gap:12px;animation:slideUp 0.4s ease;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .install-banner.show{display:flex;}
 .install-info{display:flex;align-items:center;gap:12px;}
@@ -259,26 +83,10 @@ html,body{height:100%;font-family:'Outfit',sans-serif;}
 .install-text strong{display:block;font-size:0.9rem;color:#fff;}
 .install-text span{font-size:0.75rem;color:rgba(255,255,255,0.4);}
 .install-btns{display:flex;gap:8px;flex-shrink:0;}
-.install-yes{
-  background:linear-gradient(135deg,#4da6e0,#2980b9);
-  color:#fff;border:none;
-  padding:9px 18px;border-radius:8px;
-  font-family:'Outfit',sans-serif;
-  font-size:0.82rem;font-weight:600;cursor:pointer;
-}
-.install-no{
-  background:transparent;color:rgba(255,255,255,0.3);
-  border:none;padding:9px;cursor:pointer;font-size:1rem;
-}
+.install-yes{background:linear-gradient(135deg,#4da6e0,#2980b9);color:#fff;border:none;padding:9px 18px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;}
+.install-no{background:transparent;color:rgba(255,255,255,0.3);border:none;padding:9px;cursor:pointer;font-size:1rem;}
 
-/* WhatsApp */
-.wa-btn{
-  position:fixed;bottom:24px;right:24px;z-index:9998;
-  width:52px;height:52px;background:#25D366;
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 18px rgba(37,211,102,0.4);
-  transition:transform 0.3s;text-decoration:none;
-}
+.wa-btn{position:fixed;bottom:24px;right:24px;z-index:9998;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,0.4);transition:transform 0.3s;text-decoration:none;}
 .wa-btn:hover{transform:scale(1.1);}
 .wa-btn svg{width:26px;height:26px;fill:#fff;}
 </style>
@@ -301,6 +109,12 @@ html,body{height:100%;font-family:'Outfit',sans-serif;}
     <div class="particle"></div>
   </div>
 
+  <!-- Selector idioma -->
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+  </div>
+
   <div class="content">
     <div class="logo-wrap">
       <img src="images/logo_i-motion_trans.png" alt="i-Motion EMS Tenerife">
@@ -308,33 +122,33 @@ html,body{height:100%;font-family:'Outfit',sans-serif;}
 
     <div class="badge">
       <div class="badge-dot"></div>
-      EMS Training · Tenerife
+      <span id="badge-text">EMS Training · Tenerife</span>
     </div>
 
-    <h1 class="headline">
+    <h1 class="headline" id="headline">
       Entrena inteligente con
       <span>i-Motion EMS Tenerife</span>
     </h1>
 
-    <p class="sub">Resultados reales en solo 25 minutos.<br>Tecnología de electroestimulación muscular.</p>
+    <p class="sub" id="sub-text">Resultados reales en solo 25 minutos.<br>Tecnología de electroestimulación muscular.</p>
 
-    <a href="reservas.html" class="btn-reservar">
+    <a href="reservas.html" class="btn-reservar" id="btn-reservar">
       <span class="btn-icon">⚡</span>
-      Reservar mi sesión
+      <span id="btn-text">Reservar mi sesión</span>
     </a>
 
     <div class="stats">
       <div class="stat">
         <div class="stat-num">25'</div>
-        <div class="stat-label">Por sesión</div>
+        <div class="stat-label" id="stat1">Por sesión</div>
       </div>
       <div class="stat">
         <div class="stat-num">350+</div>
-        <div class="stat-label">Músculos activos</div>
+        <div class="stat-label" id="stat2">Músculos activos</div>
       </div>
       <div class="stat">
         <div class="stat-num">100%</div>
-        <div class="stat-label">Resultados reales</div>
+        <div class="stat-label" id="stat3">Resultados reales</div>
       </div>
     </div>
   </div>
@@ -347,11 +161,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;}
     <img src="images/logo_i-motion_trans.png" alt="i-Motion">
     <div class="install-text">
       <strong>i-Motion EMS Tenerife</strong>
-      <span>Instala la app gratis en tu móvil</span>
+      <span id="install-text">Instala la app gratis en tu móvil</span>
     </div>
   </div>
   <div class="install-btns">
-    <button class="install-yes" onclick="installPWA()">Instalar</button>
+    <button class="install-yes" onclick="installPWA()" id="install-btn">Instalar</button>
     <button class="install-no" onclick="document.getElementById('installBanner').classList.remove('show')">✕</button>
   </div>
 </div>
@@ -361,6 +175,50 @@ html,body{height:100%;font-family:'Outfit',sans-serif;}
 </a>
 
 <script>
+const translations = {
+  es: {
+    badge: 'EMS Training · Tenerife',
+    headline: 'Entrena inteligente con<br><span style="color:#4da6e0">i-Motion EMS Tenerife</span>',
+    sub: 'Resultados reales en solo 25 minutos.<br>Tecnología de electroestimulación muscular.',
+    btn: 'Reservar mi sesión',
+    stat1: 'Por sesión',
+    stat2: 'Músculos activos',
+    stat3: 'Resultados reales',
+    install: 'Instala la app gratis en tu móvil',
+    installBtn: 'Instalar',
+    wa: 'Hola%2C%20quiero%20reservar%20una%20sesi%C3%B3n'
+  },
+  en: {
+    badge: 'EMS Training · Tenerife',
+    headline: 'Train smarter with<br><span style="color:#4da6e0">i-Motion EMS Tenerife</span>',
+    sub: 'Real results in just 25 minutes.<br>Electric muscle stimulation technology.',
+    btn: 'Book my session',
+    stat1: 'Per session',
+    stat2: 'Active muscles',
+    stat3: 'Real results',
+    install: 'Install the app free on your phone',
+    installBtn: 'Install',
+    wa: 'Hello%2C%20I%20would%20like%20to%20book%20a%20session'
+  }
+};
+
+function setLang(lang) {
+  const t = translations[lang];
+  document.getElementById('badge-text').textContent = t.badge;
+  document.getElementById('headline').innerHTML = t.headline;
+  document.getElementById('sub-text').innerHTML = t.sub;
+  document.getElementById('btn-text').textContent = t.btn;
+  document.getElementById('stat1').textContent = t.stat1;
+  document.getElementById('stat2').textContent = t.stat2;
+  document.getElementById('stat3').textContent = t.stat3;
+  document.getElementById('install-text').textContent = t.install;
+  document.getElementById('install-btn').textContent = t.installBtn;
+  document.querySelector('.wa-btn').href = `https://wa.me/34643986544?text=${t.wa}`;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.documentElement.lang = lang;
+}
+
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
