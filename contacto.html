@@ -9,119 +9,126 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<meta name="keywords" content="reservar sesión EMS Tenerife, contacto i-Motion Tenerife, primera sesión gratis EMS, cita EMS Costa Adeje, 643986544">
-<meta property="og:title" content="Contacto y Reservas | i-Motion EMS Tenerife | Primera Sesión Gratis">
-<meta property="og:description" content="Reserva tu primera sesión de entrenamiento EMS gratis en i-Motion Tenerife. Costa Adeje, Tenerife Top Training. Llámanos: 643 986 544.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://imotiontenerife-ems.com/contacto.html">
-<meta property="og:image" content="https://imotiontenerife-ems.com/images/logo_i-motion_trans.png">
 <link rel="canonical" href="https://imotiontenerife-ems.com/contacto.html">
+<style>
+.lang-switch{display:flex;align-items:center;gap:6px;margin-left:16px;}
+.lang-btn{padding:4px 10px;border-radius:16px;border:1.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
+.lang-btn.active{border-color:var(--accent);color:var(--accent);}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent);}
+</style>
 </head>
 <body>
+
 <nav class="navbar scrolled" id="navbar">
   <div class="nav-container">
     <a href="index.html" class="nav-logo"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="50"></a>
     <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="quienes-somos.html">Quiénes somos</a></li>
-      <li><a href="imotion-sport.html">i-Motion Sport</a></li>
-      <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
-      <li><a href="contacto.html" class="nav-cta active">Reservar sesión</a></li>
+      <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+      <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+      <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+      <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+      <li><a href="reservas.html" class="nav-cta active" data-i18n="nav_reservar">Reservar sesión</a></li>
     </ul>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="es" onclick="applyLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="en" onclick="applyLang('en')">🇬🇧 EN</button>
+    </div>
   </div>
 </nav>
+
 <section class="page-hero">
   <div class="container">
-    <span class="tag">Empezar es gratis</span>
+    <span class="tag" data-i18n="ct_hero_tag">Empezar es gratis</span>
     <h1>RESERVA TU <span class="accent">SESIÓN</span></h1>
-    <p style="color:rgba(255,255,255,0.55); max-width:500px; margin:16px auto 0;">Primera sesión de prueba completamente gratuita y sin compromiso. Descubre el poder del EMS.</p>
+    <p style="color:rgba(255,255,255,0.55);max-width:500px;margin:16px auto 0;" data-i18n="ct_hero_sub">Primera sesión de prueba completamente gratuita y sin compromiso. Descubre el poder del EMS.</p>
   </div>
 </section>
+
 <section class="section">
   <div class="container">
     <div class="contact-grid reveal">
       <div>
-        <span class="tag">Escríbenos</span>
-        <h2 style="margin-bottom:32px;">Ponte en <span class="accent">contacto</span></h2>
+        <span class="tag" data-i18n="ct_form_tag">Escríbenos</span>
+        <h2 style="margin-bottom:32px;" data-i18n="ct_form_title">Ponte en <span class="accent">contacto</span></h2>
         <form class="contact-form" name="contacto" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/gracias.html">
           <input type="hidden" name="form-name" value="contacto">
           <p style="display:none;"><input name="bot-field"></p>
           <div class="form-row">
             <div class="form-group">
-              <label for="nombre">Nombre *</label>
+              <label for="nombre" data-i18n="ct_f_nombre">Nombre *</label>
               <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
             </div>
             <div class="form-group">
-              <label for="apellidos">Apellidos</label>
+              <label for="apellidos" data-i18n="ct_f_apellidos">Apellidos</label>
               <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="email">Email *</label>
+              <label for="email" data-i18n="ct_f_email">Email *</label>
               <input type="email" id="email" name="email" placeholder="tu@email.com" required>
             </div>
             <div class="form-group">
-              <label for="telefono">Teléfono</label>
+              <label for="telefono" data-i18n="ct_f_tel">Teléfono</label>
               <input type="tel" id="telefono" name="telefono" placeholder="600 000 000">
             </div>
           </div>
           <div class="form-group">
-            <label for="programa">Programa de interés</label>
+            <label for="programa" data-i18n="ct_f_programa">Programa de interés</label>
             <select id="programa" name="programa">
-              <option value="">Seleccionar...</option>
-              <option value="sport">i-Motion Sport (rendimiento deportivo)</option>
-              <option value="esthetic">i-Shape Esthetic (transformación corporal)</option>
-              <option value="ambos">Ambos programas / No lo sé todavía</option>
+              <option value="" data-i18n="ct_select">Seleccionar...</option>
+              <option value="sport" data-i18n="ct_prog1">i-Motion Sport (rendimiento deportivo)</option>
+              <option value="esthetic" data-i18n="ct_prog2">i-Shape Esthetic (transformación corporal)</option>
+              <option value="ambos" data-i18n="ct_prog3">Ambos programas / No lo sé todavía</option>
             </select>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="fecha">Fecha preferida para la sesión</label>
+              <label for="fecha" data-i18n="ct_f_fecha">Fecha preferida para la sesión</label>
               <input type="date" id="fecha" name="fecha">
             </div>
             <div class="form-group">
-              <label for="horario">Horario preferido</label>
+              <label for="horario" data-i18n="ct_f_horario">Horario preferido</label>
               <select id="horario" name="horario">
-                <option value="">Seleccionar...</option>
-                <option value="manana">Mañana (8:00 – 13:00)</option>
-                <option value="tarde">Tarde (13:00 – 18:00)</option>
-                <option value="noche">Noche (18:00 – 21:00)</option>
-                <option value="sabado">Sábado (9:00 – 14:00)</option>
+                <option value="" data-i18n="ct_select">Seleccionar...</option>
+                <option value="manana" data-i18n="ct_h1">Mañana (8:00 – 13:00)</option>
+                <option value="tarde" data-i18n="ct_h2">Tarde (13:00 – 18:00)</option>
+                <option value="noche" data-i18n="ct_h3">Noche (18:00 – 21:00)</option>
+                <option value="sabado" data-i18n="ct_h4">Sábado (9:00 – 14:00)</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="como">¿Cómo nos conociste?</label>
+            <label for="como" data-i18n="ct_f_como">¿Cómo nos conociste?</label>
             <select id="como" name="como">
-              <option value="">Seleccionar...</option>
+              <option value="" data-i18n="ct_select">Seleccionar...</option>
               <option value="instagram">Instagram</option>
               <option value="facebook">Facebook</option>
-              <option value="google">Google / Búsqueda en internet</option>
-              <option value="recomendacion">Recomendación de un amigo o familiar</option>
-              <option value="pasando">Pasando por el centro</option>
-              <option value="otro">Otro</option>
+              <option value="google" data-i18n="ct_c3">Google / Búsqueda en internet</option>
+              <option value="recomendacion" data-i18n="ct_c4">Recomendación de un amigo o familiar</option>
+              <option value="pasando" data-i18n="ct_c5">Pasando por el centro</option>
+              <option value="otro" data-i18n="ct_c6">Otro</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="mensaje">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos tu objetivo o cualquier pregunta que tengas..."></textarea>
+            <label for="mensaje" data-i18n="ct_f_msg">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" data-i18n-placeholder="ct_f_msg_ph" placeholder="Cuéntanos tu objetivo o cualquier pregunta que tengas..."></textarea>
           </div>
-          <div class="form-group" style="flex-direction:row; align-items:center; gap:10px;">
-            <input type="checkbox" id="privacidad" name="privacidad" required style="width:18px; height:18px; flex-shrink:0;">
-            <label for="privacidad" style="font-size:0.82rem; color:rgba(255,255,255,0.5); cursor:pointer;">Acepto la <a href="politica-privacidad.html" style="color:var(--accent);">política de privacidad</a> *</label>
+          <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;">
+            <input type="checkbox" id="privacidad" name="privacidad" required style="width:18px;height:18px;flex-shrink:0;">
+            <label for="privacidad" style="font-size:0.82rem;color:rgba(255,255,255,0.5);cursor:pointer;" data-i18n="ct_f_privacy">Acepto la <a href="politica-privacidad.html" style="color:var(--accent);">política de privacidad</a> *</label>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Enviar solicitud de reserva</button>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" data-i18n="ct_submit">Enviar solicitud de reserva</button>
         </form>
       </div>
       <div>
-        <span class="tag">Información</span>
-        <h2 style="margin-bottom:32px;">Encuéntranos <span class="accent">aquí</span></h2>
+        <span class="tag" data-i18n="ct_info_tag">Información</span>
+        <h2 style="margin-bottom:32px;" data-i18n="ct_info_title">Encuéntranos <span class="accent">aquí</span></h2>
         <div class="contact-info-block">
           <div class="info-card">
             <div class="info-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
-            <div><h4>Teléfono</h4><p><a href="tel:643986544">643 986 544</a></p></div>
+            <div><h4 data-i18n="ct_phone">Teléfono</h4><p><a href="tel:643986544">643 986 544</a></p></div>
           </div>
           <div class="info-card">
             <div class="info-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
@@ -129,31 +136,57 @@
           </div>
           <div class="info-card">
             <div class="info-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
-            <div><h4>Dirección</h4><p>Av. Los Acantilados s/n, La Caleta, Costa Adeje</p></div>
+            <div><h4 data-i18n="ct_address">Dirección</h4><p>Av. Los Acantilados s/n, La Caleta, Costa Adeje</p></div>
           </div>
           <div class="info-card">
             <div class="info-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
-            <div><h4>Horario</h4><p>Lunes a Viernes: 8:00 – 21:00<br>Sábados: 9:00 – 14:00</p></div>
+            <div><h4 data-i18n="ct_hours_label">Horario</h4><p data-i18n="ct_hours">Lunes a Viernes: 8:00 – 21:00<br>Sábados: 9:00 – 14:00</p></div>
           </div>
         </div>
-        <div style="margin-top:28px; background:var(--dark-2); border-radius:12px; overflow:hidden; border:1px solid var(--border); height:240px;">
+        <div style="margin-top:28px;background:var(--dark-2);border-radius:12px;overflow:hidden;border:1px solid var(--border);height:240px;">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14303.254395938!2d-16.7268!3d28.0928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc6a9ad0e3c3b591%3A0x4ee2faf3f7e2c879!2sCosta%20Adeje%2C%20Santa%20Cruz%20de%20Tenerife!5e0!3m2!1ses!2ses!4v1700000000000" width="100%" height="240" style="border:0;" allowfullscreen="" loading="lazy" title="Ubicación i-Motion Tenerife EMS"></iframe>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand"><img src="images/logo_i-motion_trans.png" alt="i-Motion Tenerife EMS" height="55"><p>Centro de entrenamiento especializado en electroestimulación muscular en Av. Los Acantilados s/n, La Caleta, Costa Adeje.</p></div>
-      <div class="footer-col"><h4>Navegación</h4><ul><li><a href="index.html">Inicio</a></li><li><a href="quienes-somos.html">Quiénes somos</a></li><li><a href="imotion-sport.html">i-Motion Sport</a></li><li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
-      <div class="footer-col"><h4>Contacto</h4><ul class="contact-list"><li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li><li><a href="tel:643986544">643 986 544</a></li><li>Av. Los Acantilados s/n, La Caleta, Costa Adeje</li></ul></div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_nav">Navegación</h4>
+        <ul>
+          <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+          <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+          <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+          <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+          <li><a href="reservas.html" data-i18n="nav_reservar">Reservar sesión</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_contact">Contacto</h4>
+        <ul class="contact-list">
+          <li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li>
+          <li><a href="tel:643986544">643 986 544</a></li>
+          <li>Av. Los Acantilados s/n, La Caleta, Costa Adeje</li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom"><p>© 2025 i-Motion Tenerife EMS · Todos los derechos reservados</p><div class="footer-legal"><a href="aviso-legal.html">Aviso Legal</a><a href="politica-privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a></div></div>
+    <div class="footer-bottom">
+      <p data-i18n="foot_rights">© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p>
+      <div class="footer-legal">
+        <a href="aviso-legal.html" data-i18n="foot_legal">Aviso Legal</a>
+        <a href="politica-privacidad.html" data-i18n="foot_privacy">Privacidad</a>
+        <a href="politica-cookies.html" data-i18n="foot_cookies">Cookies</a>
+      </div>
+    </div>
   </div>
 </footer>
+
 <a href="https://wa.me/34643986544?text=Hola%2C%20me%20gustaria%20reservar%20una%20sesion%20de%20prueba%20gratuita" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><div class="whatsapp-pulse"></div><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
 <script src="js/main.js"></script>
 </body>
 </html>
