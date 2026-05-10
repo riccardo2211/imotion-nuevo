@@ -16,10 +16,15 @@
 <meta property="og:url" content="https://imotiontenerife-ems.com/">
 <meta property="og:image" content="https://imotiontenerife-ems.com/images/logo_i-motion_trans.png">
 <link rel="canonical" href="https://imotiontenerife-ems.com/">
+<style>
+.lang-switch{display:flex;align-items:center;gap:6px;margin-left:16px;}
+.lang-btn{padding:4px 10px;border-radius:16px;border:1.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
+.lang-btn.active{border-color:var(--accent);color:var(--accent);}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent);}
+</style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="nav-container">
     <a href="index.html" class="nav-logo">
@@ -29,65 +34,55 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="active">Inicio</a></li>
-      <li><a href="quienes-somos.html">Quiénes somos</a></li>
-      <li><a href="imotion-sport.html">i-Motion Sport</a></li>
-      <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
-      <li><a href="contacto.html" class="nav-cta">Reservar sesión</a></li>
+      <li><a href="index.html" class="active" data-i18n="nav_inicio">Inicio</a></li>
+      <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+      <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+      <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+      <li><a href="reservas.html" class="nav-cta" data-i18n="nav_reservar">Reservar sesión</a></li>
     </ul>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="es" onclick="applyLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="en" onclick="applyLang('en')">🇬🇧 EN</button>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
     <img src="images/mujer-hombre-entrenando-imotion-v24.png" alt="Entrenamiento EMS i-Motion Tenerife" class="hero-img">
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
-    <div class="hero-badge">🏆 Tenerife Top Training · La Caleta · Costa Adeje · Tenerife</div>
+    <div class="hero-badge" data-i18n="idx_badge">🏆 Tenerife Top Training · La Caleta · Costa Adeje · Tenerife</div>
     <h1 class="hero-title"><span class="accent">i-MOTION</span> EMS<br>TENERIFE</h1>
-    <p class="hero-sub">El centro de electroestimulación muscular de referencia en Tenerife. 25 minutos que transforman tu cuerpo, en Costa Adeje en el Tenerife Top Training.</p>
+    <p class="hero-sub" data-i18n="idx_sub">El centro de electroestimulación muscular de referencia en Tenerife. 25 minutos que transforman tu cuerpo, en Costa Adeje en el Tenerife Top Training.</p>
     <div class="hero-actions">
-      <a href="contacto.html" class="btn btn-primary">Reservar sesión gratis</a>
-      <a href="quienes-somos.html" class="btn btn-outline">Conocer más</a>
+      <a href="reservas.html" class="btn btn-primary" data-i18n="idx_btn1">Reservar sesión gratis</a>
+      <a href="quienes-somos.html" class="btn btn-outline" data-i18n="idx_btn2">Conocer más</a>
     </div>
   </div>
   <div class="hero-stats">
-    <div class="stat-item">
-      <span class="stat-num">25'</span>
-      <span class="stat-label">por sesión</span>
-    </div>
+    <div class="stat-item"><span class="stat-num">25'</span><span class="stat-label" data-i18n="idx_stat1">por sesión</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">+80%</span>
-      <span class="stat-label">músculos activados</span>
-    </div>
+    <div class="stat-item"><span class="stat-num">+80%</span><span class="stat-label" data-i18n="idx_stat2">músculos activados</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">100%</span>
-      <span class="stat-label">personalizado</span>
-    </div>
+    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label" data-i18n="idx_stat3">personalizado</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">TOP</span>
-      <span class="stat-label">Training Tenerife</span>
-    </div>
+    <div class="stat-item"><span class="stat-num">TOP</span><span class="stat-label" data-i18n="idx_stat4">Training Tenerife</span></div>
   </div>
 </section>
 
-<!-- INTRO -->
 <section class="intro section">
   <div class="container">
-    <div class="intro-grid">
-      <div class="intro-text reveal">
-        <span class="tag">¿Qué es EMS?</span>
-        <h2><span class="accent">i-Motion EMS Tenerife</span> — La revolución del entrenamiento inteligente</h2>
-        <p>La electroestimulación muscular (EMS) utiliza impulsos eléctricos de baja frecuencia para activar simultáneamente hasta el 90% de tus fibras musculares — algo imposible con el entrenamiento convencional.</p>
-        <p>Estamos en <strong style="color:#fff;">Tenerife Top Training</strong>, el centro de alto rendimiento de referencia en Tenerife, en <strong style="color:#fff;">Av. de Los Acantilados s/n, La Caleta, Costa Adeje</strong>. Un espacio de élite para un entrenamiento de élite.</p>
-        <a href="quienes-somos.html" class="btn btn-primary">Sobre nosotros</a>
+    <div class="intro-grid reveal">
+      <div class="intro-text">
+        <span class="tag" data-i18n="idx_intro_tag">¿Qué es EMS?</span>
+        <h2 data-i18n="idx_intro_title"><span class="accent">i-Motion EMS Tenerife</span> — La revolución del entrenamiento inteligente</h2>
+        <p data-i18n="idx_intro_p1">La electroestimulación muscular (EMS) utiliza impulsos eléctricos de baja frecuencia para activar simultáneamente hasta el 90% de tus fibras musculares — algo imposible con el entrenamiento convencional.</p>
+        <p data-i18n="idx_intro_p2">Estamos en <strong style="color:#fff;">Tenerife Top Training</strong>, el centro de alto rendimiento de referencia en Tenerife, en <strong style="color:#fff;">Av. de Los Acantilados s/n, La Caleta, Costa Adeje</strong>. Un espacio de élite para un entrenamiento de élite.</p>
+        <a href="quienes-somos.html" class="btn btn-primary" data-i18n="idx_intro_btn">Sobre nosotros</a>
       </div>
-      <div class="intro-visual reveal">
+      <div class="intro-visual">
         <div class="intro-img-wrap">
           <img src="images/TRAJE-V24-PNG.png" alt="Traje EMS i-motion" class="intro-img">
         </div>
@@ -100,160 +95,109 @@
   </div>
 </section>
 
-<!-- SERVICIOS -->
 <section class="services section dark-section">
   <div class="container">
     <div class="section-header center reveal">
-      <span class="tag">Nuestros programas</span>
-      <h2>Elige tu <span class="accent">objetivo</span></h2>
+      <span class="tag" data-i18n="idx_serv_tag">Nuestros programas</span>
+      <h2 data-i18n="idx_serv_title">Elige tu <span class="accent">objetivo</span></h2>
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
-        <div class="service-img-wrap">
-          <img src="images/corredor-v25.png" alt="i-Motion Sport" class="service-img">
-        </div>
+        <div class="service-img-wrap"><img src="images/corredor-v25.png" alt="i-Motion Sport" class="service-img"></div>
         <div class="service-body">
-          <span class="service-tag sport">Rendimiento</span>
+          <span class="service-tag sport" data-i18n="idx_sport_tag">Rendimiento</span>
           <h3>i-Motion Sport</h3>
-          <p>Para atletas y deportistas que buscan llevar su rendimiento al siguiente nivel. Mejora fuerza, resistencia y potencia muscular con entrenamientos adaptados a tu deporte.</p>
+          <p data-i18n="idx_sport_desc">Para atletas y deportistas que buscan llevar su rendimiento al siguiente nivel. Mejora fuerza, resistencia y potencia muscular con entrenamientos adaptados a tu deporte.</p>
           <ul class="service-list">
-            <li>Entrenamiento de fuerza y resistencia</li>
-            <li>Mejora del rendimiento deportivo</li>
-            <li>Recuperación muscular acelerada</li>
-            <li>Tonificación y definición corporal</li>
-            <li>Traje cuerpo entero o inferior</li>
+            <li data-i18n="sp_b1">Entrenamiento de fuerza y resistencia</li>
+            <li data-i18n="sp_b2">Mejora del rendimiento deportivo</li>
+            <li data-i18n="sp_b3">Recuperación muscular acelerada</li>
+            <li data-i18n="sp_b4">Tonificación y definición corporal</li>
+            <li data-i18n="sp_b5">Traje cuerpo entero o inferior</li>
           </ul>
-          <a href="imotion-sport.html" class="btn btn-primary">Ver programa</a>
+          <a href="imotion-sport.html" class="btn btn-primary" data-i18n="idx_sport_btn">Ver programa</a>
         </div>
       </div>
       <div class="service-card featured reveal">
-        <div class="service-img-wrap">
-          <img src="images/Eli%20ishape%20esthetic.png" alt="i-Shape Esthetic" class="service-img" style="object-position: center center;">
-        </div>
+        <div class="service-img-wrap"><img src="images/Eli%20ishape%20esthetic.png" alt="i-Shape Esthetic" class="service-img" style="object-position:center center;"></div>
         <div class="service-body">
-          <span class="service-tag esthetic">Estético</span>
+          <span class="service-tag esthetic" data-i18n="idx_esthetic_tag">Estético</span>
           <h3>i-Shape Esthetic</h3>
-          <p>Para quienes buscan una transformación corporal visible. Tonifica, reduce celulitis y mejora la firmeza con electroestimulación focalizada en zonas específicas.</p>
+          <p data-i18n="idx_esthetic_desc">Para quienes buscan una transformación corporal visible. Tonifica, reduce celulitis y mejora la firmeza con electroestimulación focalizada en zonas específicas.</p>
           <ul class="service-list">
-            <li>Reducción de celulitis</li>
-            <li>Mejora de la firmeza cutánea</li>
-            <li>Fortalecimiento suelo pélvico</li>
-            <li>Resultados visibles desde la 1ª sesión</li>
+            <li data-i18n="es_b1">Reducción de celulitis</li>
+            <li data-i18n="es_b2">Mejora de la firmeza cutánea</li>
+            <li data-i18n="es_b3">Fortalecimiento suelo pélvico</li>
+            <li data-i18n="es_b4">Resultados visibles desde la 1ª sesión</li>
           </ul>
-          <a href="ishape-esthetic.html" class="btn btn-primary">Ver programa</a>
+          <a href="ishape-esthetic.html" class="btn btn-primary" data-i18n="idx_esthetic_btn">Ver programa</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BENEFICIOS -->
 <section class="benefits section">
   <div class="container">
     <div class="benefits-grid">
-      <div class="reveal">
-        <img src="images/imotionv25-pesa.png" alt="Entrenamiento con pesas EMS" class="benefits-img">
-      </div>
+      <div class="reveal"><img src="images/imotionv25-pesa.png" alt="Entrenamiento con pesas EMS" class="benefits-img"></div>
       <div class="benefits-content reveal">
-        <span class="tag">Por qué i-Motion EMS Tenerife</span>
-        <h2>Ventajas del entrenamiento <span class="accent">i-Motion</span></h2>
+        <span class="tag" data-i18n="idx_benef_tag">Por qué i-Motion EMS Tenerife</span>
+        <h2 data-i18n="idx_benef_title">Ventajas del entrenamiento <span class="accent">i-Motion</span></h2>
         <div class="benefits-list">
-          <div class="benefit-item">
-            <div class="benefit-icon">🏆</div>
-            <div><strong>Tenerife Top Training</strong><p>Ubicados en el centro de alto rendimiento de referencia en la isla</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">⚡</div>
-            <div><strong>Ahorra tiempo</strong><p>25 minutos = 90 minutos de gym convencional</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">💪</div>
-            <div><strong>Aumenta masa muscular</strong><p>Activa hasta el 90% de las fibras musculares</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">🔥</div>
-            <div><strong>Tonificación y adelgazamiento</strong><p>Define tu cuerpo y reduce grasa con resultados visibles y rápidos</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">🦴</div>
-            <div><strong>Descarga articulaciones</strong><p>Sin impacto, ideal para lesiones y rehabilitación</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">🎯</div>
-            <div><strong>100% personalizado</strong><p>Programas adaptados a tu cuerpo y objetivos</p></div>
-          </div>
+          <div class="benefit-item"><div class="benefit-icon">🏆</div><div><strong>Tenerife Top Training</strong><p>Ubicados en el centro de alto rendimiento de referencia en la isla</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">⚡</div><div><strong data-i18n="idx_b2t">Ahorra tiempo</strong><p data-i18n="idx_b2p">25 minutos = 90 minutos de gym convencional</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">💪</div><div><strong data-i18n="idx_b3t">Aumenta masa muscular</strong><p data-i18n="idx_b3p">Activa hasta el 90% de las fibras musculares</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">🔥</div><div><strong data-i18n="idx_b4t">Tonificación y adelgazamiento</strong><p data-i18n="idx_b4p">Define tu cuerpo y reduce grasa con resultados visibles y rápidos</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">🦴</div><div><strong data-i18n="idx_b5t">Descarga articulaciones</strong><p data-i18n="idx_b5p">Sin impacto, ideal para lesiones y rehabilitación</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">🎯</div><div><strong data-i18n="idx_b6t">100% personalizado</strong><p data-i18n="idx_b6p">Programas adaptados a tu cuerpo y objetivos</p></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ANTES Y DESPUÉS -->
 <section class="section dark-section">
   <div class="container">
     <div class="section-header center reveal">
-      <span class="tag">Resultados reales</span>
-      <h2>Antes y después con <span class="accent">i-Motion EMS</span></h2>
-      <p>Transformaciones reales de clientes reales. Resultados visibles en pocas semanas.</p>
+      <span class="tag" data-i18n="idx_results_tag">Resultados reales</span>
+      <h2 data-i18n="idx_results_title">Antes y después con <span class="accent">i-Motion EMS</span></h2>
+      <p data-i18n="idx_results_sub">Transformaciones reales de clientes reales. Resultados visibles en pocas semanas.</p>
     </div>
     <div class="tech-grid reveal">
-      <div class="testi-card" style="padding:0; overflow:hidden;">
-        <img src="images/i-motion-antes-y-despues-resultados.webp" alt="Antes y después i-Motion" style="width:100%; display:block; border-radius:12px;">
-      </div>
-      <div class="testi-card" style="padding:0; overflow:hidden;">
-        <img src="images/i-motion-antes-y-despues-resultados-1.webp" alt="Antes y después i-Motion" style="width:100%; display:block; border-radius:12px;">
-      </div>
-      <div class="testi-card" style="padding:0; overflow:hidden;">
-        <img src="images/i-motion-before-and-after-2.webp" alt="Antes y después i-Motion" style="width:100%; display:block; border-radius:12px;">
-      </div>
+      <div class="testi-card" style="padding:0;overflow:hidden;"><img src="images/i-motion-antes-y-despues-resultados.webp" alt="Antes y después" style="width:100%;display:block;border-radius:12px;"></div>
+      <div class="testi-card" style="padding:0;overflow:hidden;"><img src="images/i-motion-antes-y-despues-resultados-1.webp" alt="Antes y después" style="width:100%;display:block;border-radius:12px;"></div>
+      <div class="testi-card" style="padding:0;overflow:hidden;"><img src="images/i-motion-before-and-after-2.webp" alt="Antes y después" style="width:100%;display:block;border-radius:12px;"></div>
     </div>
   </div>
 </section>
 
-<!-- TECNOLOGÍA -->
 <section class="tech section">
   <div class="container">
     <div class="section-header center reveal">
-      <span class="tag">Tecnología</span>
-      <h2>Equipo <span class="accent">i-motion Pro V25</span></h2>
-      <p>La última generación en electroestimulación muscular inalámbrica con inteligencia artificial integrada</p>
+      <span class="tag" data-i18n="idx_tech_tag">Tecnología</span>
+      <h2 data-i18n="idx_tech_title">Equipo <span class="accent">i-motion Pro V25</span></h2>
+      <p data-i18n="idx_tech_sub">La última generación en electroestimulación muscular inalámbrica con inteligencia artificial integrada</p>
     </div>
     <div class="tech-grid reveal">
-      <div class="tech-card">
-        <img src="images/fondo-pantalla-v25.png" alt="i-motion V25" class="tech-img">
-        <h4>Sistema V25</h4>
-        <p>Conectividad Bluetooth, control total desde tablet con IA</p>
-      </div>
-      <div class="tech-card">
-        <img src="images/TABLET-CON-IA-integrada.png" alt="IA integrada" class="tech-img">
-        <h4>IA Integrada</h4>
-        <p>Ajuste automático de parámetros según tu rendimiento en tiempo real</p>
-      </div>
-      <div class="tech-card">
-        <img src="images/software_imotion_v25.jpg" alt="Software i-motion" class="tech-img">
-        <h4>Software propio</h4>
-        <p>Seguimiento completo de tu progreso sesión a sesión</p>
-      </div>
+      <div class="tech-card"><img src="images/fondo-pantalla-v25.png" alt="i-motion V25" class="tech-img"><h4>Sistema V25</h4><p>Conectividad Bluetooth, control total desde tablet con IA</p></div>
+      <div class="tech-card"><img src="images/TABLET-CON-IA-integrada.png" alt="IA integrada" class="tech-img"><h4>IA Integrada</h4><p>Ajuste automático de parámetros según tu rendimiento en tiempo real</p></div>
+      <div class="tech-card"><img src="images/software_imotion_v25.jpg" alt="Software i-motion" class="tech-img"><h4>Software propio</h4><p>Seguimiento completo de tu progreso sesión a sesión</p></div>
     </div>
   </div>
 </section>
 
-<!-- CTA FINAL -->
 <section class="cta-section">
-  <div class="cta-bg">
-    <img src="images/V24-pose.png" alt="" class="cta-bg-img">
-    <div class="cta-overlay"></div>
-  </div>
+  <div class="cta-bg"><img src="images/V24-pose.png" alt="" class="cta-bg-img"><div class="cta-overlay"></div></div>
   <div class="container">
     <div class="cta-content reveal">
-      <h2>¿Listo para entrenar en <span class="accent">Tenerife Top Training</span> con EMS?</h2>
-      <p>Reserva tu primera sesión de prueba gratuita en i-Motion EMS Tenerife</p>
-      <a href="contacto.html" class="btn btn-primary btn-large">Reservar sesión gratis</a>
+      <h2 data-i18n="idx_cta_title">¿Listo para entrenar en <span class="accent">Tenerife Top Training</span> con EMS?</h2>
+      <p data-i18n="idx_cta_sub">Reserva tu primera sesión de prueba gratuita en i-Motion EMS Tenerife</p>
+      <a href="reservas.html" class="btn btn-primary btn-large" data-i18n="idx_cta_btn">Reservar sesión gratis</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
@@ -266,17 +210,17 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Navegación</h4>
+        <h4 data-i18n="foot_nav">Navegación</h4>
         <ul>
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="quienes-somos.html">Quiénes somos</a></li>
-          <li><a href="imotion-sport.html">i-Motion Sport</a></li>
-          <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+          <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+          <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+          <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+          <li><a href="reservas.html" data-i18n="nav_reservar">Reservar sesión</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contacto</h4>
+        <h4 data-i18n="foot_contact">Contacto</h4>
         <ul class="contact-list">
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li>
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><a href="tel:643986544">643 986 544</a></li>
@@ -285,16 +229,18 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p>
+      <p data-i18n="foot_rights">© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p>
       <div class="footer-legal">
-        <a href="aviso-legal.html">Aviso Legal</a>
-        <a href="politica-privacidad.html">Privacidad</a>
-        <a href="politica-cookies.html">Cookies</a>
+        <a href="aviso-legal.html" data-i18n="foot_legal">Aviso Legal</a>
+        <a href="politica-privacidad.html" data-i18n="foot_privacy">Privacidad</a>
+        <a href="politica-cookies.html" data-i18n="foot_cookies">Cookies</a>
       </div>
     </div>
   </div>
 </footer>
+
 <a href="https://wa.me/34643986544?text=Hola%2C%20me%20gustaria%20reservar%20una%20sesion%20de%20prueba%20gratuita" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><div class="whatsapp-pulse"></div><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
 <script src="js/main.js"></script>
 </body>
 </html>
