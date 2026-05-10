@@ -9,13 +9,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<meta name="keywords" content="i-Motion EMS Tenerife, centro EMS Costa Adeje, Tenerife Top Training, electroestimulación La Caleta, entrenadores EMS certificados Tenerife">
-<meta property="og:title" content="Quiénes Somos | i-Motion EMS Tenerife | Tenerife Top Training Costa Adeje">
-<meta property="og:description" content="Conoce i-Motion EMS Tenerife, centro especializado en electroestimulación muscular en Tenerife Top Training, Av. Los Acantilados s/n, La Caleta, Costa Adeje.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://imotiontenerife-ems.com/quienes-somos.html">
-<meta property="og:image" content="https://imotiontenerife-ems.com/images/logo_i-motion_trans.png">
 <link rel="canonical" href="https://imotiontenerife-ems.com/quienes-somos.html">
+<style>
+.lang-switch{display:flex;align-items:center;gap:6px;margin-left:16px;}
+.lang-btn{padding:4px 10px;border-radius:16px;border:1.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
+.lang-btn.active{border-color:var(--accent);color:var(--accent);}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent);}
+</style>
 </head>
 <body>
 
@@ -26,20 +26,24 @@
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="quienes-somos.html" class="active">Quiénes somos</a></li>
-      <li><a href="imotion-sport.html">i-Motion Sport</a></li>
-      <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
-      <li><a href="contacto.html" class="nav-cta">Reservar sesión</a></li>
+      <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+      <li><a href="quienes-somos.html" class="active" data-i18n="nav_quienes">Quiénes somos</a></li>
+      <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+      <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+      <li><a href="reservas.html" class="nav-cta" data-i18n="nav_reservar">Reservar sesión</a></li>
     </ul>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="es" onclick="applyLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="en" onclick="applyLang('en')">🇬🇧 EN</button>
+    </div>
   </div>
 </nav>
 
 <section class="page-hero">
   <div class="container">
-    <span class="tag">Sobre nosotros</span>
-    <h1>QUIÉNES <span class="accent">SOMOS</span></h1>
-    <p style="color:rgba(255,255,255,0.55); max-width:540px; margin:16px auto 0;">El primer centro especializado en entrenamiento EMS de Av. Los Acantilados s/n, La Caleta, Costa Adeje.</p>
+    <span class="tag" data-i18n="qs_hero_tag">Sobre nosotros</span>
+    <h1 data-i18n="qs_hero_title">QUIÉNES <span class="accent">SOMOS</span></h1>
+    <p style="color:rgba(255,255,255,0.55);max-width:540px;margin:16px auto 0;" data-i18n="qs_hero_sub">El primer centro especializado en entrenamiento EMS de Av. Los Acantilados s/n, La Caleta, Costa Adeje.</p>
   </div>
 </section>
 
@@ -47,11 +51,11 @@
   <div class="container">
     <div class="intro-grid reveal">
       <div class="intro-text">
-        <span class="tag">Nuestra misión</span>
-        <h2>Tecnología al servicio de tu <span class="accent">bienestar</span></h2>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">En i-Motion Tenerife EMS creemos que cada persona merece acceder a la tecnología más avanzada en entrenamiento físico, con resultados reales y en el menor tiempo posible.</p>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:16px;">Nuestro centro, ubicado en Costa Adeje, está equipado con la última generación del sistema i-motion Pro V25, combinando electroestimulación inalámbrica con inteligencia artificial para maximizar cada sesión.</p>
-        <p style="color:rgba(255,255,255,0.65);">Contamos con entrenadores certificados en EMS que diseñan programas completamente personalizados, adaptados a tus objetivos, condición física y estilo de vida.</p>
+        <span class="tag" data-i18n="qs_mission_tag">Nuestra misión</span>
+        <h2 data-i18n="qs_mission_title">Tecnología al servicio de tu <span class="accent">bienestar</span></h2>
+        <p style="color:rgba(255,255,255,0.65);margin-bottom:16px;" data-i18n="qs_p1">En i-Motion Tenerife EMS creemos que cada persona merece acceder a la tecnología más avanzada en entrenamiento físico, con resultados reales y en el menor tiempo posible.</p>
+        <p style="color:rgba(255,255,255,0.65);margin-bottom:16px;" data-i18n="qs_p2">Nuestro centro, ubicado en Costa Adeje, está equipado con la última generación del sistema i-motion Pro V25, combinando electroestimulación inalámbrica con inteligencia artificial para maximizar cada sesión.</p>
+        <p style="color:rgba(255,255,255,0.65);" data-i18n="qs_p3">Contamos con entrenadores certificados en EMS que diseñan programas completamente personalizados, adaptados a tus objetivos, condición física y estilo de vida.</p>
       </div>
       <div class="intro-visual">
         <div class="intro-img-wrap">
@@ -65,24 +69,24 @@
 <section class="section dark-section">
   <div class="container">
     <div class="section-header center reveal">
-      <span class="tag">Nuestros valores</span>
-      <h2>Por qué elegir <span class="accent">i-Motion</span></h2>
+      <span class="tag" data-i18n="qs_values_tag">Nuestros valores</span>
+      <h2 data-i18n="qs_values_title">Por qué elegir <span class="accent">i-Motion</span></h2>
     </div>
     <div class="tech-grid reveal">
       <div class="tech-card">
         <img src="images/imagen_web_1.jpg" alt="Entrenamiento personalizado" class="tech-img">
-        <h4>100% Personalizado</h4>
-        <p>Cada sesión se adapta a tus objetivos y condición física con seguimiento constante.</p>
+        <h4 data-i18n="qs_v1t">100% Personalizado</h4>
+        <p data-i18n="qs_v1p">Cada sesión se adapta a tus objetivos y condición física con seguimiento constante.</p>
       </div>
       <div class="tech-card">
         <img src="images/imagen_web_2.jpg" alt="Entrenadores certificados" class="tech-img">
-        <h4>Entrenadores Certificados</h4>
-        <p>Profesionales especializados en EMS con formación continua y experiencia demostrada.</p>
+        <h4 data-i18n="qs_v2t">Entrenadores Certificados</h4>
+        <p data-i18n="qs_v2p">Profesionales especializados en EMS con formación continua y experiencia demostrada.</p>
       </div>
       <div class="tech-card">
         <img src="images/TABLET-CON-IA-integrada.png" alt="Tecnología de vanguardia" class="tech-img">
-        <h4>Tecnología V25</h4>
-        <p>El sistema más avanzado del mercado con IA integrada y conectividad Bluetooth.</p>
+        <h4 data-i18n="qs_v3t">Tecnología V25</h4>
+        <p data-i18n="qs_v3p">El sistema más avanzado del mercado con IA integrada y conectividad Bluetooth.</p>
       </div>
     </div>
   </div>
@@ -92,35 +96,20 @@
   <div class="container">
     <div class="benefits-grid reveal">
       <div>
-        <img src="images/dani_falso_v25.png" alt="Entrenamiento EMS en acción" style="border-radius:12px; width:100%;">
+        <img src="images/dani_falso_v25.png" alt="Entrenamiento EMS en acción" style="border-radius:12px;width:100%;">
       </div>
       <div class="benefits-content">
-        <span class="tag">Nuestro centro</span>
-        <h2>Un espacio creado para <span class="accent">ti</span></h2>
-        <p style="color:rgba(255,255,255,0.65); margin-bottom:20px;">Instalaciones modernas y equipadas en Costa Adeje, con un ambiente acogedor donde te sentirás cómodo desde el primer día.</p>
+        <span class="tag" data-i18n="qs_centro_tag">Nuestro centro</span>
+        <h2 data-i18n="qs_centro_title">Un espacio creado para <span class="accent">ti</span></h2>
+        <p style="color:rgba(255,255,255,0.65);margin-bottom:20px;" data-i18n="qs_centro_sub">Instalaciones modernas y equipadas en Costa Adeje, con un ambiente acogedor donde te sentirás cómodo desde el primer día.</p>
         <div class="benefits-list">
-          <div class="benefit-item">
-            <div class="benefit-icon">🏆</div>
-            <div><strong>Tenerife Top Training — Centro de Alto Rendimiento</strong><p>Situados dentro del centro deportivo de referencia en Tenerife, con instalaciones de élite.</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">📍</div>
-            <div><strong>Ubicación privilegiada</strong><p>Av. de Los Acantilados s/n, La Caleta, Costa Adeje — fácil acceso y aparcamiento.</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">🧴</div>
-            <div><strong>Todo incluido</strong><p>Traje EMS, toalla y asesoramiento nutricional básico incluidos.</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">📅</div>
-            <div><strong>Horarios flexibles</strong><p>Adaptamos la sesión a tu agenda. Mañana, tarde o noche.</p></div>
-          </div>
-          <div class="benefit-item">
-            <div class="benefit-icon">🎯</div>
-            <div><strong>Seguimiento continuo</strong><p>Medición de resultados y ajuste del programa mensualmente.</p></div>
-          </div>
+          <div class="benefit-item"><div class="benefit-icon">🏆</div><div><strong data-i18n="qs_c1t">Tenerife Top Training — Centro de Alto Rendimiento</strong><p data-i18n="qs_c1p">Situados dentro del centro deportivo de referencia en Tenerife, con instalaciones de élite.</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">📍</div><div><strong data-i18n="qs_c2t">Ubicación privilegiada</strong><p data-i18n="qs_c2p">Av. de Los Acantilados s/n, La Caleta, Costa Adeje — fácil acceso y aparcamiento.</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">🧴</div><div><strong data-i18n="qs_c3t">Todo incluido</strong><p data-i18n="qs_c3p">Traje EMS, toalla y asesoramiento nutricional básico incluidos.</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">📅</div><div><strong data-i18n="qs_c4t">Horarios flexibles</strong><p data-i18n="qs_c4p">Adaptamos la sesión a tu agenda. Mañana, tarde o noche.</p></div></div>
+          <div class="benefit-item"><div class="benefit-icon">🎯</div><div><strong data-i18n="qs_c5t">Seguimiento continuo</strong><p data-i18n="qs_c5p">Medición de resultados y ajuste del programa mensualmente.</p></div></div>
         </div>
-        <a href="contacto.html" class="btn btn-primary" style="margin-top:28px;">Visítanos</a>
+        <a href="reservas.html" class="btn btn-primary" style="margin-top:28px;" data-i18n="qs_visit_btn">Visítanos</a>
       </div>
     </div>
   </div>
@@ -138,17 +127,17 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Navegación</h4>
+        <h4 data-i18n="foot_nav">Navegación</h4>
         <ul>
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="quienes-somos.html">Quiénes somos</a></li>
-          <li><a href="imotion-sport.html">i-Motion Sport</a></li>
-          <li><a href="ishape-esthetic.html">i-Shape Esthetic</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+          <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+          <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+          <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+          <li><a href="reservas.html" data-i18n="nav_reservar">Reservar sesión</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contacto</h4>
+        <h4 data-i18n="foot_contact">Contacto</h4>
         <ul class="contact-list">
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li>
           <li><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><a href="tel:643986544">643 986 544</a></li>
@@ -157,12 +146,18 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 i-Motion Tenerife EMS · Todos los derechos reservados</p>
-      <div class="footer-legal"><a href="aviso-legal.html">Aviso Legal</a><a href="politica-privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a></div>
+      <p data-i18n="foot_rights">© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p>
+      <div class="footer-legal">
+        <a href="aviso-legal.html" data-i18n="foot_legal">Aviso Legal</a>
+        <a href="politica-privacidad.html" data-i18n="foot_privacy">Privacidad</a>
+        <a href="politica-cookies.html" data-i18n="foot_cookies">Cookies</a>
+      </div>
     </div>
   </div>
 </footer>
+
 <a href="https://wa.me/34643986544?text=Hola%2C%20me%20gustaria%20reservar%20una%20sesion%20de%20prueba%20gratuita" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><div class="whatsapp-pulse"></div><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
 <script src="js/main.js"></script>
 </body>
 </html>
