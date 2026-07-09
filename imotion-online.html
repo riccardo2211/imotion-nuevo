@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>i-Motion Online | Entrenamiento y Nutrición Online | i-Motion EMS Tenerife</title>
+<meta name="description" content="Entrenamiento personalizado y plan nutricional online con i-Motion EMS Tenerife. Donde y cuando quieras, con seguimiento profesional y evaluación mensual en centro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="canonical" href="https://imotiontenerife-ems.com/imotion-online.html">
+<style>
+.lang-switch{display:flex;align-items:center;gap:6px;margin-left:16px;}
+.lang-btn{padding:4px 10px;border-radius:16px;border:1.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
+.lang-btn.active{border-color:var(--accent);color:var(--accent);}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Hero con imagen */
+.online-hero{position:relative;min-height:85vh;display:flex;align-items:center;overflow:hidden;background:#0a0a0a;}
+.online-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0.35;}
+.online-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.85) 40%,rgba(0,0,0,0.2) 100%);}
+.online-hero-content{position:relative;z-index:2;max-width:600px;padding:40px 0;}
+.online-hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(77,166,224,0.12);border:1px solid rgba(77,166,224,0.3);border-radius:20px;padding:5px 14px;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4da6e0;margin-bottom:20px;}
+.online-hero-title{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:3px;line-height:1.05;color:#fff;margin-bottom:16px;}
+.online-hero-title span{color:#4da6e0;}
+.online-hero-sub{font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:36px;max-width:480px;}
+.btn-harbiz{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:10px;background:linear-gradient(135deg,#4da6e0,#2980b9);color:#fff;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.5px;text-decoration:none;transition:all 0.3s;box-shadow:0 8px 24px rgba(77,166,224,0.3);}
+.btn-harbiz:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(77,166,224,0.5);}
+
+/* Stats hero */
+.online-stats{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap;}
+.online-stat{text-align:left;}
+.online-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:#4da6e0;line-height:1;}
+.online-stat-label{font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+
+/* Features grid */
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px;}
+.feature-card{background:#1c1c1c;border-radius:12px;border:1px solid rgba(255,255,255,0.08);padding:24px;text-align:center;transition:0.3s;}
+.feature-card:hover{border-color:rgba(77,166,224,0.4);transform:translateY(-4px);}
+.feature-icon{font-size:2rem;margin-bottom:14px;}
+.feature-card h4{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;color:#fff;margin-bottom:8px;}
+.feature-card p{font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+/* Bonos cards */
+.bonos-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;}
+.bono-card{background:#1c1c1c;border-radius:14px;border:2px solid rgba(255,255,255,0.08);padding:32px;position:relative;transition:0.3s;}
+.bono-card.featured{border-color:rgba(77,166,224,0.5);background:rgba(77,166,224,0.05);}
+.bono-badge{display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+.badge-activo{background:rgba(77,166,224,0.15);color:#4da6e0;}
+.badge-nuevo{background:rgba(46,204,113,0.15);color:#2ecc71;}
+.bono-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:1px;color:#fff;margin-bottom:10px;}
+.bono-card p{font-size:0.88rem;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:20px;}
+.bono-list{list-style:none;padding:0;margin:0 0 24px;}
+.bono-list li{font-size:0.85rem;color:rgba(255,255,255,0.65);padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;}
+.bono-list li:last-child{border-bottom:none;}
+.bono-list li::before{content:'✓';color:#4da6e0;font-weight:700;flex-shrink:0;}
+.bono-card.featured .bono-list li::before{color:#4da6e0;}
+
+/* Plataforma */
+.platform-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px;}
+.platform-card{background:#1c1c1c;border-radius:12px;border:1px solid rgba(255,255,255,0.08);padding:24px;text-align:center;}
+.platform-icon{font-size:2.2rem;margin-bottom:12px;}
+.platform-card h4{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.platform-card p{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+/* CTA */
+.online-cta{text-align:center;padding:60px 0;}
+.online-cta h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px;color:#fff;margin-bottom:12px;}
+.online-cta p{color:rgba(255,255,255,0.55);margin-bottom:32px;font-size:0.95rem;}
+
+@media(max-width:900px){
+  .features-grid,.platform-grid{grid-template-columns:1fr 1fr;}
+  .bonos-grid{grid-template-columns:1fr;}
+  .online-hero-title{font-size:2.8rem;}
+}
+@media(max-width:580px){
+  .features-grid,.platform-grid{grid-template-columns:1fr;}
+  .online-hero-title{font-size:2.2rem;}
+  .online-stats{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><img src="images/logo_i-motion_trans.png" alt="i-Motion EMS Tenerife" height="50"></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+      <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+      <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+      <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+      <li><a href="imotion-online.html" class="active" data-i18n="nav_online">i-Motion Online</a></li>
+      <li><a href="contacto.html" class="nav-cta" data-i18n="nav_reservar">Reservar sesión</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="es" onclick="applyLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="en" onclick="applyLang('en')">🇬🇧 EN</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="online-hero">
+  <img src="images/mujer-hombre-entrenando-imotion-v24.png" alt="i-Motion Online" class="online-hero-img">
+  <div class="online-hero-overlay"></div>
+  <div class="container">
+    <div class="online-hero-content">
+      <div class="online-hero-tag">🌐 i-Motion Online · Harbiz</div>
+      <h1 class="online-hero-title" data-i18n="on_hero_title">Tu entrenamiento y nutrición<br><span>donde y cuando quieras</span></h1>
+      <p class="online-hero-sub" data-i18n="on_hero_sub">La plataforma de i-Motion EMS Tenerife para llevar tu entrenamiento y nutrición al siguiente nivel — en casa, en el gimnasio o donde estés.</p>
+      <a href="https://app.harbiz.io/checkout-form/imotionemstene?lang=es&product=invitation" target="_blank" class="btn-harbiz">
+        <span>⚡</span>
+        <span data-i18n="on_hero_btn">Empezar ahora</span>
+      </a>
+      <div class="online-stats">
+        <div class="online-stat"><div class="online-stat-num">100%</div><div class="online-stat-label" data-i18n="on_stat1">Personalizado</div></div>
+        <div class="online-stat"><div class="online-stat-num">24/7</div><div class="online-stat-label" data-i18n="on_stat2">Disponible</div></div>
+        <div class="online-stat"><div class="online-stat-num">1×</div><div class="online-stat-label" data-i18n="on_stat3">Evaluación mensual</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ INCLUYE -->
+<section class="section dark-section">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="tag" data-i18n="on_feat_tag">Qué incluye</span>
+      <h2 data-i18n="on_feat_title">Una plataforma completa para <span class="accent">tu cambio</span></h2>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">🏋️</div>
+        <h4 data-i18n="on_f1t">Entrenamiento personalizado</h4>
+        <p data-i18n="on_f1p">Plan de entrenamiento adaptado a tus objetivos, nivel y equipamiento disponible.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🥗</div>
+        <h4 data-i18n="on_f2t">Plan nutricional</h4>
+        <p data-i18n="on_f2p">Alimentación adaptada a ti, con macronutrientes, recetas y hábitos saludables.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h4 data-i18n="on_f3t">Seguimiento de progreso</h4>
+        <p data-i18n="on_f3p">Control de hábitos, resultados y motivación continua desde la app.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h4 data-i18n="on_f4t">Evaluación mensual en centro</h4>
+        <p data-i18n="on_f4p">Una vez al mes en Tenerife Top Training para medir tu composición corporal y ver tus progresos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BONOS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="tag" data-i18n="on_bonos_tag">Elige tu plan</span>
+      <h2 data-i18n="on_bonos_title">Para cada <span class="accent">perfil</span></h2>
+      <p data-i18n="on_bonos_sub">Tanto si ya entrenas con nosotros como si buscas empezar desde cero</p>
+    </div>
+    <div class="bonos-grid reveal">
+
+      <div class="bono-card featured">
+        <span class="bono-badge badge-activo" data-i18n="on_b1_badge">⚡ Cliente con bono activo</span>
+        <h3 data-i18n="on_b1_title">i-Motion Online<br>+ EMS</h3>
+        <p data-i18n="on_b1_desc">Si ya entrenas con nosotros en el centro, complementa tus sesiones EMS con entrenamiento y nutrición online a precio especial.</p>
+        <ul class="bono-list">
+          <li data-i18n="on_b1_l1">Plan de entrenamiento online personalizado</li>
+          <li data-i18n="on_b1_l2">Plan nutricional adaptado</li>
+          <li data-i18n="on_b1_l3">Seguimiento y motivación continua</li>
+          <li data-i18n="on_b1_l4">Evaluación corporal mensual en centro</li>
+          <li data-i18n="on_b1_l5">Precio especial para clientes activos</li>
+          <li data-i18n="on_b1_l6">Comunicación directa con tu entrenador</li>
+        </ul>
+        <a href="https://app.harbiz.io/checkout-form/imotionemstene?lang=es&product=invitation" target="_blank" class="btn-harbiz" data-i18n="on_btn_subs">Suscribirme</a>
+      </div>
+
+      <div class="bono-card">
+        <span class="bono-badge badge-nuevo" data-i18n="on_b2_badge">🌱 Nuevo cliente</span>
+        <h3 data-i18n="on_b2_title">i-Motion Online</h3>
+        <p data-i18n="on_b2_desc">Empieza tu transformación desde casa, el gimnasio o donde estés. Entrenamiento y nutrición profesional al alcance de tu móvil.</p>
+        <ul class="bono-list">
+          <li data-i18n="on_b2_l1">Plan de entrenamiento online personalizado</li>
+          <li data-i18n="on_b2_l2">Plan nutricional adaptado a tus objetivos</li>
+          <li data-i18n="on_b2_l3">Seguimiento semanal de progreso</li>
+          <li data-i18n="on_b2_l4">Evaluación corporal mensual en centro</li>
+          <li data-i18n="on_b2_l5">Comunicación directa con tu entrenador</li>
+          <li data-i18n="on_b2_l6">Acceso completo a la app i-Motion</li>
+        </ul>
+        <a href="https://app.harbiz.io/checkout-form/imotionemstene?lang=es&product=invitation" target="_blank" class="btn-harbiz" style="background:linear-gradient(135deg,#2ecc71,#27ae60);" data-i18n="on_btn_subs2">Empezar ahora</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PLATAFORMA -->
+<section class="section dark-section">
+  <div class="container">
+    <div class="section-header center reveal">
+      <span class="tag" data-i18n="on_plat_tag">La plataforma</span>
+      <h2 data-i18n="on_plat_title">Todo en <span class="accent">una app</span></h2>
+      <p data-i18n="on_plat_sub">Tecnología profesional al servicio de tu progreso</p>
+    </div>
+    <div class="platform-grid reveal">
+      <div class="platform-card">
+        <div class="platform-icon">👤</div>
+        <h4 data-i18n="on_p1t">Planes 100% personalizados</h4>
+        <p data-i18n="on_p1p">Entrenamientos adaptados a tu nivel y objetivos.</p>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">🔄</div>
+        <h4 data-i18n="on_p2t">Actualización periódica</h4>
+        <p data-i18n="on_p2p">Tu plan evoluciona contigo según tus progresos.</p>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">✅</div>
+        <h4 data-i18n="on_p3t">Seguimiento y motivación</h4>
+        <p data-i18n="on_p3p">Control de hábitos, progreso y resultados en tiempo real.</p>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">💬</div>
+        <h4 data-i18n="on_p4t">Comunicación directa</h4>
+        <p data-i18n="on_p4p">Resuelve dudas y recibe el apoyo que necesitas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="cta-bg"><img src="images/mujer-hombre-entrenando-imotion-v24.png" alt="" class="cta-bg-img"><div class="cta-overlay"></div></div>
+  <div class="container">
+    <div class="cta-content reveal online-cta">
+      <h2 data-i18n="on_cta_title">¿Listo para entrenar donde y cuando <span class="accent">quieras</span>?</h2>
+      <p data-i18n="on_cta_sub">Únete a i-Motion Online y lleva tu entrenamiento y nutrición al siguiente nivel.</p>
+      <a href="https://app.harbiz.io/checkout-form/imotionemstene?lang=es&product=invitation" target="_blank" class="btn-harbiz" data-i18n="on_cta_btn">Empezar ahora ⚡</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><img src="images/logo_i-motion_trans.png" alt="i-Motion EMS Tenerife" height="55"><p>Centro de entrenamiento EMS en <strong style="color:#fff;">Tenerife Top Training</strong>, La Caleta, Costa Adeje, Tenerife.</p></div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_nav">Navegación</h4>
+        <ul>
+          <li><a href="index.html" data-i18n="nav_inicio">Inicio</a></li>
+          <li><a href="quienes-somos.html" data-i18n="nav_quienes">Quiénes somos</a></li>
+          <li><a href="imotion-sport.html" data-i18n="nav_sport">i-Motion Sport</a></li>
+          <li><a href="ishape-esthetic.html" data-i18n="nav_esthetic">i-Shape Esthetic</a></li>
+          <li><a href="imotion-online.html" data-i18n="nav_online">i-Motion Online</a></li>
+          <li><a href="contacto.html" data-i18n="nav_reservar">Reservar sesión</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_contact">Contacto</h4>
+        <ul class="contact-list">
+          <li><a href="mailto:info@imotiontenerife-ems.com">info@imotiontenerife-ems.com</a></li>
+          <li><a href="tel:643986544">643 986 544</a></li>
+          <li>Tenerife Top Training · Av. Los Acantilados s/n<br>La Caleta, Costa Adeje, Tenerife</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="foot_rights">© 2025 i-Motion EMS Tenerife · Todos los derechos reservados</p>
+      <div class="footer-legal">
+        <a href="aviso-legal.html" data-i18n="foot_legal">Aviso Legal</a>
+        <a href="politica-privacidad.html" data-i18n="foot_privacy">Privacidad</a>
+        <a href="politica-cookies.html" data-i18n="foot_cookies">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/34643986544?text=Hola%2C%20me%20gustaria%20reservar%20una%20sesion%20de%20prueba%20gratuita" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><div class="whatsapp-pulse"></div><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
+<script src="js/main.js"></script>
+</body>
+</html>
