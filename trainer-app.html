@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>i-Motion Trainer App</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0d0d;color:#f0f0f0;font-family:'Outfit',sans-serif;font-size:14px;min-height:100vh}
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+  .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
+  .btn{background:#00aaff;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:600;font-size:13px}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .btn-sm{background:#00aaff;color:#fff;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-weight:600;font-size:12px}
+  .btn-ghost{background:transparent;color:#888;border:1px solid #2a2a2a;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px}
+  input,select{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:8px 12px;color:#f0f0f0;font-size:13px;width:100%}
+  .tag{border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
+  .spinner{width:36px;height:36px;border:3px solid #2a2a2a;border-top:3px solid #00aaff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .nav{background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:0 16px;display:flex;align-items:center;gap:4px;overflow-x:auto}
+  .nav-btn{background:none;border:none;color:#888;border-bottom:2px solid transparent;padding:14px 10px;cursor:pointer;font-size:13px;white-space:nowrap}
+  .nav-btn.active{color:#00aaff;border-bottom-color:#00aaff;font-weight:700}
+  .grid{display:grid;gap:12px}
+  .modal-bg{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .hidden{display:none!important}
+  label.lbl{font-size:11px;color:#888;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:1px}
+  #app{max-width:960px;margin:0 auto;padding:20px}
+</style>
+</head>
+<body>
+
+<div id="nav" class="hidden"></div>
+<div id="app"></div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbwy1JyochqSC-OvimvpHTSWedgUiZrzjeHXl79-Mbg0BlBnxcweCzI6P1ZOqH2Qo5CJWA/exec";
+let currentUser = null;
+let currentTab = null;
+
+// ── API ───────────────────────────────────────────────────
+async function apiGet(params) {
+  const url = API + "?" + new URLSearchParams(params);
+  const res = await fetch(url);
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error);
+  return json.data;
+}
+
+// ── Utils ─────────────────────────────────────────────────
+function tag(text, color) {
+  return `<span class="tag" style="background:${color}22;color:${color};border:1px solid ${color}55">${text}</span>`;
+}
+function spinner(text="Cargando…") {
+  return `<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:#888;margin-top:16px;font-size:13px">${text}</div></div>`;
+}
+function render(html) { document.getElementById("app").innerHTML = html; }
+
+// ── Nav ───────────────────────────────────────────────────
+function renderNav() {
+  const tabs = currentUser.rol === "trainer"
+    ? ["Dashboard","Clientes","Ejercicios","Rutinas","Nutrición"]
+    : ["Mi Entrenamiento","Ejercicios","Mi Nutrición","Mi Progreso"];
+  const nav = document.getElementById("nav");
+  nav.classList.remove("hidden");
+  nav.innerHTML = `
+    <div style="font-weight:800;color:#00aaff;font-size:16px;margin-right:12px;white-space:nowrap">i-Motion</div>
+    ${tabs.map(t => `<button class="nav-btn ${t===currentTab?'active':''}" onclick="setTab('${t}')">${t}</button>`).join("")}
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px">
+      <span style="font-size:12px;color:#888;white-space:nowrap">${currentUser.nombre}</span>
+      <button class="btn-ghost" onclick="logout()">Salir</button>
+    </div>`;
+}
+
+function setTab(tab) { currentTab = tab; renderNav(); renderTab(); }
+function logout() { currentUser=null; currentTab=null; document.getElementById("nav").classList.add("hidden"); renderLogin(); }
+
+// ── Login ─────────────────────────────────────────────────
+function renderLogin() {
+  render(`
+    <div style="display:flex;align-items:center;justify-content:center;min-height:90vh">
+      <div class="card" style="width:320px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#00aaff;margin-bottom:4px">i-Motion</div>
+        <div style="color:#888;margin-bottom:24px;font-size:12px">EMS Trainer Platform</div>
+        <div style="text-align:left;margin-bottom:12px">
+          <label class="lbl">Email</label>
+          <input id="lemail" placeholder="trainer@imotion.com"/>
+        </div>
+        <div style="text-align:left;margin-bottom:16px">
+          <label class="lbl">Contraseña</label>
+          <input id="lpass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+        </div>
+        <div id="lerr" style="color:#ff4444;font-size:12px;margin-bottom:10px"></div>
+        <button class="btn" style="width:100%" id="lbtn" onclick="doLogin()">Entrar</button>
+        <div style="margin-top:16px;font-size:11px;color:#888">trainer@imotion.com · carlos@demo.com · maria@demo.com<br>pass: imotion2024 / 1234</div>
+      </div>
+    </div>`);
+}
+
+async function doLogin() {
+  const email = document.getElementById("lemail").value;
+  const pass = document.getElementById("lpass").value;
+  const btn = document.getElementById("lbtn");
+  const err = document.getElementById("lerr");
+  btn.disabled = true; btn.textContent = "Verificando…"; err.textContent = "";
+  try {
+    const user = await apiGet({ action:"login", email, password:pass });
+    currentUser = user;
+    currentTab = user.rol === "trainer" ? "Dashboard" : "Mi Entrenamiento";
+    renderNav(); renderTab();
+  } catch(e) {
+    err.textContent = e.message;
+    btn.disabled = false; btn.textContent = "Entrar";
+  }
+}
+
+// ── Tab router ────────────────────────────────────────────
+function renderTab() {
+  if (currentUser.rol === "trainer") {
+    if (currentTab === "Dashboard") renderDashboard();
+    else if (currentTab === "Clientes") renderClients();
+    else if (currentTab === "Ejercicios") renderExercises();
+    else if (currentTab === "Rutinas") renderRoutines();
+    else if (currentTab === "Nutrición") renderNutrition();
+  } else {
+    if (currentTab === "Mi Entrenamiento") renderClientTraining();
+    else if (currentTab === "Ejercicios") renderExercises();
+    else if (currentTab === "Mi Nutrición") renderClientNutrition();
+    else if (currentTab === "Mi Progreso") renderClientProgress();
+  }
+}
+
+// ── Dashboard ─────────────────────────────────────────────
+async function renderDashboard() {
+  render(spinner("Cargando dashboard…"));
+  const [clients, exercises, routines, nutrition] = await Promise.all([
+    apiGet({action:"clients"}), apiGet({action:"exercises"}),
+    apiGet({action:"routines"}), apiGet({action:"nutrition"})
+  ]);
+  const stats = [
+    {label:"Clientes",val:clients.length,col:"#00aaff"},
+    {label:"Ejercicios",val:exercises.length,col:"#00cc88"},
+    {label:"Rutinas",val:routines.length,col:"#ffaa00"},
+    {label:"Planes nutri",val:nutrition.length,col:"#cc66ff"},
+  ];
+  render(`
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:20px">
+      ${stats.map(s=>`<div class="card" style="text-align:center"><div style="font-size:36px;font-weight:800;color:${s.col}">${s.val}</div><div style="color:#888;font-size:13px">${s.label}</div></div>`).join("")}
+    </div>
+    <div class="card">
+      <div style="font-weight:700;margin-bottom:12px">Clientes activos</div>
+      ${clients.map(c => {
+        const r = routines.find(r=>String(r.clienteId)===String(c.id));
+        const n = nutrition.find(n=>String(n.clienteId)===String(c.id));
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #2a2a2a;flex-wrap:wrap;gap:8px">
+          <div><div style="font-weight:600">${c.nombre}</div><div style="font-size:12px;color:#888">${c.email}</div></div>
+          <div style="display:flex;gap:6px">
+            ${r?tag("Rutina ✓","#00cc88"):tag("Sin rutina","#ffaa00")}
+            ${n?tag("Nutrición ✓","#00cc88"):tag("Sin nutrición","#ffaa00")}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`);
+}
+
+// ── Ejercicios ────────────────────────────────────────────
+const CATS = ["Todos","Piernas","Pecho","Espalda","Hombros","Bíceps","Tríceps","Core","Cardio","Movilidad"];
+let _exercises = null;
+let _exCat = "Todos";
+let _exSearch = "";
+
+async function renderExercises() {
+  render(spinner("Cargando ejercicios…"));
+  if (!_exercises) _exercises = await apiGet({action:"exercises"});
+  renderExerciseGrid();
+}
+
+function renderExerciseGrid() {
+  const filtered = _exercises.filter(e =>
+    (_exCat==="Todos" || e.categoria===_exCat) &&
+    e.nombre.toLowerCase().includes(_exSearch.toLowerCase())
+  );
+  document.getElementById("app").innerHTML = `
+    <div style="margin-bottom:12px">
+      <input style="max-width:280px;margin-bottom:10px" placeholder="🔍 Buscar ejercicio…" value="${_exSearch}" oninput="_exSearch=this.value;renderExerciseGrid()"/>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${CATS.map(c=>`<button class="btn-ghost" style="font-size:11px;${c===_exCat?'color:#00aaff;border-color:#00aaff':''}" onclick="_exCat='${c}';renderExerciseGrid()">${c}</button>`).join("")}
+      </div>
+      <div style="color:#888;font-size:12px;margin-top:8px">${filtered.length} ejercicios</div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">
+      ${filtered.map(e=>`
+        <div class="card" style="cursor:pointer" onclick="openExercise(${e.id})">
+          <div style="font-weight:700;margin-bottom:6px;font-size:13px">${e.nombre}</div>
+          <div style="margin-bottom:8px">${tag(e.categoria,"#00aaff")} ${tag(e.musculo,"#888")}</div>
+          <div style="font-size:12px;color:#888">${String(e.descripcion).slice(0,60)}…</div>
+          <div style="margin-top:8px;font-size:11px;color:#00aaff">▶ Ver vídeo</div>
+        </div>`).join("")}
+    </div>`;
+}
+
+function openExercise(id) {
+  const e = _exercises.find(e=>String(e.id)===String(id));
+  if (!e) return;
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="exmodal" onclick="document.getElementById('exmodal').remove()">
+      <div class="card" style="max-width:560px;width:100%" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <div style="font-weight:800;font-size:18px">${e.nombre}</div>
+          <button class="btn-ghost" onclick="document.getElementById('exmodal').remove()">✕</button>
+        </div>
+        <div style="margin-bottom:12px">${tag(e.categoria,"#00aaff")} ${tag(e.musculo,"#888")}</div>
+        <div style="position:relative;padding-bottom:56.25%;margin-bottom:12px;background:#000;border-radius:8px;overflow:hidden">
+          <iframe src="${e.video}" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+        </div>
+        <div style="color:#888;font-size:13px;line-height:1.6">${e.descripcion}</div>
+      </div>
+    </div>`);
+}
+
+// ── Clientes ──────────────────────────────────────────────
+let _clients=[], _routines=[], _nutrition=[];
+
+async function renderClients() {
+  render(spinner("Cargando clientes…"));
+  [_clients, _routines, _nutrition] = await Promise.all([
+    apiGet({action:"clients"}), apiGet({action:"routines"}), apiGet({action:"nutrition"})
+  ]);
+  render(`
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+      ${_clients.map(c => {
+        const r = _routines.find(r=>String(r.clienteId)===String(c.id));
+        const n = _nutrition.find(n=>String(n.clienteId)===String(c.id));
+        return `<div class="card" style="cursor:pointer" onclick="openClientModal(${c.id})">
+          <div style="font-weight:700;font-size:16px;margin-bottom:4px">${c.nombre}</div>
+          <div style="font-size:12px;color:#888;margin-bottom:12px">${c.email}</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;color:#888">Rutina</span>
+              ${r?tag(r.nombre,"#00cc88"):tag("Sin asignar","#ffaa00")}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;color:#888">Nutrición</span>
+              ${n?tag(n.nombre,"#00cc88"):tag("Sin asignar","#ffaa00")}
+            </div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`);
+}
+
+async function openClientModal(clientId) {
+  const c = _clients.find(c=>String(c.id)===String(clientId));
+  const assigned = _routines.find(r=>String(r.clienteId)===String(clientId));
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="cmodal" onclick="document.getElementById('cmodal').remove()">
+      <div class="card" style="max-width:480px;width:100%;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;margin-bottom:16px">
+          <div style="font-weight:800;font-size:18px">${c.nombre}</div>
+          <button class="btn-ghost" onclick="document.getElementById('cmodal').remove()">✕</button>
+        </div>
+        <div style="font-weight:700;margin-bottom:8px">Asignar Rutina</div>
+        ${_routines.map(r=>`
+          <div class="card" style="cursor:pointer;margin-bottom:8px;border-color:${assigned?.id===r.id?'#00aaff':'#2a2a2a'}" onclick="assignRoutine(${r.id},${clientId})">
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-weight:600">${r.nombre}</span>
+              ${assigned?.id===r.id?tag("✓ Asignada","#00aaff"):""}
+            </div>
+            <div style="font-size:12px;color:#888">${r.days?.length||0} días</div>
+          </div>`).join("")}
+      </div>
+    </div>`);
+}
+
+async function assignRoutine(routineId, clientId) {
+  await apiGet({action:"assignRoutine", routineId, clienteId:clientId});
+  document.getElementById("cmodal")?.remove();
+  renderClients();
+}
+
+// ── Rutinas ───────────────────────────────────────────────
+async function renderRoutines() {
+  render(spinner("Cargando rutinas…"));
+  if (!_exercises) _exercises = await apiGet({action:"exercises"});
+  _routines = await apiGet({action:"routines"});
+  showRoutineList();
+}
+
+function showRoutineList() {
+  render(`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-weight:700;font-size:16px">Rutinas (${_routines.length})</div>
+      <button class="btn" onclick="showCreateRoutine()">+ Nueva Rutina</button>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+      ${_routines.map(r=>`
+        <div class="card" style="cursor:pointer" onclick="openRoutineEditor(${r.id})">
+          <div style="font-weight:700;margin-bottom:6px">${r.nombre}</div>
+          <div style="font-size:12px;color:#888;margin-bottom:8px">${r.days?.length||0} día(s)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            ${(r.days||[]).map(d=>tag(d.dia,"#00aaff")).join("")}
+          </div>
+        </div>`).join("")}
+    </div>`);
+}
+
+function showCreateRoutine() {
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="crmodal" onclick="document.getElementById('crmodal').remove()">
+      <div class="card" style="max-width:400px;width:100%" onclick="event.stopPropagation()">
+        <div style="font-weight:800;font-size:16px;margin-bottom:16px">Nueva Rutina</div>
+        <label class="lbl">Nombre</label>
+        <input id="rname" placeholder="Ej: Rutina Fuerza A" style="margin-bottom:12px"/>
+        <button class="btn" onclick="createRoutine()">Crear</button>
+      </div>
+    </div>`);
+}
+
+async function createRoutine() {
+  const nombre = document.getElementById("rname").value.trim();
+  if (!nombre) return;
+  await apiGet({action:"createRoutine", nombre, clienteId:""});
+  document.getElementById("crmodal")?.remove();
+  renderRoutines();
+}
+
+async function openRoutineEditor(routineId) {
+  const routine = _routines.find(r=>String(r.id)===String(routineId));
+  const DAYS = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  const availDays = DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
+
+  const exOptions = CATS.filter(c=>c!=="Todos").map(cat=>`
+    <optgroup label="${cat}">
+      ${_exercises.filter(e=>e.categoria===cat).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}
+    </optgroup>`).join("");
+
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="remodal" onclick="" style="align-items:flex-start;overflow-y:auto">
+      <div class="card" style="max-width:600px;width:100%;margin:20px auto" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;margin-bottom:16px">
+          <div style="font-weight:800;font-size:18px">${routine.nombre}</div>
+          <button class="btn-ghost" onclick="document.getElementById('remodal').remove();renderRoutines()">✓ Cerrar</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <select id="newday" style="flex:1">
+            <option value="">Añadir día…</option>
+            ${availDays.map(d=>`<option>${d}</option>`).join("")}
+          </select>
+          <button class="btn-sm" onclick="addDayToRoutine(${routine.id})">+</button>
+        </div>
+        <div id="days-container">
+          ${(routine.days||[]).map(d=>`
+            <div class="card" style="margin-bottom:12px;background:#111" id="day-${d.id}">
+              <div style="font-weight:700;margin-bottom:8px;color:#00aaff">${d.dia}</div>
+              <div id="exlist-${d.id}">
+                ${(d.exercises||[]).map(ex=>{
+                  const exData = _exercises.find(e=>String(e.id)===String(ex.exerciseId));
+                  return `<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a2a">
+                    <div style="flex:1">
+                      <div style="font-weight:600;font-size:13px">${exData?.nombre||""}</div>
+                      <div style="font-size:12px;color:#888">${ex.series}×${ex.reps} · ${ex.descanso}</div>
+                    </div>
+                    <button class="btn-ghost" style="color:#ff4444;border-color:#ff4444" onclick="removeExFromDay(${ex.id},${d.id})">✕</button>
+                  </div>`;
+                }).join("")}
+              </div>
+              <select style="margin-top:8px;font-size:12px" onchange="addExToDay(${d.id},this.value);this.value=''">
+                <option value="">+ Añadir ejercicio…</option>
+                ${exOptions}
+              </select>
+            </div>`).join("")}
+        </div>
+      </div>
+    </div>`);
+}
+
+async function addDayToRoutine(routineId) {
+  const dia = document.getElementById("newday").value;
+  if (!dia) return;
+  await apiGet({action:"addDay", routineId, dia});
+  document.getElementById("remodal")?.remove();
+  _routines = await apiGet({action:"routines"});
+  await openRoutineEditor(routineId);
+}
+
+async function addExToDay(dayId, exerciseId) {
+  if (!exerciseId) return;
+  const {id} = await apiGet({action:"addExercise", dayId, exerciseId, series:3, reps:"10", descanso:"60s"});
+  const ex = _exercises.find(e=>String(e.id)===String(exerciseId));
+  const container = document.getElementById(`exlist-${dayId}`);
+  if (container) {
+    container.insertAdjacentHTML("beforeend",`
+      <div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a2a" id="exrow-${id}">
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px">${ex?.nombre||""}</div>
+          <div style="font-size:12px;color:#888">3×10 · 60s</div>
+        </div>
+        <button class="btn-ghost" style="color:#ff4444;border-color:#ff4444" onclick="removeExFromDay(${id},${dayId})">✕</button>
+      </div>`);
+  }
+}
+
+async function removeExFromDay(exId, dayId) {
+  await apiGet({action:"removeExercise", id:exId});
+  document.getElementById(`exrow-${exId}`)?.remove();
+}
+
+// ── Nutrición ─────────────────────────────────────────────
+const NUTRI_TPLS = [
+  {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g|Media mañana: Yogur griego + frutos secos|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + proteína|Cena: Pescado 200g + verduras"},
+  {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano|Comida: Ternera 250g + pasta 150g|Pre-entreno: Arroz 80g + atún|Cena: Salmón 200g + boniato 200g"},
+  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral|Media mañana: Frutos secos + yogur|Comida: Pollo 180g + patata 150g + ensalada|Merienda: Fruta + proteína|Cena: Pescado 180g + verduras + arroz 60g"},
+];
+
+async function renderNutrition() {
+  render(spinner("Cargando nutrición…"));
+  const [clients, nutrition] = await Promise.all([apiGet({action:"clients"}), apiGet({action:"nutrition"})]);
+  render(`
+    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Planes Nutricionales</div>
+    ${clients.map(c => {
+      const plan = nutrition.find(n=>String(n.clienteId)===String(c.id));
+      return `<div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-weight:700">${c.nombre}</div>
+          <button class="btn-sm" onclick="openNutriModal(${c.id})">${plan?"Cambiar plan":"Asignar plan"}</button>
+        </div>
+        ${plan ? nutriCard(plan) : '<div style="color:#888;font-size:13px">Sin plan asignado.</div>'}
+      </div>`;
+    }).join("")}`);
+}
+
+function nutriCard(plan) {
+  const meals = Array.isArray(plan.comidas) ? plan.comidas : String(plan.comidas).split("|");
+  return `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      ${[{l:"Kcal",v:plan.kcal,c:"#ffaa00"},{l:"Proteína",v:plan.proteina+"g",c:"#00aaff"},{l:"Carbos",v:plan.carbos+"g",c:"#00cc88"},{l:"Grasas",v:plan.grasas+"g",c:"#cc66ff"}]
+        .map(x=>`<div class="card" style="background:#111;text-align:center;min-width:70px;flex:1"><div style="font-size:20px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:11px;color:#888">${x.l}</div></div>`).join("")}
+    </div>
+    ${meals.map((m,i)=>`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #2a2a2a;font-size:13px"><span style="color:#00aaff;font-weight:700;min-width:20px">${i+1}</span><span>${m}</span></div>`).join("")}`;
+}
+
+async function openNutriModal(clientId) {
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="nmodal" onclick="document.getElementById('nmodal').remove()">
+      <div class="card" style="max-width:460px;width:100%" onclick="event.stopPropagation()">
+        <div style="font-weight:800;font-size:16px;margin-bottom:16px">Seleccionar plan</div>
+        ${NUTRI_TPLS.map((t,i)=>`
+          <div class="card" style="cursor:pointer;margin-bottom:10px;background:#111" onclick="assignNutri(${clientId},${i})">
+            <div style="font-weight:700">${t.nombre}</div>
+            <div style="font-size:12px;color:#888">${t.kcal} kcal · P:${t.proteina}g · C:${t.carbos}g · G:${t.grasas}g</div>
+          </div>`).join("")}
+      </div>
+    </div>`);
+}
+
+async function assignNutri(clientId, tplIdx) {
+  const t = NUTRI_TPLS[tplIdx];
+  await apiGet({action:"saveNutrition", clienteId:clientId, ...t});
+  document.getElementById("nmodal")?.remove();
+  renderNutrition();
+}
+
+// ── Cliente: Mi Entrenamiento ─────────────────────────────
+async function renderClientTraining() {
+  render(spinner("Cargando entrenamiento…"));
+  if (!_exercises) _exercises = await apiGet({action:"exercises"});
+  const routines = await apiGet({action:"routines", clientId:currentUser.id});
+  const routine = routines[0];
+  if (!routine) { render(`<div style="padding:40px;text-align:center;color:#888">Tu entrenador aún no te ha asignado una rutina.</div>`); return; }
+  render(`
+    <div style="font-weight:800;font-size:18px;margin-bottom:4px">${routine.nombre}</div>
+    <div style="color:#888;font-size:13px;margin-bottom:20px">${routine.days?.length||0} días de entrenamiento</div>
+    ${(routine.days||[]).map((d,di)=>`
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-weight:700;color:#00aaff;margin-bottom:12px">${d.dia}</div>
+        ${(d.exercises||[]).map((ex,ei)=>{
+          const e = _exercises.find(e=>String(e.id)===String(ex.exerciseId));
+          return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2a2a2a">
+            <input type="checkbox" id="chk-${di}-${ei}" style="width:16px;height:16px;cursor:pointer" onchange="toggleEx('${di}-${ei}')"/>
+            <div style="flex:1">
+              <div id="exname-${di}-${ei}" style="font-weight:600;font-size:13px">${e?.nombre||""}</div>
+              <div style="font-size:12px;color:#888">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
+            </div>
+            ${e?`<button class="btn-sm" onclick="openExercise(${e.id})">▶ Ver</button>`:""}
+          </div>`;
+        }).join("")}
+      </div>`).join("")}`);
+}
+
+function toggleEx(key) {
+  const el = document.getElementById(`exname-${key}`);
+  const chk = document.getElementById(`chk-${key}`);
+  if (el) { el.style.textDecoration = chk.checked?"line-through":"none"; el.style.color = chk.checked?"#888":"#f0f0f0"; }
+}
+
+// ── Cliente: Mi Nutrición ─────────────────────────────────
+async function renderClientNutrition() {
+  render(spinner("Cargando nutrición…"));
+  const plans = await apiGet({action:"nutrition", clientId:currentUser.id});
+  if (!plans[0]) { render(`<div style="padding:40px;text-align:center;color:#888">Tu entrenador aún no te ha asignado un plan nutricional.</div>`); return; }
+  render(nutriCard(plans[0]));
+}
+
+// ── Cliente: Mi Progreso ──────────────────────────────────
+async function renderClientProgress() {
+  render(spinner("Cargando progreso…"));
+  const records = await apiGet({action:"progress", clientId:currentUser.id});
+  render(`
+    <div class="card" style="margin-bottom:20px">
+      <div style="font-weight:700;margin-bottom:12px">Registrar hoy</div>
+      <label class="lbl">Peso (kg)</label>
+      <input id="ppeso" type="number" step="0.1" placeholder="75.5" style="margin-bottom:8px"/>
+      <label class="lbl">Notas</label>
+      <input id="pnotas" placeholder="Cómo te has sentido hoy…" style="margin-bottom:12px"/>
+      <button class="btn" onclick="saveProgress()">Guardar registro</button>
+    </div>
+    <div style="font-weight:700;margin-bottom:12px">Historial (${records.length} registros)</div>
+    <div id="precords">
+      ${[...records].reverse().map(r=>`
+        <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-weight:600">${r.fecha}</div>${r.notas?`<div style="font-size:12px;color:#888">${r.notas}</div>`:""}</div>
+          <div style="font-size:24px;font-weight:800;color:#00aaff">${r.peso} <span style="font-size:13px;color:#888">kg</span></div>
+        </div>`).join("")}
+    </div>`);
+}
+
+async function saveProgress() {
+  const peso = document.getElementById("ppeso").value;
+  const notas = document.getElementById("pnotas").value;
+  if (!peso) return;
+  await apiGet({action:"saveProgress", clienteId:currentUser.id, fecha:new Date().toLocaleDateString("es-ES"), peso, notas});
+  renderClientProgress();
+}
+
+// ── Init ──────────────────────────────────────────────────
+renderLogin();
+</script>
+</body>
+</html>
