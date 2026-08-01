@@ -4,58 +4,175 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>i-Motion Trainer App</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#0d0d0d;color:#f0f0f0;font-family:'Outfit',sans-serif;font-size:14px;min-height:100vh}
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
-  .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
-  .btn{background:#00aaff;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:600;font-size:13px}
-  .btn:disabled{opacity:.6;cursor:not-allowed}
-  .btn-sm{background:#00aaff;color:#fff;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-weight:600;font-size:12px}
-  .btn-ghost{background:transparent;color:#888;border:1px solid #2a2a2a;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px}
-  input,select{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:8px 12px;color:#f0f0f0;font-size:13px;width:100%}
-  .tag{border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
-  .spinner{width:36px;height:36px;border:3px solid #2a2a2a;border-top:3px solid #00aaff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .nav{background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:0 16px;display:flex;align-items:center;gap:4px;overflow-x:auto}
-  .nav-btn{background:none;border:none;color:#888;border-bottom:2px solid transparent;padding:14px 10px;cursor:pointer;font-size:13px;white-space:nowrap}
-  .nav-btn.active{color:#00aaff;border-bottom-color:#00aaff;font-weight:700}
-  .grid{display:grid;gap:12px}
-  .modal-bg{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
-  .hidden{display:none!important}
-  label.lbl{font-size:11px;color:#888;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:1px}
-  #app{max-width:960px;margin:0 auto;padding:20px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#f0f0f0;font-family:'Outfit',sans-serif;font-size:14px;min-height:100vh}
+.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
+.btn{background:#00aaff;color:#fff;border:none;border-radius:8px;padding:8px 18px;cursor:pointer;font-weight:600;font-size:13px;font-family:'Outfit',sans-serif}
+.btn:hover{background:#0099ee}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sm{background:#00aaff;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-weight:600;font-size:12px;font-family:'Outfit',sans-serif}
+.btn-ghost{background:transparent;color:#888;border:1px solid #333;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif}
+.btn-ghost:hover{border-color:#555;color:#ccc}
+input,select,textarea{background:#111;border:1px solid #333;border-radius:8px;padding:9px 12px;color:#f0f0f0;font-size:13px;width:100%;font-family:'Outfit',sans-serif;outline:none}
+input:focus,select:focus{border-color:#00aaff}
+.tag{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
+.spinner{width:32px;height:32px;border:3px solid #2a2a2a;border-top:3px solid #00aaff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NAV */
+.nav{background:#111;border-bottom:1px solid #222;padding:0 20px;display:flex;align-items:center;gap:2px;overflow-x:auto;position:sticky;top:0;z-index:50}
+.nav-logo{font-weight:800;color:#00aaff;font-size:18px;margin-right:16px;white-space:nowrap;letter-spacing:-0.5px}
+.nav-btn{background:none;border:none;color:#666;border-bottom:2px solid transparent;padding:16px 12px;cursor:pointer;font-size:13px;white-space:nowrap;font-family:'Outfit',sans-serif;font-weight:500;transition:color .2s}
+.nav-btn:hover{color:#aaa}
+.nav-btn.active{color:#00aaff;border-bottom-color:#00aaff;font-weight:700}
+
+/* EXERCISE CARDS — Harbiz style */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.ex-card{background:#1a1a1a;border:1px solid #222;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
+.ex-card:hover{transform:translateY(-2px);border-color:#444}
+.ex-thumb{position:relative;width:100%;padding-bottom:56.25%;background:#111;overflow:hidden}
+.ex-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ex-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);display:flex;align-items:flex-end;padding:10px}
+.ex-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(0,170,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+.ex-body{padding:12px}
+.ex-name{font-weight:700;font-size:14px;margin-bottom:6px;line-height:1.3}
+.ex-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.ex-desc{font-size:11px;color:#666;line-height:1.4}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;overflow-y:auto}
+.modal-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.modal-video{position:relative;padding-bottom:56.25%;background:#000;margin:16px 0 0}
+.modal-video iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.modal-content{padding:16px 20px 20px}
+
+/* STEPS */
+.steps{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#ccc;line-height:1.5}
+.step-num{background:#00aaff22;color:#00aaff;border:1px solid #00aaff44;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* FILTERS */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:5px 14px;cursor:pointer;font-size:12px;color:#888;font-family:'Outfit',sans-serif;font-weight:500;transition:all .15s}
+.filter-btn:hover{border-color:#555;color:#ccc}
+.filter-btn.active{background:#00aaff22;border-color:#00aaff;color:#00aaff;font-weight:600}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:#1a1a1a;border:1px solid #222;border-radius:12px;padding:16px;text-align:center}
+.stat-val{font-size:32px;font-weight:800;line-height:1}
+.stat-lbl{font-size:12px;color:#666;margin-top:4px}
+
+/* ROUTINE EDITOR */
+.day-block{background:#111;border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:12px}
+.day-title{font-weight:700;color:#00aaff;margin-bottom:10px;font-size:14px}
+.ex-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1e1e1e}
+.ex-row:last-of-type{border-bottom:none}
+
+/* NUTRI */
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.macro-card{background:#111;border:1px solid #222;border-radius:10px;padding:12px;text-align:center}
+.macro-val{font-size:22px;font-weight:800}
+.macro-lbl{font-size:10px;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.meal-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #1e1e1e;font-size:13px;align-items:flex-start}
+.meal-num{background:#00aaff22;color:#00aaff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* PROGRESS */
+.prog-entry{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#111;border:1px solid #1e1e1e;border-radius:10px;margin-bottom:8px}
+
+label.lbl{font-size:11px;color:#666;margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+#app{max-width:980px;margin:0 auto;padding:20px}
+.hidden{display:none!important}
+.search-wrap{position:relative;max-width:300px;margin-bottom:14px}
+.search-wrap input{padding-left:34px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#555;font-size:15px}
 </style>
 </head>
 <body>
 
-<div id="nav" class="hidden"></div>
+<div id="nav" class="nav hidden"></div>
 <div id="app"></div>
 
 <script>
 const API = "https://script.google.com/macros/s/AKfycbwy1JyochqSC-OvimvpHTSWedgUiZrzjeHXl79-Mbg0BlBnxcweCzI6P1ZOqH2Qo5CJWA/exec";
-let currentUser = null;
-let currentTab = null;
+let currentUser = null, currentTab = null;
+let _exercises = null, _clients = [], _routines = [], _nutrition = [];
 
-// ── API ───────────────────────────────────────────────────
+// ── API ────────────────────────────────────────────────────
 async function apiGet(params) {
-  const url = API + "?" + new URLSearchParams(params);
-  const res = await fetch(url);
-  const json = await res.json();
-  if (!json.ok) throw new Error(json.error);
-  return json.data;
+  const r = await fetch(API + "?" + new URLSearchParams(params));
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
 }
 
-// ── Utils ─────────────────────────────────────────────────
+// ── Utils ──────────────────────────────────────────────────
 function tag(text, color) {
-  return `<span class="tag" style="background:${color}22;color:${color};border:1px solid ${color}55">${text}</span>`;
+  return `<span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">${text}</span>`;
 }
 function spinner(text="Cargando…") {
-  return `<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:#888;margin-top:16px;font-size:13px">${text}</div></div>`;
+  return `<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:#555;margin-top:14px;font-size:13px">${text}</div></div>`;
 }
 function render(html) { document.getElementById("app").innerHTML = html; }
 
-// ── Nav ───────────────────────────────────────────────────
+// Thumbnail de YouTube
+function ytThumb(videoUrl) {
+  const match = videoUrl.match(/embed\/([^?]+)/);
+  if (!match) return "";
+  return `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+}
+
+// Pasos de ejecución por ejercicio
+const STEPS = {
+  "1": ["Coloca la barra sobre los trapecios, pies a la anchura de los hombros","Inspira y baja flexionando rodillas hasta que los muslos queden paralelos al suelo","Mantén la espalda recta y el pecho arriba en todo momento","Empuja con los talones y sube expirando hasta la posición inicial"],
+  "2": ["Siéntate en la prensa con la espalda bien apoyada en el respaldo","Coloca los pies en la plataforma a la anchura de los hombros","Suelta los seguros y flexiona las rodillas hasta 90°","Empuja con los talones hasta casi extender las piernas, sin bloquear las rodillas"],
+  "3": ["De pie, da un paso largo hacia adelante con una pierna","Baja el cuerpo verticalmente hasta que la rodilla trasera casi toque el suelo","Mantén el torso erguido y la rodilla delantera alineada con el pie","Empuja con el talón delantero para volver a la posición inicial"],
+  "4": ["De pie con la barra frente a ti, agarre prono a la anchura de caderas","Empuja las caderas hacia atrás manteniendo la espalda neutra","Baja la barra por las piernas hasta sentir tensión en los isquios","Vuelve empujando las caderas hacia adelante hasta quedar erguido"],
+  "5": ["Túmbate boca abajo en la máquina de curl femoral","Coloca el rodillo justo por encima de los talones","Flexiona las rodillas llevando los talones hacia los glúteos","Controla la bajada de forma lenta y controlada"],
+  "6": ["Apoya la espalda alta en un banco, pies planos en el suelo","Coloca la barra sobre las caderas con una almohadilla de protección","Empuja con los talones elevando las caderas hasta alinear hombros, caderas y rodillas","Aprieta los glúteos en la parte alta 1-2 segundos y baja controlando"],
+  "7": ["De pie en el borde de un escalón o superficie elevada","Sube de puntillas lo más alto posible apretando los gemelos","Mantén la posición 1 segundo en la cima","Baja de forma lenta y controlada hasta estirar el gemelo"],
+  "8": ["Apoya el pie trasero en un banco a la altura de la rodilla","Baja el cuerpo verticalmente hasta que la rodilla trasera casi toque el suelo","Mantén el torso recto y la rodilla delantera sobre el pie","Sube empujando con el talón de la pierna delantera"],
+  "9": ["Túmbate en el banco, agarra la barra algo más ancha que los hombros","Baja la barra de forma controlada hasta que toque ligeramente el pecho","Mantén los codos a 45-75° respecto al torso","Empuja la barra hacia arriba espirando hasta extender los brazos"],
+  "10": ["Ajusta el banco a 30-45°, agarra la barra algo más ancha que los hombros","Baja la barra hasta la parte alta del pecho de forma controlada","Mantén los pies firmes en el suelo y la espalda baja apoyada","Empuja hacia arriba y ligeramente hacia atrás hasta extender los codos"],
+  "11": ["Túmbate en el banco con una mancuerna en cada mano, brazos extendidos","Abre los brazos describiendo un arco amplio hasta sentir estiramiento en el pecho","Mantén un ligero codo doblado durante todo el movimiento","Cierra los brazos volviendo a la posición inicial apretando el pecho"],
+  "12": ["Agarra las barras paralelas y eleva el cuerpo con los brazos extendidos","Inclínate ligeramente hacia adelante para mayor activación pectoral","Baja flexionando los codos hasta 90° de forma controlada","Empuja hacia arriba hasta extender los brazos sin bloquear los codos"],
+  "13": ["Coloca las manos algo más anchas que los hombros en el suelo","Mantén el cuerpo en línea recta de cabeza a talones, core activo","Baja el pecho hasta casi tocar el suelo flexionando los codos","Empuja hacia arriba hasta extender los brazos completamente"],
+  "14": ["De pie frente a la barra en el suelo, pies a la anchura de caderas","Agarra la barra justo fuera de las piernas, espalda neutra y pecho arriba","Empuja el suelo con los pies y extiende caderas y rodillas simultáneamente","Baja la barra de forma controlada invirtiendo el movimiento"],
+  "15": ["Agarra la barra con agarre prono a la anchura de los hombros","Desde posición colgada activa los hombros bajándolos ligeramente","Tira de tu cuerpo hacia arriba hasta que la barbilla supere la barra","Baja de forma lenta y controlada hasta la posición inicial"],
+  "16": ["De pie con la barra, inclínate hacia adelante 45-60° con espalda neutra","Agarra la barra a la anchura de los hombros con agarre prono","Tira de la barra hacia el ombligo retrayendo los omóplatos","Baja de forma controlada hasta casi extender los brazos"],
+  "17": ["Apoya una mano y la rodilla del mismo lado en un banco","Con la otra mano agarra la mancuerna con el brazo extendido","Tira de la mancuerna hacia la cadera retrayendo el omóplato","Baja de forma controlada y repite con el otro lado"],
+  "18": ["Siéntate en la máquina con los muslos bajo los rodillos","Agarra la barra con agarre prono algo más ancho que los hombros","Tira de la barra hacia el pecho superior llevando los codos hacia abajo","Controla la subida de la barra hasta la posición inicial"],
+  "19": ["Siéntate en la máquina de remo con los pies en los apoyos","Agarra el cable con los brazos extendidos y la espalda erguida","Tira del cable hacia el abdomen llevando los codos hacia atrás","Extiende los brazos de forma controlada para volver al inicio"],
+  "20": ["De pie o sentado, agarra la barra a la anchura de los hombros","Lleva la barra a la altura de la barbilla con los codos a 90°","Empuja la barra hacia arriba hasta casi extender los brazos","Baja la barra de forma controlada hasta la posición inicial"],
+  "21": ["Sentado, sujeta las mancuernas a la altura de los hombros, palmas hacia ti","Al subir, gira las muñecas hasta que las palmas queden hacia adelante","Extiende los brazos hacia arriba sin bloquear los codos","Invierte el giro al bajar volviendo a la posición inicial"],
+  "22": ["De pie, mancuernas a los lados con los codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de los hombros","Controla que los codos lideren el movimiento, no las muñecas","Baja de forma lenta y controlada sin balancear el torso"],
+  "23": ["Inclínate hacia adelante con las caderas flexionadas y espalda neutra","Con una mancuerna en cada mano y codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de los hombros","Aprieta los deltoides posteriores en la cima y baja controlando"],
+  "24": ["Ajusta la polea a la altura de los ojos con accesorio de cuerda","Agarra cada extremo de la cuerda con las palmas hacia abajo","Tira hacia tu cara separando los extremos de la cuerda al final","Mantén los codos elevados durante todo el movimiento"],
+  "25": ["De pie, agarra la barra con agarre supino a la anchura de los hombros","Mantén los codos pegados a los costados durante todo el movimiento","Flexiona los codos llevando la barra hacia el pecho","Baja la barra de forma lenta y controlada sin balancear el torso"],
+  "26": ["De pie, una mancuerna en cada mano con agarre supino","Alterna la flexión de codo, girando la muñeca al subir (supinación)","Lleva la mancuerna hasta el hombro apretando el bíceps en la cima","Baja de forma controlada y repite con el otro brazo"],
+  "27": ["De pie, mancuernas con agarre neutro (palmas enfrentadas)","Flexiona los codos manteniendo las muñecas y codos alineados","Sube ambas mancuernas simultáneamente hasta el nivel del hombro","Baja de forma controlada controlando la tensión excéntrica"],
+  "28": ["Túmbate en el banco, agarra la barra o mancuernas con agarre prono","Extiende los brazos hacia arriba sobre el pecho","Flexiona solo los codos bajando el peso hacia la frente o detrás de la cabeza","Extiende los codos volviendo a la posición inicial sin mover los hombros"],
+  "29": ["Agarra el cable o polea con agarre prono, codos pegados al cuerpo","Desde los 90° de flexión de codo, extiende los brazos hacia abajo","Aprieta los tríceps en la posición extendida durante 1 segundo","Sube de forma controlada hasta volver a 90° de flexión"],
+  "30": ["Siéntate en el borde de un banco, manos junto a las caderas","Desliza los glúteos fuera del banco y baja flexionando los codos hasta 90°","Mantén la espalda cerca del banco durante todo el movimiento","Empuja con las manos para extender los codos y volver arriba"],
+  "31": ["Apoya los antebrazos y puntas de los pies en el suelo","Mantén el cuerpo en línea recta de cabeza a talones","Activa el core, glúteos y no dejes que caigan ni suban las caderas","Mantén la posición respirando de forma controlada"],
+  "32": ["Túmbate boca arriba, rodillas flexionadas, pies en el suelo","Coloca las manos detrás de la cabeza sin tirar del cuello","Flexiona el tronco llevando el esternón hacia las rodillas","Baja de forma lenta y controlada sin apoyar completamente la cabeza"],
+  "33": ["Cuélgate de una barra con agarre prono y brazos extendidos","Activa el core y mantén las piernas juntas y rectas","Eleva las piernas hasta la horizontal o más si puedes","Baja de forma lenta sin balancearte ni usar impulso"],
+  "34": ["Arrodíllate con la rueda frente a ti, manos en las asas","Rueda hacia adelante extendiendo el cuerpo de forma controlada","Mantén el core muy activo para evitar que la espalda baja se curve","Contrae el abdomen para volver a la posición inicial"],
+  "35": ["Túmbate de lado apoyando el antebrazo y el pie en el suelo","Eleva las caderas hasta que el cuerpo forme una línea recta","Mantén el core activo y la cadera sin caer ni elevarse en exceso","Mantén la posición respirando de forma controlada"],
+  "36": ["Túmbate boca arriba, brazos extendidos arriba, rodillas a 90°","Baja simultáneamente el brazo derecho y extiende la pierna izquierda","Mantén la espalda baja pegada al suelo en todo momento","Vuelve al centro y repite con el lado contrario de forma alterna"],
+  "37": ["De pie, baja en cuclillas y apoya las manos en el suelo","Salta con los pies hacia atrás quedando en posición de plancha","Realiza una flexión de brazos (opcional)","Salta los pies hacia las manos, incorpora el cuerpo y salta hacia arriba con los brazos extendidos"],
+  "38": ["En posición de plancha alta con los brazos extendidos","Alterna llevando las rodillas hacia el pecho de forma rápida","Mantén las caderas bajas y el core activo durante todo el movimiento","Cuanto más rápido, mayor demanda cardiovascular"],
+  "39": ["De pie frente al cajón, pies a la anchura de los hombros","Flexiona ligeramente las rodillas y carga el impulso en los brazos","Salta explosivamente aterrizando con ambos pies en el cajón","Aterriza suavemente con las rodillas semiflexionadas y baja caminando"],
+  "40": ["Agarra los extremos del cable con cada mano","Gira las muñecas hacia adelante para que el cable quede detrás","Salta sobre las puntas de los pies con saltos pequeños y rítmicos","Mantén los codos cerca del cuerpo y las rodillas ligeramente flexionadas"],
+  "41": ["Haz una zancada y baja la rodilla trasera al suelo","Empuja la cadera hacia adelante hasta sentir el estiramiento en la ingle","Mantén el torso erguido y activa el glúteo de la pierna trasera","Mantén 20-30 segundos y cambia de lado"],
+  "42": ["Siéntate en una silla o arrodíllate, manos detrás de la cabeza","Lleva un codo hacia el techo abriendo la caja torácica de ese lado","Mantén 2-3 segundos sintiendo la apertura en la columna media","Alterna lados de forma lenta y controlada"],
+  "43": ["Siéntate en el suelo con las piernas extendidas y juntas","Inclínate hacia adelante desde las caderas manteniendo la espalda recta","Alcanza los pies o tobillos sin redondear la espalda lumbar","Mantén el estiramiento 20-30 segundos respirando de forma profunda"],
+};
+
+// ── Nav ────────────────────────────────────────────────────
 function renderNav() {
   const tabs = currentUser.rol === "trainer"
     ? ["Dashboard","Clientes","Ejercicios","Rutinas","Nutrición"]
@@ -63,184 +180,211 @@ function renderNav() {
   const nav = document.getElementById("nav");
   nav.classList.remove("hidden");
   nav.innerHTML = `
-    <div style="font-weight:800;color:#00aaff;font-size:16px;margin-right:12px;white-space:nowrap">i-Motion</div>
-    ${tabs.map(t => `<button class="nav-btn ${t===currentTab?'active':''}" onclick="setTab('${t}')">${t}</button>`).join("")}
-    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px">
-      <span style="font-size:12px;color:#888;white-space:nowrap">${currentUser.nombre}</span>
+    <span class="nav-logo">i-Motion</span>
+    ${tabs.map(t=>`<button class="nav-btn${t===currentTab?' active':''}" onclick="setTab('${t}')">${t}</button>`).join("")}
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px;flex-shrink:0">
+      <span style="font-size:12px;color:#555">${currentUser.nombre}</span>
       <button class="btn-ghost" onclick="logout()">Salir</button>
     </div>`;
 }
+function setTab(t){currentTab=t;renderNav();renderTab();}
+function logout(){currentUser=null;currentTab=null;_exercises=null;document.getElementById("nav").classList.add("hidden");renderLogin();}
 
-function setTab(tab) { currentTab = tab; renderNav(); renderTab(); }
-function logout() { currentUser=null; currentTab=null; document.getElementById("nav").classList.add("hidden"); renderLogin(); }
-
-// ── Login ─────────────────────────────────────────────────
-function renderLogin() {
+// ── Login ──────────────────────────────────────────────────
+function renderLogin(){
   render(`
     <div style="display:flex;align-items:center;justify-content:center;min-height:90vh">
-      <div class="card" style="width:320px;text-align:center">
-        <div style="font-size:28px;font-weight:800;color:#00aaff;margin-bottom:4px">i-Motion</div>
-        <div style="color:#888;margin-bottom:24px;font-size:12px">EMS Trainer Platform</div>
+      <div class="card" style="width:340px;text-align:center;padding:32px">
+        <div style="font-size:30px;font-weight:800;color:#00aaff;margin-bottom:4px;letter-spacing:-1px">i-Motion</div>
+        <div style="color:#555;margin-bottom:28px;font-size:12px;font-weight:500">EMS TRAINER PLATFORM</div>
         <div style="text-align:left;margin-bottom:12px">
           <label class="lbl">Email</label>
           <input id="lemail" placeholder="trainer@imotion.com"/>
         </div>
-        <div style="text-align:left;margin-bottom:16px">
+        <div style="text-align:left;margin-bottom:20px">
           <label class="lbl">Contraseña</label>
           <input id="lpass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
         </div>
-        <div id="lerr" style="color:#ff4444;font-size:12px;margin-bottom:10px"></div>
-        <button class="btn" style="width:100%" id="lbtn" onclick="doLogin()">Entrar</button>
-        <div style="margin-top:16px;font-size:11px;color:#888">trainer@imotion.com · carlos@demo.com · maria@demo.com<br>pass: imotion2024 / 1234</div>
+        <div id="lerr" style="color:#ff5555;font-size:12px;margin-bottom:12px"></div>
+        <button class="btn" style="width:100%;padding:11px" id="lbtn" onclick="doLogin()">Entrar</button>
+        <div style="margin-top:20px;font-size:11px;color:#444;line-height:1.8">
+          trainer@imotion.com — imotion2024<br>
+          carlos@demo.com / maria@demo.com — 1234
+        </div>
       </div>
     </div>`);
 }
 
-async function doLogin() {
-  const email = document.getElementById("lemail").value;
-  const pass = document.getElementById("lpass").value;
-  const btn = document.getElementById("lbtn");
-  const err = document.getElementById("lerr");
-  btn.disabled = true; btn.textContent = "Verificando…"; err.textContent = "";
-  try {
-    const user = await apiGet({ action:"login", email, password:pass });
-    currentUser = user;
-    currentTab = user.rol === "trainer" ? "Dashboard" : "Mi Entrenamiento";
-    renderNav(); renderTab();
-  } catch(e) {
-    err.textContent = e.message;
-    btn.disabled = false; btn.textContent = "Entrar";
+async function doLogin(){
+  const email=document.getElementById("lemail").value.trim();
+  const pass=document.getElementById("lpass").value;
+  const btn=document.getElementById("lbtn");
+  const errEl=document.getElementById("lerr");
+  if(!email||!pass)return;
+  btn.disabled=true;btn.textContent="Verificando…";errEl.textContent="";
+  try{
+    const user=await apiGet({action:"login",email,password:pass});
+    currentUser=user;
+    currentTab=user.rol==="trainer"?"Dashboard":"Mi Entrenamiento";
+    renderNav();renderTab();
+  }catch(e){
+    errEl.textContent=e.message;
+    btn.disabled=false;btn.textContent="Entrar";
   }
 }
 
-// ── Tab router ────────────────────────────────────────────
-function renderTab() {
-  if (currentUser.rol === "trainer") {
-    if (currentTab === "Dashboard") renderDashboard();
-    else if (currentTab === "Clientes") renderClients();
-    else if (currentTab === "Ejercicios") renderExercises();
-    else if (currentTab === "Rutinas") renderRoutines();
-    else if (currentTab === "Nutrición") renderNutrition();
-  } else {
-    if (currentTab === "Mi Entrenamiento") renderClientTraining();
-    else if (currentTab === "Ejercicios") renderExercises();
-    else if (currentTab === "Mi Nutrición") renderClientNutrition();
-    else if (currentTab === "Mi Progreso") renderClientProgress();
+function renderTab(){
+  if(currentUser.rol==="trainer"){
+    if(currentTab==="Dashboard")renderDashboard();
+    else if(currentTab==="Clientes")renderClients();
+    else if(currentTab==="Ejercicios")renderExercises();
+    else if(currentTab==="Rutinas")renderRoutines();
+    else if(currentTab==="Nutrición")renderNutrition();
+  }else{
+    if(currentTab==="Mi Entrenamiento")renderClientTraining();
+    else if(currentTab==="Ejercicios")renderExercises();
+    else if(currentTab==="Mi Nutrición")renderClientNutrition();
+    else if(currentTab==="Mi Progreso")renderClientProgress();
   }
 }
 
-// ── Dashboard ─────────────────────────────────────────────
-async function renderDashboard() {
+// ── Dashboard ──────────────────────────────────────────────
+async function renderDashboard(){
   render(spinner("Cargando dashboard…"));
-  const [clients, exercises, routines, nutrition] = await Promise.all([
-    apiGet({action:"clients"}), apiGet({action:"exercises"}),
-    apiGet({action:"routines"}), apiGet({action:"nutrition"})
+  const [clients,exercises,routines,nutrition]=await Promise.all([
+    apiGet({action:"clients"}),apiGet({action:"exercises"}),
+    apiGet({action:"routines"}),apiGet({action:"nutrition"})
   ]);
-  const stats = [
-    {label:"Clientes",val:clients.length,col:"#00aaff"},
-    {label:"Ejercicios",val:exercises.length,col:"#00cc88"},
-    {label:"Rutinas",val:routines.length,col:"#ffaa00"},
-    {label:"Planes nutri",val:nutrition.length,col:"#cc66ff"},
-  ];
+  _clients=clients;_routines=routines;_nutrition=nutrition;
   render(`
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:20px">
-      ${stats.map(s=>`<div class="card" style="text-align:center"><div style="font-size:36px;font-weight:800;color:${s.col}">${s.val}</div><div style="color:#888;font-size:13px">${s.label}</div></div>`).join("")}
+    <div class="stats-grid">
+      ${[{l:"Clientes",v:clients.length,c:"#00aaff"},{l:"Ejercicios",v:exercises.length,c:"#00cc88"},{l:"Rutinas",v:routines.length,c:"#ffaa00"},{l:"Planes nutri",v:nutrition.length,c:"#cc66ff"}]
+        .map(s=>`<div class="stat-card"><div class="stat-val" style="color:${s.c}">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join("")}
     </div>
     <div class="card">
-      <div style="font-weight:700;margin-bottom:12px">Clientes activos</div>
-      ${clients.map(c => {
-        const r = routines.find(r=>String(r.clienteId)===String(c.id));
-        const n = nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #2a2a2a;flex-wrap:wrap;gap:8px">
-          <div><div style="font-weight:600">${c.nombre}</div><div style="font-size:12px;color:#888">${c.email}</div></div>
+      <div style="font-weight:700;margin-bottom:14px;font-size:15px">Clientes activos</div>
+      ${clients.map(c=>{
+        const r=routines.find(r=>String(r.clienteId)===String(c.id));
+        const n=nutrition.find(n=>String(n.clienteId)===String(c.id));
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1e1e1e;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-weight:600;font-size:15px">${c.nombre}</div>
+            <div style="font-size:12px;color:#555">${c.email}</div>
+          </div>
           <div style="display:flex;gap:6px">
-            ${r?tag("Rutina ✓","#00cc88"):tag("Sin rutina","#ffaa00")}
-            ${n?tag("Nutrición ✓","#00cc88"):tag("Sin nutrición","#ffaa00")}
+            ${r?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">Rutina ✓</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin rutina</span>`}
+            ${n?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">Nutrición ✓</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin nutrición</span>`}
           </div>
         </div>`;
       }).join("")}
     </div>`);
 }
 
-// ── Ejercicios ────────────────────────────────────────────
-const CATS = ["Todos","Piernas","Pecho","Espalda","Hombros","Bíceps","Tríceps","Core","Cardio","Movilidad"];
-let _exercises = null;
-let _exCat = "Todos";
-let _exSearch = "";
+// ── Ejercicios ─────────────────────────────────────────────
+const CATS=["Todos","Piernas","Pecho","Espalda","Hombros","Bíceps","Tríceps","Core","Cardio","Movilidad"];
+let _exCat="Todos",_exSearch="";
 
-async function renderExercises() {
+async function renderExercises(){
   render(spinner("Cargando ejercicios…"));
-  if (!_exercises) _exercises = await apiGet({action:"exercises"});
-  renderExerciseGrid();
+  if(!_exercises)_exercises=await apiGet({action:"exercises"});
+  renderExGrid();
 }
 
-function renderExerciseGrid() {
-  const filtered = _exercises.filter(e =>
-    (_exCat==="Todos" || e.categoria===_exCat) &&
+function renderExGrid(){
+  const filtered=_exercises.filter(e=>
+    (_exCat==="Todos"||e.categoria===_exCat)&&
     e.nombre.toLowerCase().includes(_exSearch.toLowerCase())
   );
-  document.getElementById("app").innerHTML = `
-    <div style="margin-bottom:12px">
-      <input style="max-width:280px;margin-bottom:10px" placeholder="🔍 Buscar ejercicio…" value="${_exSearch}" oninput="_exSearch=this.value;renderExerciseGrid()"/>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        ${CATS.map(c=>`<button class="btn-ghost" style="font-size:11px;${c===_exCat?'color:#00aaff;border-color:#00aaff':''}" onclick="_exCat='${c}';renderExerciseGrid()">${c}</button>`).join("")}
+  document.getElementById("app").innerHTML=`
+    <div style="margin-bottom:16px">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input placeholder="Buscar ejercicio…" value="${_exSearch}" oninput="_exSearch=this.value;renderExGrid()"/>
       </div>
-      <div style="color:#888;font-size:12px;margin-top:8px">${filtered.length} ejercicios</div>
+      <div class="filter-bar">
+        ${CATS.map(c=>`<button class="filter-btn${c===_exCat?' active':''}" onclick="_exCat='${c}';renderExGrid()">${c}${c==="Todos"?"":" ("+_exercises.filter(e=>e.categoria===c).length+")"}</button>`).join("")}
+      </div>
+      <div style="color:#444;font-size:12px">${filtered.length} ejercicios</div>
     </div>
-    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">
+    <div class="ex-grid">
       ${filtered.map(e=>`
-        <div class="card" style="cursor:pointer" onclick="openExercise(${e.id})">
-          <div style="font-weight:700;margin-bottom:6px;font-size:13px">${e.nombre}</div>
-          <div style="margin-bottom:8px">${tag(e.categoria,"#00aaff")} ${tag(e.musculo,"#888")}</div>
-          <div style="font-size:12px;color:#888">${String(e.descripcion).slice(0,60)}…</div>
-          <div style="margin-top:8px;font-size:11px;color:#00aaff">▶ Ver vídeo</div>
+        <div class="ex-card" onclick="openExModal('${e.id}')">
+          <div class="ex-thumb">
+            <img src="${ytThumb(e.video)}" alt="${e.nombre}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22><rect fill=%22%23111%22 width=%22320%22 height=%22180%22/></svg>'"/>
+            <div class="ex-thumb-overlay"></div>
+            <div class="ex-play">▶</div>
+          </div>
+          <div class="ex-body">
+            <div class="ex-name">${e.nombre}</div>
+            <div class="ex-tags">
+              <span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${e.categoria}</span>
+              <span class="tag" style="background:#33333380;color:#888;border:1px solid #333">${e.musculo}</span>
+            </div>
+            <div class="ex-desc">${String(e.descripcion).slice(0,70)}…</div>
+          </div>
         </div>`).join("")}
     </div>`;
 }
 
-function openExercise(id) {
-  const e = _exercises.find(e=>String(e.id)===String(id));
-  if (!e) return;
+function openExModal(id){
+  const e=_exercises.find(e=>String(e.id)===String(id));
+  if(!e)return;
+  const steps=STEPS[String(e.id)]||[];
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="exmodal" onclick="document.getElementById('exmodal').remove()">
-      <div class="card" style="max-width:560px;width:100%" onclick="event.stopPropagation()">
-        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-          <div style="font-weight:800;font-size:18px">${e.nombre}</div>
-          <button class="btn-ghost" onclick="document.getElementById('exmodal').remove()">✕</button>
+    <div class="modal-bg" id="exmodal" onclick="if(event.target===this)this.remove()">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div>
+            <div style="font-weight:800;font-size:20px;margin-bottom:8px">${e.nombre}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${e.categoria}</span>
+              <span class="tag" style="background:#33333380;color:#888;border:1px solid #333">${e.musculo}</span>
+            </div>
+          </div>
+          <button class="btn-ghost" onclick="document.getElementById('exmodal').remove()" style="flex-shrink:0">✕</button>
         </div>
-        <div style="margin-bottom:12px">${tag(e.categoria,"#00aaff")} ${tag(e.musculo,"#888")}</div>
-        <div style="position:relative;padding-bottom:56.25%;margin-bottom:12px;background:#000;border-radius:8px;overflow:hidden">
-          <iframe src="${e.video}" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+        <div class="modal-video">
+          <iframe src="${e.video}?autoplay=1&rel=0&modestbranding=1" allowfullscreen allow="autoplay"></iframe>
         </div>
-        <div style="color:#888;font-size:13px;line-height:1.6">${e.descripcion}</div>
+        <div class="modal-content">
+          <div style="font-weight:700;margin-bottom:10px;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:.8px">Cómo realizarlo</div>
+          <ol class="steps">
+            ${steps.map((s,i)=>`<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("")}
+          </ol>
+          <div style="margin-top:14px;font-size:13px;color:#555;line-height:1.6;border-top:1px solid #222;padding-top:12px">${e.descripcion}</div>
+        </div>
       </div>
     </div>`);
 }
 
-// ── Clientes ──────────────────────────────────────────────
-let _clients=[], _routines=[], _nutrition=[];
-
-async function renderClients() {
+// ── Clientes ───────────────────────────────────────────────
+async function renderClients(){
   render(spinner("Cargando clientes…"));
-  [_clients, _routines, _nutrition] = await Promise.all([
-    apiGet({action:"clients"}), apiGet({action:"routines"}), apiGet({action:"nutrition"})
+  [_clients,_routines,_nutrition]=await Promise.all([
+    apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})
   ]);
   render(`
-    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
-      ${_clients.map(c => {
-        const r = _routines.find(r=>String(r.clienteId)===String(c.id));
-        const n = _nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div class="card" style="cursor:pointer" onclick="openClientModal(${c.id})">
-          <div style="font-weight:700;font-size:16px;margin-bottom:4px">${c.nombre}</div>
-          <div style="font-size:12px;color:#888;margin-bottom:12px">${c.email}</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Clientes (${_clients.length})</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">
+      ${_clients.map(c=>{
+        const r=_routines.find(r=>String(r.clienteId)===String(c.id));
+        const n=_nutrition.find(n=>String(n.clienteId)===String(c.id));
+        return `<div class="card" style="cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#2a2a2a'" onclick="openClientModal('${c.id}')">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <div style="width:42px;height:42px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff;font-size:16px">${c.nombre[0]}</div>
+            <div>
+              <div style="font-weight:700;font-size:15px">${c.nombre}</div>
+              <div style="font-size:12px;color:#555">${c.email}</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:#888">Rutina</span>
-              ${r?tag(r.nombre,"#00cc88"):tag("Sin asignar","#ffaa00")}
+              <span style="font-size:12px;color:#555">Rutina</span>
+              ${r?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">${r.nombre}</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin asignar</span>`}
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:#888">Nutrición</span>
-              ${n?tag(n.nombre,"#00cc88"):tag("Sin asignar","#ffaa00")}
+              <span style="font-size:12px;color:#555">Nutrición</span>
+              ${n?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">${n.nombre}</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin asignar</span>`}
             </div>
           </div>
         </div>`;
@@ -248,290 +392,315 @@ async function renderClients() {
     </div>`);
 }
 
-async function openClientModal(clientId) {
-  const c = _clients.find(c=>String(c.id)===String(clientId));
-  const assigned = _routines.find(r=>String(r.clienteId)===String(clientId));
+async function openClientModal(clientId){
+  const c=_clients.find(c=>String(c.id)===String(clientId));
+  const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="cmodal" onclick="document.getElementById('cmodal').remove()">
-      <div class="card" style="max-width:480px;width:100%;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">
-        <div style="display:flex;justify-content:space-between;margin-bottom:16px">
-          <div style="font-weight:800;font-size:18px">${c.nombre}</div>
+    <div class="modal-bg" id="cmodal" onclick="if(event.target===this)this.remove()">
+      <div class="modal-box" style="max-width:460px">
+        <div class="modal-header" style="padding:20px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:44px;height:44px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff;font-size:18px">${c.nombre[0]}</div>
+            <div style="font-weight:800;font-size:18px">${c.nombre}</div>
+          </div>
           <button class="btn-ghost" onclick="document.getElementById('cmodal').remove()">✕</button>
         </div>
-        <div style="font-weight:700;margin-bottom:8px">Asignar Rutina</div>
-        ${_routines.map(r=>`
-          <div class="card" style="cursor:pointer;margin-bottom:8px;border-color:${assigned?.id===r.id?'#00aaff':'#2a2a2a'}" onclick="assignRoutine(${r.id},${clientId})">
-            <div style="display:flex;justify-content:space-between">
-              <span style="font-weight:600">${r.nombre}</span>
-              ${assigned?.id===r.id?tag("✓ Asignada","#00aaff"):""}
-            </div>
-            <div style="font-size:12px;color:#888">${r.days?.length||0} días</div>
-          </div>`).join("")}
-      </div>
-    </div>`);
-}
-
-async function assignRoutine(routineId, clientId) {
-  await apiGet({action:"assignRoutine", routineId, clienteId:clientId});
-  document.getElementById("cmodal")?.remove();
-  renderClients();
-}
-
-// ── Rutinas ───────────────────────────────────────────────
-async function renderRoutines() {
-  render(spinner("Cargando rutinas…"));
-  if (!_exercises) _exercises = await apiGet({action:"exercises"});
-  _routines = await apiGet({action:"routines"});
-  showRoutineList();
-}
-
-function showRoutineList() {
-  render(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div style="font-weight:700;font-size:16px">Rutinas (${_routines.length})</div>
-      <button class="btn" onclick="showCreateRoutine()">+ Nueva Rutina</button>
-    </div>
-    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
-      ${_routines.map(r=>`
-        <div class="card" style="cursor:pointer" onclick="openRoutineEditor(${r.id})">
-          <div style="font-weight:700;margin-bottom:6px">${r.nombre}</div>
-          <div style="font-size:12px;color:#888;margin-bottom:8px">${r.days?.length||0} día(s)</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px">
-            ${(r.days||[]).map(d=>tag(d.dia,"#00aaff")).join("")}
-          </div>
-        </div>`).join("")}
-    </div>`);
-}
-
-function showCreateRoutine() {
-  document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="crmodal" onclick="document.getElementById('crmodal').remove()">
-      <div class="card" style="max-width:400px;width:100%" onclick="event.stopPropagation()">
-        <div style="font-weight:800;font-size:16px;margin-bottom:16px">Nueva Rutina</div>
-        <label class="lbl">Nombre</label>
-        <input id="rname" placeholder="Ej: Rutina Fuerza A" style="margin-bottom:12px"/>
-        <button class="btn" onclick="createRoutine()">Crear</button>
-      </div>
-    </div>`);
-}
-
-async function createRoutine() {
-  const nombre = document.getElementById("rname").value.trim();
-  if (!nombre) return;
-  await apiGet({action:"createRoutine", nombre, clienteId:""});
-  document.getElementById("crmodal")?.remove();
-  renderRoutines();
-}
-
-async function openRoutineEditor(routineId) {
-  const routine = _routines.find(r=>String(r.id)===String(routineId));
-  const DAYS = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
-  const availDays = DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
-
-  const exOptions = CATS.filter(c=>c!=="Todos").map(cat=>`
-    <optgroup label="${cat}">
-      ${_exercises.filter(e=>e.categoria===cat).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}
-    </optgroup>`).join("");
-
-  document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="remodal" onclick="" style="align-items:flex-start;overflow-y:auto">
-      <div class="card" style="max-width:600px;width:100%;margin:20px auto" onclick="event.stopPropagation()">
-        <div style="display:flex;justify-content:space-between;margin-bottom:16px">
-          <div style="font-weight:800;font-size:18px">${routine.nombre}</div>
-          <button class="btn-ghost" onclick="document.getElementById('remodal').remove();renderRoutines()">✓ Cerrar</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:16px">
-          <select id="newday" style="flex:1">
-            <option value="">Añadir día…</option>
-            ${availDays.map(d=>`<option>${d}</option>`).join("")}
-          </select>
-          <button class="btn-sm" onclick="addDayToRoutine(${routine.id})">+</button>
-        </div>
-        <div id="days-container">
-          ${(routine.days||[]).map(d=>`
-            <div class="card" style="margin-bottom:12px;background:#111" id="day-${d.id}">
-              <div style="font-weight:700;margin-bottom:8px;color:#00aaff">${d.dia}</div>
-              <div id="exlist-${d.id}">
-                ${(d.exercises||[]).map(ex=>{
-                  const exData = _exercises.find(e=>String(e.id)===String(ex.exerciseId));
-                  return `<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a2a">
-                    <div style="flex:1">
-                      <div style="font-weight:600;font-size:13px">${exData?.nombre||""}</div>
-                      <div style="font-size:12px;color:#888">${ex.series}×${ex.reps} · ${ex.descanso}</div>
-                    </div>
-                    <button class="btn-ghost" style="color:#ff4444;border-color:#ff4444" onclick="removeExFromDay(${ex.id},${d.id})">✕</button>
-                  </div>`;
-                }).join("")}
+        <div style="padding:0 20px 20px">
+          <div style="font-weight:700;margin-bottom:10px;font-size:13px;color:#666;text-transform:uppercase;letter-spacing:.8px">Asignar Rutina</div>
+          ${_routines.length===0?'<div style="color:#555;font-size:13px">No hay rutinas creadas aún.</div>':''}
+          ${_routines.map(r=>`
+            <div onclick="assignRoutine('${r.id}','${clientId}')" style="background:#111;border:1px solid ${assigned?.id==r.id?'#00aaff':'#222'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;transition:border-color .15s">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-weight:600">${r.nombre}</span>
+                ${assigned?.id==r.id?`<span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff40">✓ Asignada</span>`:''}
               </div>
-              <select style="margin-top:8px;font-size:12px" onchange="addExToDay(${d.id},this.value);this.value=''">
-                <option value="">+ Añadir ejercicio…</option>
-                ${exOptions}
-              </select>
+              <div style="font-size:12px;color:#555;margin-top:2px">${r.days?.length||0} días</div>
             </div>`).join("")}
         </div>
       </div>
     </div>`);
 }
 
-async function addDayToRoutine(routineId) {
-  const dia = document.getElementById("newday").value;
-  if (!dia) return;
-  await apiGet({action:"addDay", routineId, dia});
+async function assignRoutine(routineId,clientId){
+  await apiGet({action:"assignRoutine",routineId,clienteId:clientId});
+  document.getElementById("cmodal")?.remove();
+  renderClients();
+}
+
+// ── Rutinas ────────────────────────────────────────────────
+async function renderRoutines(){
+  render(spinner("Cargando rutinas…"));
+  if(!_exercises)_exercises=await apiGet({action:"exercises"});
+  _routines=await apiGet({action:"routines"});
+  showRoutineList();
+}
+
+function showRoutineList(){
+  render(`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <div style="font-weight:700;font-size:16px">Rutinas (${_routines.length})</div>
+      <button class="btn" onclick="showCreateRoutine()">+ Nueva Rutina</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px">
+      ${_routines.map(r=>`
+        <div class="card" style="cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#2a2a2a'" onclick="openRoutineEditor('${r.id}')">
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">${r.nombre}</div>
+          <div style="font-size:12px;color:#555;margin-bottom:10px">${r.days?.length||0} día(s) entrenamiento</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            ${(r.days||[]).map(d=>`<span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${d.dia}</span>`).join("")}
+          </div>
+        </div>`).join("")}
+    </div>`);
+}
+
+function showCreateRoutine(){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="crmodal" onclick="if(event.target===this)this.remove()">
+      <div class="modal-box" style="max-width:380px;padding:24px">
+        <div style="font-weight:800;font-size:18px;margin-bottom:18px">Nueva Rutina</div>
+        <label class="lbl">Nombre de la rutina</label>
+        <input id="rname" placeholder="Ej: Rutina Fuerza A" style="margin-bottom:16px" onkeydown="if(event.key==='Enter')createRoutine()"/>
+        <button class="btn" style="width:100%" onclick="createRoutine()">Crear rutina</button>
+      </div>
+    </div>`);
+}
+
+async function createRoutine(){
+  const nombre=document.getElementById("rname").value.trim();
+  if(!nombre)return;
+  await apiGet({action:"createRoutine",nombre,clienteId:""});
+  document.getElementById("crmodal")?.remove();
+  renderRoutines();
+}
+
+async function openRoutineEditor(routineId){
+  const routine=_routines.find(r=>String(r.id)===String(routineId));
+  const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  const availDays=DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
+  const exOptions=CATS.filter(c=>c!=="Todos").map(cat=>`<optgroup label="${cat}">${_exercises.filter(e=>e.categoria===cat).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}</optgroup>`).join("");
+
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="remodal" style="align-items:flex-start;overflow-y:auto;padding:20px">
+      <div class="modal-box" style="max-width:620px;width:100%;margin:0 auto">
+        <div class="modal-header" style="padding:20px">
+          <div style="font-weight:800;font-size:20px">${routine.nombre}</div>
+          <button class="btn-ghost" onclick="document.getElementById('remodal').remove();renderRoutines()">✓ Cerrar</button>
+        </div>
+        <div style="padding:0 20px 20px">
+          <div style="display:flex;gap:8px;margin-bottom:18px">
+            <select id="newday" style="flex:1">
+              <option value="">+ Añadir día de entrenamiento…</option>
+              ${availDays.map(d=>`<option>${d}</option>`).join("")}
+            </select>
+            <button class="btn" onclick="addDayToRoutine('${routine.id}')">Añadir</button>
+          </div>
+          <div id="days-container">
+            ${(routine.days||[]).map(d=>`
+              <div class="day-block" id="day-${d.id}">
+                <div class="day-title">📅 ${d.dia}</div>
+                <div id="exlist-${d.id}">
+                  ${(d.exercises||[]).map(ex=>{
+                    const exData=_exercises.find(e=>String(e.id)===String(ex.exerciseId));
+                    return `<div class="ex-row" id="exrow-${ex.id}">
+                      <div style="flex:1">
+                        <div style="font-weight:600;font-size:13px">${exData?.nombre||""}</div>
+                        <div style="font-size:12px;color:#555">${ex.series} series × ${ex.reps} · Descanso ${ex.descanso}</div>
+                      </div>
+                      <button class="btn-ghost" style="color:#ff5555;border-color:#ff555540" onclick="removeExFromDay('${ex.id}','${d.id}')">✕</button>
+                    </div>`;
+                  }).join("")}
+                </div>
+                <select style="margin-top:10px;font-size:12px" onchange="addExToDay('${d.id}',this.value);this.value=''">
+                  <option value="">+ Añadir ejercicio a ${d.dia}…</option>
+                  ${exOptions}
+                </select>
+              </div>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>`);
+}
+
+async function addDayToRoutine(routineId){
+  const dia=document.getElementById("newday").value;
+  if(!dia)return;
+  await apiGet({action:"addDay",routineId,dia});
   document.getElementById("remodal")?.remove();
-  _routines = await apiGet({action:"routines"});
+  _routines=await apiGet({action:"routines"});
   await openRoutineEditor(routineId);
 }
 
-async function addExToDay(dayId, exerciseId) {
-  if (!exerciseId) return;
-  const {id} = await apiGet({action:"addExercise", dayId, exerciseId, series:3, reps:"10", descanso:"60s"});
-  const ex = _exercises.find(e=>String(e.id)===String(exerciseId));
-  const container = document.getElementById(`exlist-${dayId}`);
-  if (container) {
+async function addExToDay(dayId,exerciseId){
+  if(!exerciseId)return;
+  const{id}=await apiGet({action:"addExercise",dayId,exerciseId,series:3,reps:"10",descanso:"60s"});
+  const ex=_exercises.find(e=>String(e.id)===String(exerciseId));
+  const container=document.getElementById(`exlist-${dayId}`);
+  if(container){
     container.insertAdjacentHTML("beforeend",`
-      <div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a2a" id="exrow-${id}">
+      <div class="ex-row" id="exrow-${id}">
         <div style="flex:1">
           <div style="font-weight:600;font-size:13px">${ex?.nombre||""}</div>
-          <div style="font-size:12px;color:#888">3×10 · 60s</div>
+          <div style="font-size:12px;color:#555">3 series × 10 · Descanso 60s</div>
         </div>
-        <button class="btn-ghost" style="color:#ff4444;border-color:#ff4444" onclick="removeExFromDay(${id},${dayId})">✕</button>
+        <button class="btn-ghost" style="color:#ff5555;border-color:#ff555540" onclick="removeExFromDay('${id}','${dayId}')">✕</button>
       </div>`);
   }
 }
 
-async function removeExFromDay(exId, dayId) {
-  await apiGet({action:"removeExercise", id:exId});
+async function removeExFromDay(exId,dayId){
+  await apiGet({action:"removeExercise",id:exId});
   document.getElementById(`exrow-${exId}`)?.remove();
 }
 
-// ── Nutrición ─────────────────────────────────────────────
-const NUTRI_TPLS = [
-  {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g|Media mañana: Yogur griego + frutos secos|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + proteína|Cena: Pescado 200g + verduras"},
-  {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano|Comida: Ternera 250g + pasta 150g|Pre-entreno: Arroz 80g + atún|Cena: Salmón 200g + boniato 200g"},
-  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral|Media mañana: Frutos secos + yogur|Comida: Pollo 180g + patata 150g + ensalada|Merienda: Fruta + proteína|Cena: Pescado 180g + verduras + arroz 60g"},
+// ── Nutrición ──────────────────────────────────────────────
+const NUTRI_TPLS=[
+  {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g + fruta|Media mañana: Yogur griego 200g + frutos secos 20g|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + proteína 25g|Cena: Pescado 200g + verduras salteadas"},
+  {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano + mantequilla cacahuete|Comida: Ternera 250g + pasta 150g + ensalada|Pre-entreno: Arroz 80g + atún 120g|Cena: Salmón 200g + boniato 200g + brócoli"},
+  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral + fruta|Media mañana: Frutos secos 30g + yogur 150g|Comida: Pollo 180g + patata 150g + ensalada|Merienda: Fruta + proteína 25g|Cena: Pescado 180g + verduras + arroz 60g"},
 ];
 
-async function renderNutrition() {
+async function renderNutrition(){
   render(spinner("Cargando nutrición…"));
-  const [clients, nutrition] = await Promise.all([apiGet({action:"clients"}), apiGet({action:"nutrition"})]);
+  const[clients,nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"nutrition"})]);
   render(`
-    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Planes Nutricionales</div>
-    ${clients.map(c => {
-      const plan = nutrition.find(n=>String(n.clienteId)===String(c.id));
+    <div style="font-weight:700;font-size:16px;margin-bottom:18px">Planes Nutricionales</div>
+    ${clients.map(c=>{
+      const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
       return `<div class="card" style="margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div style="font-weight:700">${c.nombre}</div>
-          <button class="btn-sm" onclick="openNutriModal(${c.id})">${plan?"Cambiar plan":"Asignar plan"}</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:${plan?'16px':'0'}">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff">${c.nombre[0]}</div>
+            <div style="font-weight:700;font-size:15px">${c.nombre}</div>
+          </div>
+          <button class="btn-sm" onclick="openNutriModal('${c.id}')">${plan?"Cambiar plan":"Asignar plan"}</button>
         </div>
-        ${plan ? nutriCard(plan) : '<div style="color:#888;font-size:13px">Sin plan asignado.</div>'}
+        ${plan?nutriCard(plan):'<div style="color:#444;font-size:13px;margin-top:10px">Sin plan asignado.</div>'}
       </div>`;
     }).join("")}`);
 }
 
-function nutriCard(plan) {
-  const meals = Array.isArray(plan.comidas) ? plan.comidas : String(plan.comidas).split("|");
+function nutriCard(plan){
+  const meals=Array.isArray(plan.comidas)?plan.comidas:String(plan.comidas).split("|");
   return `
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-      ${[{l:"Kcal",v:plan.kcal,c:"#ffaa00"},{l:"Proteína",v:plan.proteina+"g",c:"#00aaff"},{l:"Carbos",v:plan.carbos+"g",c:"#00cc88"},{l:"Grasas",v:plan.grasas+"g",c:"#cc66ff"}]
-        .map(x=>`<div class="card" style="background:#111;text-align:center;min-width:70px;flex:1"><div style="font-size:20px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:11px;color:#888">${x.l}</div></div>`).join("")}
+    <div class="macro-grid">
+      ${[{l:"Calorías",v:plan.kcal,c:"#ffaa00"},{l:"Proteína",v:plan.proteina+"g",c:"#00aaff"},{l:"Carbos",v:plan.carbos+"g",c:"#00cc88"},{l:"Grasas",v:plan.grasas+"g",c:"#cc66ff"}]
+        .map(x=>`<div class="macro-card"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
     </div>
-    ${meals.map((m,i)=>`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #2a2a2a;font-size:13px"><span style="color:#00aaff;font-weight:700;min-width:20px">${i+1}</span><span>${m}</span></div>`).join("")}`;
+    <div style="font-weight:600;margin-bottom:10px;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:.8px">Plan: ${plan.nombre}</div>
+    ${meals.map((m,i)=>`<div class="meal-row"><div class="meal-num">${i+1}</div><span>${m}</span></div>`).join("")}`;
 }
 
-async function openNutriModal(clientId) {
+async function openNutriModal(clientId){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="nmodal" onclick="document.getElementById('nmodal').remove()">
-      <div class="card" style="max-width:460px;width:100%" onclick="event.stopPropagation()">
-        <div style="font-weight:800;font-size:16px;margin-bottom:16px">Seleccionar plan</div>
+    <div class="modal-bg" id="nmodal" onclick="if(event.target===this)this.remove()">
+      <div class="modal-box" style="max-width:420px;padding:24px">
+        <div style="font-weight:800;font-size:18px;margin-bottom:18px">Seleccionar plan nutricional</div>
         ${NUTRI_TPLS.map((t,i)=>`
-          <div class="card" style="cursor:pointer;margin-bottom:10px;background:#111" onclick="assignNutri(${clientId},${i})">
-            <div style="font-weight:700">${t.nombre}</div>
-            <div style="font-size:12px;color:#888">${t.kcal} kcal · P:${t.proteina}g · C:${t.carbos}g · G:${t.grasas}g</div>
+          <div onclick="assignNutri('${clientId}',${i})" style="background:#111;border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#222'">
+            <div style="font-weight:700;margin-bottom:4px">${t.nombre}</div>
+            <div class="macro-grid" style="margin-top:8px">
+              ${[{l:"Kcal",v:t.kcal,c:"#ffaa00"},{l:"Prot",v:t.proteina+"g",c:"#00aaff"},{l:"Carb",v:t.carbos+"g",c:"#00cc88"},{l:"Gras",v:t.grasas+"g",c:"#cc66ff"}]
+                .map(x=>`<div class="macro-card" style="padding:8px"><div class="macro-val" style="color:${x.c};font-size:16px">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
+            </div>
           </div>`).join("")}
       </div>
     </div>`);
 }
 
-async function assignNutri(clientId, tplIdx) {
-  const t = NUTRI_TPLS[tplIdx];
-  await apiGet({action:"saveNutrition", clienteId:clientId, ...t});
+async function assignNutri(clientId,tplIdx){
+  const t=NUTRI_TPLS[tplIdx];
+  await apiGet({action:"saveNutrition",clienteId:clientId,...t});
   document.getElementById("nmodal")?.remove();
   renderNutrition();
 }
 
-// ── Cliente: Mi Entrenamiento ─────────────────────────────
-async function renderClientTraining() {
+// ── Cliente: Mi Entrenamiento ──────────────────────────────
+async function renderClientTraining(){
   render(spinner("Cargando entrenamiento…"));
-  if (!_exercises) _exercises = await apiGet({action:"exercises"});
-  const routines = await apiGet({action:"routines", clientId:currentUser.id});
-  const routine = routines[0];
-  if (!routine) { render(`<div style="padding:40px;text-align:center;color:#888">Tu entrenador aún no te ha asignado una rutina.</div>`); return; }
+  if(!_exercises)_exercises=await apiGet({action:"exercises"});
+  const routines=await apiGet({action:"routines",clientId:currentUser.id});
+  const routine=routines[0];
+  if(!routine){render(`<div style="padding:60px;text-align:center;color:#444">Tu entrenador aún no te ha asignado una rutina.</div>`);return;}
   render(`
-    <div style="font-weight:800;font-size:18px;margin-bottom:4px">${routine.nombre}</div>
-    <div style="color:#888;font-size:13px;margin-bottom:20px">${routine.days?.length||0} días de entrenamiento</div>
+    <div style="margin-bottom:20px">
+      <div style="font-weight:800;font-size:22px;margin-bottom:4px">${routine.nombre}</div>
+      <div style="color:#555;font-size:13px">${routine.days?.length||0} días de entrenamiento</div>
+    </div>
     ${(routine.days||[]).map((d,di)=>`
       <div class="card" style="margin-bottom:16px">
-        <div style="font-weight:700;color:#00aaff;margin-bottom:12px">${d.dia}</div>
+        <div style="font-weight:700;color:#00aaff;margin-bottom:14px;font-size:15px">📅 ${d.dia}</div>
         ${(d.exercises||[]).map((ex,ei)=>{
-          const e = _exercises.find(e=>String(e.id)===String(ex.exerciseId));
-          return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #2a2a2a">
-            <input type="checkbox" id="chk-${di}-${ei}" style="width:16px;height:16px;cursor:pointer" onchange="toggleEx('${di}-${ei}')"/>
+          const e=_exercises.find(e=>String(e.id)===String(ex.exerciseId));
+          const k=`${di}-${ei}`;
+          return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1e1e1e">
+            <input type="checkbox" id="chk-${k}" style="width:18px;height:18px;cursor:pointer;accent-color:#00aaff" onchange="toggleEx('${k}')"/>
             <div style="flex:1">
-              <div id="exname-${di}-${ei}" style="font-weight:600;font-size:13px">${e?.nombre||""}</div>
-              <div style="font-size:12px;color:#888">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
+              <div id="exname-${k}" style="font-weight:600;font-size:14px">${e?.nombre||""}</div>
+              <div style="font-size:12px;color:#555;margin-top:2px">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
             </div>
-            ${e?`<button class="btn-sm" onclick="openExercise(${e.id})">▶ Ver</button>`:""}
+            ${e?`<button class="btn-sm" onclick="openExModal('${e.id}')">▶ Ver</button>`:""}
           </div>`;
         }).join("")}
       </div>`).join("")}`);
 }
 
-function toggleEx(key) {
-  const el = document.getElementById(`exname-${key}`);
-  const chk = document.getElementById(`chk-${key}`);
-  if (el) { el.style.textDecoration = chk.checked?"line-through":"none"; el.style.color = chk.checked?"#888":"#f0f0f0"; }
+function toggleEx(k){
+  const el=document.getElementById(`exname-${k}`);
+  const chk=document.getElementById(`chk-${k}`);
+  if(el){el.style.textDecoration=chk.checked?"line-through":"none";el.style.color=chk.checked?"#444":"#f0f0f0";}
 }
 
-// ── Cliente: Mi Nutrición ─────────────────────────────────
-async function renderClientNutrition() {
+// ── Cliente: Mi Nutrición ──────────────────────────────────
+async function renderClientNutrition(){
   render(spinner("Cargando nutrición…"));
-  const plans = await apiGet({action:"nutrition", clientId:currentUser.id});
-  if (!plans[0]) { render(`<div style="padding:40px;text-align:center;color:#888">Tu entrenador aún no te ha asignado un plan nutricional.</div>`); return; }
-  render(nutriCard(plans[0]));
+  const plans=await apiGet({action:"nutrition",clientId:currentUser.id});
+  if(!plans[0]){render(`<div style="padding:60px;text-align:center;color:#444">Tu entrenador aún no te ha asignado un plan nutricional.</div>`);return;}
+  render(`<div style="font-weight:800;font-size:20px;margin-bottom:18px">Mi Plan Nutricional</div>${nutriCard(plans[0])}`);
 }
 
-// ── Cliente: Mi Progreso ──────────────────────────────────
-async function renderClientProgress() {
+// ── Cliente: Mi Progreso ───────────────────────────────────
+async function renderClientProgress(){
   render(spinner("Cargando progreso…"));
-  const records = await apiGet({action:"progress", clientId:currentUser.id});
+  const records=await apiGet({action:"progress",clientId:currentUser.id});
   render(`
+    <div style="font-weight:800;font-size:20px;margin-bottom:18px">Mi Progreso</div>
     <div class="card" style="margin-bottom:20px">
-      <div style="font-weight:700;margin-bottom:12px">Registrar hoy</div>
-      <label class="lbl">Peso (kg)</label>
-      <input id="ppeso" type="number" step="0.1" placeholder="75.5" style="margin-bottom:8px"/>
-      <label class="lbl">Notas</label>
-      <input id="pnotas" placeholder="Cómo te has sentido hoy…" style="margin-bottom:12px"/>
+      <div style="font-weight:700;margin-bottom:14px">Registrar hoy</div>
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label class="lbl">Peso (kg)</label>
+          <input id="ppeso" type="number" step="0.1" placeholder="75.5"/>
+        </div>
+        <div>
+          <label class="lbl">Notas</label>
+          <input id="pnotas" placeholder="Cómo te has sentido hoy…"/>
+        </div>
+      </div>
       <button class="btn" onclick="saveProgress()">Guardar registro</button>
     </div>
-    <div style="font-weight:700;margin-bottom:12px">Historial (${records.length} registros)</div>
+    <div style="font-weight:700;font-size:15px;margin-bottom:12px">Historial (${records.length} registros)</div>
+    ${records.length===0?`<div style="color:#444;font-size:13px">Aún no hay registros.</div>`:""}
     <div id="precords">
       ${[...records].reverse().map(r=>`
-        <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-weight:600">${r.fecha}</div>${r.notas?`<div style="font-size:12px;color:#888">${r.notas}</div>`:""}</div>
-          <div style="font-size:24px;font-weight:800;color:#00aaff">${r.peso} <span style="font-size:13px;color:#888">kg</span></div>
+        <div class="prog-entry">
+          <div>
+            <div style="font-weight:600">${r.fecha}</div>
+            ${r.notas?`<div style="font-size:12px;color:#555;margin-top:2px">${r.notas}</div>`:""}
+          </div>
+          <div style="font-size:28px;font-weight:800;color:#00aaff">${r.peso}<span style="font-size:14px;color:#555"> kg</span></div>
         </div>`).join("")}
     </div>`);
 }
 
-async function saveProgress() {
-  const peso = document.getElementById("ppeso").value;
-  const notas = document.getElementById("pnotas").value;
-  if (!peso) return;
-  await apiGet({action:"saveProgress", clienteId:currentUser.id, fecha:new Date().toLocaleDateString("es-ES"), peso, notas});
+async function saveProgress(){
+  const peso=document.getElementById("ppeso").value;
+  const notas=document.getElementById("pnotas").value;
+  if(!peso)return;
+  await apiGet({action:"saveProgress",clienteId:currentUser.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
   renderClientProgress();
 }
 
-// ── Init ──────────────────────────────────────────────────
+// ── Init ───────────────────────────────────────────────────
 renderLogin();
 </script>
 </body>
