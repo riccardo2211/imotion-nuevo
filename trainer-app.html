@@ -2,219 +2,295 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>i-Motion Trainer App</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>i-Motion Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0d0d;color:#f0f0f0;font-family:'Outfit',sans-serif;font-size:14px;min-height:100vh}
-.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
-.btn{background:#00aaff;color:#fff;border:none;border-radius:8px;padding:8px 18px;cursor:pointer;font-weight:600;font-size:13px;font-family:'Outfit',sans-serif}
-.btn:hover{background:#0099ee}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-sm{background:#00aaff;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-weight:600;font-size:12px;font-family:'Outfit',sans-serif}
-.btn-ghost{background:transparent;color:#888;border:1px solid #333;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif}
-.btn-ghost:hover{border-color:#555;color:#ccc}
-input,select,textarea{background:#111;border:1px solid #333;border-radius:8px;padding:9px 12px;color:#f0f0f0;font-size:13px;width:100%;font-family:'Outfit',sans-serif;outline:none}
-input:focus,select:focus{border-color:#00aaff}
-.tag{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
-.spinner{width:32px;height:32px;border:3px solid #2a2a2a;border-top:3px solid #00aaff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
-@keyframes spin{to{transform:rotate(360deg)}}
+:root{
+  --bg:#f5f6fa;--sidebar:#fff;--card:#fff;--border:#e8eaed;
+  --text:#1a1a2e;--muted:#8892a4;--accent:#4f6ef7;--accent2:#6c63ff;
+  --success:#00c48c;--warn:#ffb648;--danger:#ff5c5c;
+  --tag-bg:#eef0ff;--tag-color:#4f6ef7;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh}
+button{font-family:'Inter',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'Inter',sans-serif}
 
-/* NAV */
-.nav{background:#111;border-bottom:1px solid #222;padding:0 20px;display:flex;align-items:center;gap:2px;overflow-x:auto;position:sticky;top:0;z-index:50}
-.nav-logo{font-weight:800;color:#00aaff;font-size:18px;margin-right:16px;white-space:nowrap;letter-spacing:-0.5px}
-.nav-btn{background:none;border:none;color:#666;border-bottom:2px solid transparent;padding:16px 12px;cursor:pointer;font-size:13px;white-space:nowrap;font-family:'Outfit',sans-serif;font-weight:500;transition:color .2s}
-.nav-btn:hover{color:#aaa}
-.nav-btn.active{color:#00aaff;border-bottom-color:#00aaff;font-weight:700}
+/* TOPBAR */
+.topbar{background:#fff;border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.logo{font-weight:800;font-size:18px;color:var(--accent);letter-spacing:-0.5px;margin-right:8px}
+.topbar-nav{display:flex;gap:2px;flex:1;overflow-x:auto}
+.topbar-btn{background:none;border:none;color:var(--muted);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;transition:all .15s}
+.topbar-btn:hover{background:#f0f2ff;color:var(--accent)}
+.topbar-btn.active{background:#eef0ff;color:var(--accent);font-weight:600}
+.topbar-user{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
 
-/* EXERCISE CARDS — Harbiz style */
-.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.ex-card{background:#1a1a1a;border:1px solid #222;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
-.ex-card:hover{transform:translateY(-2px);border-color:#444}
-.ex-thumb{position:relative;width:100%;padding-bottom:56.25%;background:#111;overflow:hidden}
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:240px;background:#fff;border-right:1px solid var(--border);padding:16px 12px;flex-shrink:0}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-weight:500;font-size:13px;transition:all .15s;margin-bottom:4px;border:none;background:none;width:100%;text-align:left}
+.sidebar-item:hover{background:#f5f6fa;color:var(--text)}
+.sidebar-item.active{background:#eef0ff;color:var(--accent);font-weight:600}
+.sidebar-icon{font-size:16px;width:20px;text-align:center}
+.sidebar-sub{font-size:11px;color:var(--muted);margin-top:1px;font-weight:400}
+.main{flex:1;padding:24px;overflow-x:hidden}
+
+/* BUTTONS */
+.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-weight:600;font-size:13px;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:#3d5ae0;transform:translateY(-1px);box-shadow:0 4px 12px rgba(79,110,247,.3)}
+.btn-sm{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-weight:600;font-size:12px}
+.btn-outline{background:#fff;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;padding:8px 16px;font-weight:600;font-size:13px}
+.btn-outline:hover{background:#eef0ff}
+.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500}
+.btn-ghost:hover{border-color:#aaa;color:var(--text)}
+.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ffdddd;border-radius:8px;padding:5px 10px;font-size:12px}
+
+/* INPUTS */
+input,select{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none;transition:border-color .15s}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,110,247,.1)}
+.search-box{position:relative}
+.search-box input{padding-left:36px;background:#f5f6fa;border-color:transparent}
+.search-box input:focus{background:#fff;border-color:var(--accent)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+label.lbl{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card-hover{transition:all .15s;cursor:pointer}
+.card-hover:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(79,110,247,.1);transform:translateY(-1px)}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap}
+.tag-blue{background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff}
+.tag-green{background:#e6faf4;color:#00a87a;border:1px solid #b3edd8}
+.tag-orange{background:#fff6e6;color:#e08a00;border:1px solid #ffd98a}
+.tag-purple{background:#f3f0ff;color:#7c5cbf;border:1px solid #d4c5ff}
+.tag-gray{background:#f0f2f5;color:#6b7280;border:1px solid #e2e5ea}
+.tag-red{background:#fff0f0;color:#e53e3e;border:1px solid #ffcccc}
+
+/* EXERCISE GRID — Harbiz style */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.ex-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s}
+.ex-card:hover{border-color:#c5cbf9;box-shadow:0 6px 20px rgba(79,110,247,.12);transform:translateY(-2px)}
+.ex-thumb{position:relative;width:100%;padding-bottom:62%;background:#f0f2f5;overflow:hidden}
 .ex-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ex-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);display:flex;align-items:flex-end;padding:10px}
-.ex-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(0,170,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
-.ex-body{padding:12px}
-.ex-name{font-weight:700;font-size:14px;margin-bottom:6px;line-height:1.3}
-.ex-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.ex-desc{font-size:11px;color:#666;line-height:1.4}
+.ex-thumb-dark{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,.1) 50%,transparent 100%)}
+.ex-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.ex-tags-overlay{position:absolute;bottom:8px;left:8px;right:8px;display:flex;flex-wrap:wrap;gap:3px}
+.ex-body{padding:11px 12px}
+.ex-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px;line-height:1.3}
+.ex-meta{display:flex;flex-wrap:wrap;gap:3px}
+
+/* FILTER CHIPS */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.active{background:#eef0ff;border-color:var(--accent);color:var(--accent);font-weight:600}
 
 /* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;overflow-y:auto}
-.modal-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-header{padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.modal-video{position:relative;padding-bottom:56.25%;background:#000;margin:16px 0 0}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;overflow-y:auto;backdrop-filter:blur(2px)}
+.modal{background:#fff;border-radius:18px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-sm{max-width:420px}
+.modal-hd{padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:0;background:#fff;z-index:1;border-radius:18px 18px 0 0}
+.modal-title{font-weight:800;font-size:20px}
+.modal-close{background:#f5f6fa;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);flex-shrink:0;transition:all .15s}
+.modal-close:hover{background:#fee;color:var(--danger)}
+.modal-video{position:relative;padding-bottom:56.25%;background:#000}
 .modal-video iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-.modal-content{padding:16px 20px 20px}
+.modal-body{padding:20px 24px 24px}
 
 /* STEPS */
-.steps{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#ccc;line-height:1.5}
-.step-num{background:#00aaff22;color:#00aaff;border:1px solid #00aaff44;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
-
-/* FILTERS */
-.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.filter-btn{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:5px 14px;cursor:pointer;font-size:12px;color:#888;font-family:'Outfit',sans-serif;font-weight:500;transition:all .15s}
-.filter-btn:hover{border-color:#555;color:#ccc}
-.filter-btn.active{background:#00aaff22;border-color:#00aaff;color:#00aaff;font-weight:600}
+.steps{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#444;line-height:1.55}
+.step-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
 
 /* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
-.stat-card{background:#1a1a1a;border:1px solid #222;border-radius:12px;padding:16px;text-align:center}
-.stat-val{font-size:32px;font-weight:800;line-height:1}
-.stat-lbl{font-size:12px;color:#666;margin-top:4px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.stat-val{font-size:28px;font-weight:800;line-height:1}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
 
-/* ROUTINE EDITOR */
-.day-block{background:#111;border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:12px}
-.day-title{font-weight:700;color:#00aaff;margin-bottom:10px;font-size:14px}
-.ex-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1e1e1e}
-.ex-row:last-of-type{border-bottom:none}
+/* ROUTINE */
+.day-block{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+.day-hd{font-weight:700;color:var(--accent);margin-bottom:10px;font-size:14px;display:flex;align-items:center;gap:6px}
+.ex-row-edit{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.ex-row-edit:last-of-type{border-bottom:none}
 
-/* NUTRI */
-.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.macro-card{background:#111;border:1px solid #222;border-radius:10px;padding:12px;text-align:center}
-.macro-val{font-size:22px;font-weight:800}
-.macro-lbl{font-size:10px;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
-.meal-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #1e1e1e;font-size:13px;align-items:flex-start}
-.meal-num{background:#00aaff22;color:#00aaff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+/* MACROS */
+.macro-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.macro{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.macro-val{font-size:20px;font-weight:800}
+.macro-lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.meal-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;align-items:flex-start}
+.meal-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
 
 /* PROGRESS */
-.prog-entry{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#111;border:1px solid #1e1e1e;border-radius:10px;margin-bottom:8px}
+.prog-entry{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#f9fafb;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
 
-label.lbl{font-size:11px;color:#666;margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.8px;font-weight:600}
-#app{max-width:980px;margin:0 auto;padding:20px}
+/* CLIENT CARD */
+.client-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .15s}
+.client-card:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(79,110,247,.1)}
+.client-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
+
+/* SPINNER */
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0f2ff 0%,#faf5ff 100%)}
+.login-card{background:#fff;border-radius:20px;padding:36px;width:360px;box-shadow:0 8px 32px rgba(79,110,247,.12)}
+
+.section-title{font-weight:800;font-size:18px;margin-bottom:18px}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+#app{max-width:1100px;margin:0 auto}
 .hidden{display:none!important}
-.search-wrap{position:relative;max-width:300px;margin-bottom:14px}
-.search-wrap input{padding-left:34px}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#555;font-size:15px}
+.flex{display:flex;align-items:center;gap:8px}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 </style>
 </head>
 <body>
 
-<div id="nav" class="nav hidden"></div>
-<div id="app"></div>
+<!-- TOPBAR -->
+<div id="topbar" class="topbar hidden">
+  <span class="logo">i-Motion</span>
+  <nav class="topbar-nav" id="topbar-nav"></nav>
+  <div class="topbar-user" id="topbar-user"></div>
+</div>
+
+<!-- LAYOUT -->
+<div id="layout" class="layout hidden">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main"><div id="app"></div></main>
+</div>
+
+<!-- LOGIN (shown initially) -->
+<div id="login-wrap" class="login-wrap">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:26px;font-weight:800;color:var(--accent);letter-spacing:-1px">i-Motion</div>
+      <div style="color:var(--muted);font-size:12px;margin-top:4px;font-weight:500">EMS TRAINER PLATFORM</div>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="lbl">Email</label>
+      <input id="lemail" placeholder="trainer@imotion.com" type="email"/>
+    </div>
+    <div style="margin-bottom:20px">
+      <label class="lbl">Contraseña</label>
+      <input id="lpass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <div id="lerr" style="color:var(--danger);font-size:12px;margin-bottom:12px;text-align:center"></div>
+    <button class="btn" style="width:100%;justify-content:center;padding:11px" id="lbtn" onclick="doLogin()">Iniciar sesión</button>
+    <div style="margin-top:20px;text-align:center;font-size:11px;color:var(--muted);line-height:1.9">
+      trainer@imotion.com · imotion2024<br>carlos@demo.com / maria@demo.com · 1234
+    </div>
+  </div>
+</div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwy1JyochqSC-OvimvpHTSWedgUiZrzjeHXl79-Mbg0BlBnxcweCzI6P1ZOqH2Qo5CJWA/exec";
-let currentUser = null, currentTab = null;
-let _exercises = null, _clients = [], _routines = [], _nutrition = [];
+const API="https://script.google.com/macros/s/AKfycbwy1JyochqSC-OvimvpHTSWedgUiZrzjeHXl79-Mbg0BlBnxcweCzI6P1ZOqH2Qo5CJWA/exec";
+let U=null,TAB=null,STAB=null;
+let _ex=null,_clients=[],_routines=[],_nutrition=[];
 
-// ── API ────────────────────────────────────────────────────
-async function apiGet(params) {
-  const r = await fetch(API + "?" + new URLSearchParams(params));
-  const j = await r.json();
-  if (!j.ok) throw new Error(j.error);
+async function apiGet(p){
+  const r=await fetch(API+"?"+new URLSearchParams(p));
+  const j=await r.json();
+  if(!j.ok)throw new Error(j.error);
   return j.data;
 }
 
-// ── Utils ──────────────────────────────────────────────────
-function tag(text, color) {
-  return `<span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">${text}</span>`;
-}
-function spinner(text="Cargando…") {
-  return `<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:#555;margin-top:14px;font-size:13px">${text}</div></div>`;
-}
-function render(html) { document.getElementById("app").innerHTML = html; }
+function render(h){document.getElementById("app").innerHTML=h;}
+function ytThumb(url){const m=url.match(/embed\/([^?]+)/);return m?`https://img.youtube.com/vi/${m[1]}/mqdefault.jpg`:"";}
+function spinner(t="Cargando…"){return`<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:var(--muted);margin-top:14px;font-size:13px">${t}</div></div>`;}
+function closeModal(id){document.getElementById(id)?.remove();}
 
-// Thumbnail de YouTube
-function ytThumb(videoUrl) {
-  const match = videoUrl.match(/embed\/([^?]+)/);
-  if (!match) return "";
-  return `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
-}
+// ── EXERCISE DATA ─────────────────────────────────────────
+const EQUIPMENT=["Todo","Peso corporal","Barra","Mancuernas","Máquina","Cable/Polea","Banda elástica","TRX","Cardio","Movilidad"];
+const MUSCLES=["Todo","Pecho","Espalda","Hombros","Bíceps","Tríceps","Cuádriceps","Isquiotibiales","Glúteos","Gemelos","Core","Full Body"];
 
-// Pasos de ejecución por ejercicio
-const STEPS = {
-  "1": ["Coloca la barra sobre los trapecios, pies a la anchura de los hombros","Inspira y baja flexionando rodillas hasta que los muslos queden paralelos al suelo","Mantén la espalda recta y el pecho arriba en todo momento","Empuja con los talones y sube expirando hasta la posición inicial"],
-  "2": ["Siéntate en la prensa con la espalda bien apoyada en el respaldo","Coloca los pies en la plataforma a la anchura de los hombros","Suelta los seguros y flexiona las rodillas hasta 90°","Empuja con los talones hasta casi extender las piernas, sin bloquear las rodillas"],
-  "3": ["De pie, da un paso largo hacia adelante con una pierna","Baja el cuerpo verticalmente hasta que la rodilla trasera casi toque el suelo","Mantén el torso erguido y la rodilla delantera alineada con el pie","Empuja con el talón delantero para volver a la posición inicial"],
-  "4": ["De pie con la barra frente a ti, agarre prono a la anchura de caderas","Empuja las caderas hacia atrás manteniendo la espalda neutra","Baja la barra por las piernas hasta sentir tensión en los isquios","Vuelve empujando las caderas hacia adelante hasta quedar erguido"],
-  "5": ["Túmbate boca abajo en la máquina de curl femoral","Coloca el rodillo justo por encima de los talones","Flexiona las rodillas llevando los talones hacia los glúteos","Controla la bajada de forma lenta y controlada"],
-  "6": ["Apoya la espalda alta en un banco, pies planos en el suelo","Coloca la barra sobre las caderas con una almohadilla de protección","Empuja con los talones elevando las caderas hasta alinear hombros, caderas y rodillas","Aprieta los glúteos en la parte alta 1-2 segundos y baja controlando"],
-  "7": ["De pie en el borde de un escalón o superficie elevada","Sube de puntillas lo más alto posible apretando los gemelos","Mantén la posición 1 segundo en la cima","Baja de forma lenta y controlada hasta estirar el gemelo"],
-  "8": ["Apoya el pie trasero en un banco a la altura de la rodilla","Baja el cuerpo verticalmente hasta que la rodilla trasera casi toque el suelo","Mantén el torso recto y la rodilla delantera sobre el pie","Sube empujando con el talón de la pierna delantera"],
-  "9": ["Túmbate en el banco, agarra la barra algo más ancha que los hombros","Baja la barra de forma controlada hasta que toque ligeramente el pecho","Mantén los codos a 45-75° respecto al torso","Empuja la barra hacia arriba espirando hasta extender los brazos"],
-  "10": ["Ajusta el banco a 30-45°, agarra la barra algo más ancha que los hombros","Baja la barra hasta la parte alta del pecho de forma controlada","Mantén los pies firmes en el suelo y la espalda baja apoyada","Empuja hacia arriba y ligeramente hacia atrás hasta extender los codos"],
-  "11": ["Túmbate en el banco con una mancuerna en cada mano, brazos extendidos","Abre los brazos describiendo un arco amplio hasta sentir estiramiento en el pecho","Mantén un ligero codo doblado durante todo el movimiento","Cierra los brazos volviendo a la posición inicial apretando el pecho"],
-  "12": ["Agarra las barras paralelas y eleva el cuerpo con los brazos extendidos","Inclínate ligeramente hacia adelante para mayor activación pectoral","Baja flexionando los codos hasta 90° de forma controlada","Empuja hacia arriba hasta extender los brazos sin bloquear los codos"],
-  "13": ["Coloca las manos algo más anchas que los hombros en el suelo","Mantén el cuerpo en línea recta de cabeza a talones, core activo","Baja el pecho hasta casi tocar el suelo flexionando los codos","Empuja hacia arriba hasta extender los brazos completamente"],
-  "14": ["De pie frente a la barra en el suelo, pies a la anchura de caderas","Agarra la barra justo fuera de las piernas, espalda neutra y pecho arriba","Empuja el suelo con los pies y extiende caderas y rodillas simultáneamente","Baja la barra de forma controlada invirtiendo el movimiento"],
-  "15": ["Agarra la barra con agarre prono a la anchura de los hombros","Desde posición colgada activa los hombros bajándolos ligeramente","Tira de tu cuerpo hacia arriba hasta que la barbilla supere la barra","Baja de forma lenta y controlada hasta la posición inicial"],
-  "16": ["De pie con la barra, inclínate hacia adelante 45-60° con espalda neutra","Agarra la barra a la anchura de los hombros con agarre prono","Tira de la barra hacia el ombligo retrayendo los omóplatos","Baja de forma controlada hasta casi extender los brazos"],
-  "17": ["Apoya una mano y la rodilla del mismo lado en un banco","Con la otra mano agarra la mancuerna con el brazo extendido","Tira de la mancuerna hacia la cadera retrayendo el omóplato","Baja de forma controlada y repite con el otro lado"],
-  "18": ["Siéntate en la máquina con los muslos bajo los rodillos","Agarra la barra con agarre prono algo más ancho que los hombros","Tira de la barra hacia el pecho superior llevando los codos hacia abajo","Controla la subida de la barra hasta la posición inicial"],
-  "19": ["Siéntate en la máquina de remo con los pies en los apoyos","Agarra el cable con los brazos extendidos y la espalda erguida","Tira del cable hacia el abdomen llevando los codos hacia atrás","Extiende los brazos de forma controlada para volver al inicio"],
-  "20": ["De pie o sentado, agarra la barra a la anchura de los hombros","Lleva la barra a la altura de la barbilla con los codos a 90°","Empuja la barra hacia arriba hasta casi extender los brazos","Baja la barra de forma controlada hasta la posición inicial"],
-  "21": ["Sentado, sujeta las mancuernas a la altura de los hombros, palmas hacia ti","Al subir, gira las muñecas hasta que las palmas queden hacia adelante","Extiende los brazos hacia arriba sin bloquear los codos","Invierte el giro al bajar volviendo a la posición inicial"],
-  "22": ["De pie, mancuernas a los lados con los codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de los hombros","Controla que los codos lideren el movimiento, no las muñecas","Baja de forma lenta y controlada sin balancear el torso"],
-  "23": ["Inclínate hacia adelante con las caderas flexionadas y espalda neutra","Con una mancuerna en cada mano y codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de los hombros","Aprieta los deltoides posteriores en la cima y baja controlando"],
-  "24": ["Ajusta la polea a la altura de los ojos con accesorio de cuerda","Agarra cada extremo de la cuerda con las palmas hacia abajo","Tira hacia tu cara separando los extremos de la cuerda al final","Mantén los codos elevados durante todo el movimiento"],
-  "25": ["De pie, agarra la barra con agarre supino a la anchura de los hombros","Mantén los codos pegados a los costados durante todo el movimiento","Flexiona los codos llevando la barra hacia el pecho","Baja la barra de forma lenta y controlada sin balancear el torso"],
-  "26": ["De pie, una mancuerna en cada mano con agarre supino","Alterna la flexión de codo, girando la muñeca al subir (supinación)","Lleva la mancuerna hasta el hombro apretando el bíceps en la cima","Baja de forma controlada y repite con el otro brazo"],
-  "27": ["De pie, mancuernas con agarre neutro (palmas enfrentadas)","Flexiona los codos manteniendo las muñecas y codos alineados","Sube ambas mancuernas simultáneamente hasta el nivel del hombro","Baja de forma controlada controlando la tensión excéntrica"],
-  "28": ["Túmbate en el banco, agarra la barra o mancuernas con agarre prono","Extiende los brazos hacia arriba sobre el pecho","Flexiona solo los codos bajando el peso hacia la frente o detrás de la cabeza","Extiende los codos volviendo a la posición inicial sin mover los hombros"],
-  "29": ["Agarra el cable o polea con agarre prono, codos pegados al cuerpo","Desde los 90° de flexión de codo, extiende los brazos hacia abajo","Aprieta los tríceps en la posición extendida durante 1 segundo","Sube de forma controlada hasta volver a 90° de flexión"],
-  "30": ["Siéntate en el borde de un banco, manos junto a las caderas","Desliza los glúteos fuera del banco y baja flexionando los codos hasta 90°","Mantén la espalda cerca del banco durante todo el movimiento","Empuja con las manos para extender los codos y volver arriba"],
-  "31": ["Apoya los antebrazos y puntas de los pies en el suelo","Mantén el cuerpo en línea recta de cabeza a talones","Activa el core, glúteos y no dejes que caigan ni suban las caderas","Mantén la posición respirando de forma controlada"],
-  "32": ["Túmbate boca arriba, rodillas flexionadas, pies en el suelo","Coloca las manos detrás de la cabeza sin tirar del cuello","Flexiona el tronco llevando el esternón hacia las rodillas","Baja de forma lenta y controlada sin apoyar completamente la cabeza"],
-  "33": ["Cuélgate de una barra con agarre prono y brazos extendidos","Activa el core y mantén las piernas juntas y rectas","Eleva las piernas hasta la horizontal o más si puedes","Baja de forma lenta sin balancearte ni usar impulso"],
-  "34": ["Arrodíllate con la rueda frente a ti, manos en las asas","Rueda hacia adelante extendiendo el cuerpo de forma controlada","Mantén el core muy activo para evitar que la espalda baja se curve","Contrae el abdomen para volver a la posición inicial"],
-  "35": ["Túmbate de lado apoyando el antebrazo y el pie en el suelo","Eleva las caderas hasta que el cuerpo forme una línea recta","Mantén el core activo y la cadera sin caer ni elevarse en exceso","Mantén la posición respirando de forma controlada"],
-  "36": ["Túmbate boca arriba, brazos extendidos arriba, rodillas a 90°","Baja simultáneamente el brazo derecho y extiende la pierna izquierda","Mantén la espalda baja pegada al suelo en todo momento","Vuelve al centro y repite con el lado contrario de forma alterna"],
-  "37": ["De pie, baja en cuclillas y apoya las manos en el suelo","Salta con los pies hacia atrás quedando en posición de plancha","Realiza una flexión de brazos (opcional)","Salta los pies hacia las manos, incorpora el cuerpo y salta hacia arriba con los brazos extendidos"],
-  "38": ["En posición de plancha alta con los brazos extendidos","Alterna llevando las rodillas hacia el pecho de forma rápida","Mantén las caderas bajas y el core activo durante todo el movimiento","Cuanto más rápido, mayor demanda cardiovascular"],
-  "39": ["De pie frente al cajón, pies a la anchura de los hombros","Flexiona ligeramente las rodillas y carga el impulso en los brazos","Salta explosivamente aterrizando con ambos pies en el cajón","Aterriza suavemente con las rodillas semiflexionadas y baja caminando"],
-  "40": ["Agarra los extremos del cable con cada mano","Gira las muñecas hacia adelante para que el cable quede detrás","Salta sobre las puntas de los pies con saltos pequeños y rítmicos","Mantén los codos cerca del cuerpo y las rodillas ligeramente flexionadas"],
-  "41": ["Haz una zancada y baja la rodilla trasera al suelo","Empuja la cadera hacia adelante hasta sentir el estiramiento en la ingle","Mantén el torso erguido y activa el glúteo de la pierna trasera","Mantén 20-30 segundos y cambia de lado"],
-  "42": ["Siéntate en una silla o arrodíllate, manos detrás de la cabeza","Lleva un codo hacia el techo abriendo la caja torácica de ese lado","Mantén 2-3 segundos sintiendo la apertura en la columna media","Alterna lados de forma lenta y controlada"],
-  "43": ["Siéntate en el suelo con las piernas extendidas y juntas","Inclínate hacia adelante desde las caderas manteniendo la espalda recta","Alcanza los pies o tobillos sin redondear la espalda lumbar","Mantén el estiramiento 20-30 segundos respirando de forma profunda"],
-};
+const EXERCISES_LOCAL=[
+  // PESO CORPORAL
+  {id:"L1",nombre:"Flexiones",musculo:"Pecho",equipo:"Peso corporal",video:"https://www.youtube.com/embed/IODxDxX7oi4",nivel:"Principiante",tipo:"Compuesto",steps:["Coloca las manos ligeramente más anchas que los hombros","Mantén el cuerpo en línea recta de cabeza a talones","Baja el pecho hasta casi tocar el suelo","Empuja hacia arriba hasta extender los brazos"]},
+  {id:"L2",nombre:"Dominadas",musculo:"Espalda",equipo:"Peso corporal",video:"https://www.youtube.com/embed/eGo4IYlbE5g",nivel:"Intermedio",tipo:"Compuesto",steps:["Agarra la barra con agarre prono a la anchura de hombros","Activa el core y los hombros antes de subir","Tira hacia arriba hasta que la barbilla supere la barra","Baja de forma lenta y controlada"]},
+  {id:"L3",nombre:"Fondos en paralelas",musculo:"Pecho / Tríceps",equipo:"Peso corporal",video:"https://www.youtube.com/embed/wjUmnZH528Y",nivel:"Intermedio",tipo:"Compuesto",steps:["Agarra las barras y eleva el cuerpo con brazos extendidos","Inclínate hacia adelante para mayor activación pectoral","Baja flexionando los codos hasta 90°","Empuja hacia arriba hasta extender los brazos"]},
+  {id:"L4",nombre:"Plancha",musculo:"Core",equipo:"Peso corporal",video:"https://www.youtube.com/embed/pSHjTRCQxIw",nivel:"Principiante",tipo:"Isométrico",steps:["Apoya antebrazos y puntas de los pies","Mantén cuerpo en línea recta","Activa core, glúteos y muslos","Respira de forma controlada"]},
+  {id:"L5",nombre:"Sentadilla con peso corporal",musculo:"Cuádriceps",equipo:"Peso corporal",video:"https://www.youtube.com/embed/aclHkVaku9U",nivel:"Principiante",tipo:"Compuesto",steps:["Pies a la anchura de hombros, punteras ligeramente abiertas","Baja flexionando rodillas hasta paralelo","Mantén el pecho arriba y talones en el suelo","Sube empujando con los talones"]},
+  {id:"L6",nombre:"Zancada",musculo:"Cuádriceps / Glúteos",equipo:"Peso corporal",video:"https://www.youtube.com/embed/QOVaHwm-Q6U",nivel:"Principiante",tipo:"Compuesto",steps:["Da un paso largo hacia adelante","Baja verticalmente hasta casi tocar el suelo con la rodilla trasera","Mantén el torso erguido","Empuja con el talón delantero para volver"]},
+  {id:"L7",nombre:"Burpees",musculo:"Full Body",equipo:"Peso corporal",video:"https://www.youtube.com/embed/dZgVxmf6jkA",nivel:"Intermedio",tipo:"Cardio",steps:["De pie, baja en cuclillas y apoya las manos","Salta los pies hacia atrás a posición de plancha","Realiza una flexión (opcional)","Salta los pies hacia las manos y salta hacia arriba"]},
+  {id:"L8",nombre:"Mountain Climbers",musculo:"Core / Cardio",equipo:"Peso corporal",video:"https://www.youtube.com/embed/nmwgirgXLYM",nivel:"Principiante",tipo:"Cardio",steps:["Posición de plancha alta con brazos extendidos","Alterna llevando rodillas al pecho rápidamente","Mantén las caderas bajas y el core activo","Cuanto más rápido, mayor demanda cardiovascular"]},
+  {id:"L9",nombre:"Plancha lateral",musculo:"Core",equipo:"Peso corporal",video:"https://www.youtube.com/embed/K2KACEZpr5Q",nivel:"Principiante",tipo:"Isométrico",steps:["Apoya antebrazo y pie lateral en el suelo","Eleva las caderas hasta formar línea recta","Mantén el core activo sin dejar caer la cadera","Mantén la posición respirando de forma controlada"]},
+  {id:"L10",nombre:"Dead Bug",musculo:"Core",equipo:"Peso corporal",video:"https://www.youtube.com/embed/4XLEnwUr1d8",nivel:"Principiante",tipo:"Estabilidad",steps:["Túmbate boca arriba, brazos al techo, rodillas a 90°","Baja simultáneamente brazo derecho y pierna izquierda","Mantén la espalda baja pegada al suelo","Vuelve al centro y repite al otro lado"]},
+  {id:"L11",nombre:"Sentadilla búlgara",musculo:"Cuádriceps / Glúteos",equipo:"Peso corporal",video:"https://www.youtube.com/embed/2C-uNgKwPLE",nivel:"Intermedio",tipo:"Compuesto",steps:["Apoya el pie trasero en un banco","Baja verticalmente hasta casi tocar el suelo con la rodilla trasera","Mantén el torso recto","Sube empujando con el talón de la pierna delantera"]},
+  {id:"L12",nombre:"Elevación de piernas colgado",musculo:"Core",equipo:"Peso corporal",video:"https://www.youtube.com/embed/hdng3Nm1x_E",nivel:"Intermedio",tipo:"Fuerza",steps:["Cuélgate de una barra con brazos extendidos","Activa el core manteniendo las piernas juntas","Eleva las piernas hasta la horizontal o más","Baja de forma lenta sin usar impulso"]},
 
-// ── Nav ────────────────────────────────────────────────────
-function renderNav() {
-  const tabs = currentUser.rol === "trainer"
-    ? ["Dashboard","Clientes","Ejercicios","Rutinas","Nutrición"]
-    : ["Mi Entrenamiento","Ejercicios","Mi Nutrición","Mi Progreso"];
-  const nav = document.getElementById("nav");
-  nav.classList.remove("hidden");
-  nav.innerHTML = `
-    <span class="nav-logo">i-Motion</span>
-    ${tabs.map(t=>`<button class="nav-btn${t===currentTab?' active':''}" onclick="setTab('${t}')">${t}</button>`).join("")}
-    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px;flex-shrink:0">
-      <span style="font-size:12px;color:#555">${currentUser.nombre}</span>
-      <button class="btn-ghost" onclick="logout()">Salir</button>
-    </div>`;
-}
-function setTab(t){currentTab=t;renderNav();renderTab();}
-function logout(){currentUser=null;currentTab=null;_exercises=null;document.getElementById("nav").classList.add("hidden");renderLogin();}
+  // BARRA
+  {id:"B1",nombre:"Sentadilla con barra",musculo:"Cuádriceps",equipo:"Barra",video:"https://www.youtube.com/embed/bEv6CCg2BC8",nivel:"Intermedio",tipo:"Compuesto",steps:["Barra sobre trapecios, pies a la anchura de hombros","Inspira y baja flexionando rodillas hasta paralelo","Mantén espalda neutra y pecho arriba","Empuja con los talones espirando hasta la posición inicial"]},
+  {id:"B2",nombre:"Press banca plano",musculo:"Pecho",equipo:"Barra",video:"https://www.youtube.com/embed/rT7DgCr-3pg",nivel:"Principiante",tipo:"Compuesto",steps:["Túmbate en el banco, agarra la barra más ancha que los hombros","Baja la barra controlando hasta el pecho","Mantén los codos a 75° respecto al torso","Empuja hacia arriba espirando hasta extender los brazos"]},
+  {id:"B3",nombre:"Press banca inclinado",musculo:"Pecho superior",equipo:"Barra",video:"https://www.youtube.com/embed/DbFgADa2PL8",nivel:"Intermedio",tipo:"Compuesto",steps:["Ajusta el banco a 30-45°","Baja la barra hasta la parte alta del pecho","Mantén los pies firmes y espalda baja apoyada","Empuja hacia arriba y ligeramente hacia atrás"]},
+  {id:"B4",nombre:"Peso muerto convencional",musculo:"Espalda / Glúteos",equipo:"Barra",video:"https://www.youtube.com/embed/op9kVnSso6Q",nivel:"Intermedio",tipo:"Compuesto",steps:["De pie frente a la barra, pies a la anchura de caderas","Agarra la barra justo fuera de las piernas, espalda neutra","Empuja el suelo con los pies extendiendo caderas y rodillas","Baja la barra de forma controlada invirtiendo el movimiento"]},
+  {id:"B5",nombre:"Peso muerto rumano",musculo:"Isquiotibiales",equipo:"Barra",video:"https://www.youtube.com/embed/JCXUYuzwNrM",nivel:"Intermedio",tipo:"Compuesto",steps:["De pie con la barra, agarre prono a la anchura de caderas","Empuja las caderas hacia atrás manteniendo la espalda neutra","Baja la barra por las piernas hasta sentir tensión en isquios","Vuelve empujando caderas hacia adelante"]},
+  {id:"B6",nombre:"Remo con barra",musculo:"Espalda",equipo:"Barra",video:"https://www.youtube.com/embed/G8l_8chR5BE",nivel:"Intermedio",tipo:"Compuesto",steps:["Inclínate 45-60° con espalda neutra","Agarra la barra a la anchura de hombros","Tira hacia el ombligo retrayendo los omóplatos","Baja de forma controlada hasta casi extender los brazos"]},
+  {id:"B7",nombre:"Press militar con barra",musculo:"Hombros",equipo:"Barra",video:"https://www.youtube.com/embed/2yjwXTZQDDI",nivel:"Intermedio",tipo:"Compuesto",steps:["De pie o sentado, agarra la barra a la anchura de hombros","Lleva la barra a la barbilla con los codos a 90°","Empuja hacia arriba hasta casi extender los brazos","Baja de forma controlada hasta la posición inicial"]},
+  {id:"B8",nombre:"Curl con barra",musculo:"Bíceps",equipo:"Barra",video:"https://www.youtube.com/embed/ykJmrZ5v0Oo",nivel:"Principiante",tipo:"Aislamiento",steps:["De pie, agarra la barra con agarre supino","Mantén los codos pegados a los costados","Flexiona los codos llevando la barra al pecho","Baja de forma lenta y controlada"]},
+  {id:"B9",nombre:"Press francés (Skull Crusher)",musculo:"Tríceps",equipo:"Barra",video:"https://www.youtube.com/embed/-arm_kZCGwg",nivel:"Intermedio",tipo:"Aislamiento",steps:["Túmbate en el banco, barra sobre el pecho","Extiende los brazos hacia arriba","Flexiona solo los codos bajando hacia la frente","Extiende los codos volviendo a la posición inicial"]},
 
-// ── Login ──────────────────────────────────────────────────
-function renderLogin(){
-  render(`
-    <div style="display:flex;align-items:center;justify-content:center;min-height:90vh">
-      <div class="card" style="width:340px;text-align:center;padding:32px">
-        <div style="font-size:30px;font-weight:800;color:#00aaff;margin-bottom:4px;letter-spacing:-1px">i-Motion</div>
-        <div style="color:#555;margin-bottom:28px;font-size:12px;font-weight:500">EMS TRAINER PLATFORM</div>
-        <div style="text-align:left;margin-bottom:12px">
-          <label class="lbl">Email</label>
-          <input id="lemail" placeholder="trainer@imotion.com"/>
-        </div>
-        <div style="text-align:left;margin-bottom:20px">
-          <label class="lbl">Contraseña</label>
-          <input id="lpass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-        </div>
-        <div id="lerr" style="color:#ff5555;font-size:12px;margin-bottom:12px"></div>
-        <button class="btn" style="width:100%;padding:11px" id="lbtn" onclick="doLogin()">Entrar</button>
-        <div style="margin-top:20px;font-size:11px;color:#444;line-height:1.8">
-          trainer@imotion.com — imotion2024<br>
-          carlos@demo.com / maria@demo.com — 1234
-        </div>
-      </div>
-    </div>`);
-}
+  // MANCUERNAS
+  {id:"M1",nombre:"Press Arnold",musculo:"Hombros",equipo:"Mancuernas",video:"https://www.youtube.com/embed/6Z15_WdXmVw",nivel:"Principiante",tipo:"Compuesto",steps:["Sentado, mancuernas a la altura del hombro, palmas hacia ti","Al subir, gira las muñecas hasta palmas hacia adelante","Extiende los brazos hacia arriba","Invierte el giro al bajar"]},
+  {id:"M2",nombre:"Elevaciones laterales",musculo:"Hombros",equipo:"Mancuernas",video:"https://www.youtube.com/embed/3VcKaXpzqRo",nivel:"Principiante",tipo:"Aislamiento",steps:["De pie, mancuernas a los lados, codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de hombros","Controla que los codos lideren el movimiento","Baja de forma lenta y controlada"]},
+  {id:"M3",nombre:"Curl con mancuernas alterno",musculo:"Bíceps",equipo:"Mancuernas",video:"https://www.youtube.com/embed/sAq_ocpRh_I",nivel:"Principiante",tipo:"Aislamiento",steps:["De pie, mancuernas con agarre supino","Alterna la flexión de codo girando la muñeca al subir","Lleva la mancuerna hasta el hombro","Baja de forma controlada y repite con el otro brazo"]},
+  {id:"M4",nombre:"Curl martillo",musculo:"Bíceps / Braquial",equipo:"Mancuernas",video:"https://www.youtube.com/embed/zC3nLlEvin4",nivel:"Principiante",tipo:"Aislamiento",steps:["De pie, mancuernas con agarre neutro (palmas enfrentadas)","Flexiona los codos manteniendo el agarre neutro","Sube hasta el nivel del hombro","Baja de forma controlada"]},
+  {id:"M5",nombre:"Pájaro (Rear Delt Fly)",musculo:"Hombros",equipo:"Mancuernas",video:"https://www.youtube.com/embed/EA7u4Q_8HQ0",nivel:"Principiante",tipo:"Aislamiento",steps:["Inclínate con caderas flexionadas y espalda neutra","Mancuernas con codos ligeramente flexionados","Eleva los brazos lateralmente hasta hombros","Aprieta deltoides posteriores en la cima"]},
+  {id:"M6",nombre:"Aperturas con mancuernas",musculo:"Pecho",equipo:"Mancuernas",video:"https://www.youtube.com/embed/eozdVDA78K0",nivel:"Principiante",tipo:"Aislamiento",steps:["Túmbate en el banco, mancuernas con brazos extendidos","Abre los brazos describiendo un arco amplio","Mantén un ligero codo doblado","Cierra los brazos apretando el pecho"]},
+  {id:"M7",nombre:"Hip Thrust con mancuerna",musculo:"Glúteos",equipo:"Mancuernas",video:"https://www.youtube.com/embed/xDmFkJxPzeM",nivel:"Principiante",tipo:"Compuesto",steps:["Apoya la espalda alta en un banco","Coloca la mancuerna sobre las caderas","Empuja con los talones elevando las caderas","Aprieta glúteos en la parte alta 1-2 segundos"]},
+  {id:"M8",nombre:"Remo con mancuerna",musculo:"Espalda",equipo:"Mancuernas",video:"https://www.youtube.com/embed/roCP2ef2T58",nivel:"Principiante",tipo:"Compuesto",steps:["Apoya mano y rodilla del mismo lado en un banco","Agarra la mancuerna con el brazo extendido","Tira hacia la cadera retrayendo el omóplato","Baja de forma controlada"]},
 
+  // MÁQUINA
+  {id:"MA1",nombre:"Prensa de piernas",musculo:"Cuádriceps",equipo:"Máquina",video:"https://www.youtube.com/embed/IZxyjW7MPJQ",nivel:"Principiante",tipo:"Compuesto",steps:["Siéntate con la espalda bien apoyada","Pies en la plataforma a la anchura de hombros","Suelta los seguros y flexiona hasta 90°","Empuja con los talones hasta casi extender"]},
+  {id:"MA2",nombre:"Curl femoral en máquina",musculo:"Isquiotibiales",equipo:"Máquina",video:"https://www.youtube.com/embed/1Tq3QdYUuHs",nivel:"Principiante",tipo:"Aislamiento",steps:["Túmbate boca abajo en la máquina","Coloca el rodillo justo por encima de los talones","Flexiona las rodillas llevando talones a glúteos","Controla la bajada de forma lenta"]},
+  {id:"MA3",nombre:"Elevación de talones en máquina",musculo:"Gemelos",equipo:"Máquina",video:"https://www.youtube.com/embed/gwLzBJYoWlI",nivel:"Principiante",tipo:"Aislamiento",steps:["Coloca los hombros bajo los apoyos de la máquina","Sube de puntillas lo más alto posible","Mantén 1 segundo en la cima","Baja lentamente hasta estirar el gemelo"]},
+  {id:"MA4",nombre:"Jalón al pecho en polea",musculo:"Espalda",equipo:"Máquina",video:"https://www.youtube.com/embed/CAwf7n6Luuc",nivel:"Principiante",tipo:"Compuesto",steps:["Siéntate con los muslos bajo los rodillos","Agarra la barra con agarre prono ancho","Tira hacia el pecho llevando los codos hacia abajo","Controla la subida hasta la posición inicial"]},
+  {id:"MA5",nombre:"Hip Thrust en máquina",musculo:"Glúteos",equipo:"Máquina",video:"https://www.youtube.com/embed/xDmFkJxPzeM",nivel:"Principiante",tipo:"Compuesto",steps:["Ajusta la máquina según tu altura","Coloca las caderas en posición correcta","Empuja con los talones elevando las caderas","Aprieta glúteos en la parte alta"]},
+
+  // CABLE / POLEA
+  {id:"C1",nombre:"Remo en polea baja",musculo:"Espalda",equipo:"Cable/Polea",video:"https://www.youtube.com/embed/GZbfZ033f74",nivel:"Principiante",tipo:"Compuesto",steps:["Siéntate con pies en los apoyos","Agarra el cable con brazos extendidos y espalda erguida","Tira hacia el abdomen llevando codos hacia atrás","Extiende los brazos de forma controlada"]},
+  {id:"C2",nombre:"Face Pull en polea",musculo:"Hombros",equipo:"Cable/Polea",video:"https://www.youtube.com/embed/rep-qVOkqgk",nivel:"Principiante",tipo:"Aislamiento",steps:["Ajusta la polea a la altura de los ojos","Agarra la cuerda con palmas hacia abajo","Tira hacia tu cara separando los extremos","Mantén los codos elevados"]},
+  {id:"C3",nombre:"Extensión de tríceps en polea",musculo:"Tríceps",equipo:"Cable/Polea",video:"https://www.youtube.com/embed/2-LAMcpzODU",nivel:"Principiante",tipo:"Aislamiento",steps:["Agarra el cable con agarre prono, codos pegados al cuerpo","Desde 90° de flexión de codo extiende hacia abajo","Aprieta tríceps en la posición extendida","Sube de forma controlada hasta volver a 90°"]},
+  {id:"C4",nombre:"Curl en polea baja",musculo:"Bíceps",equipo:"Cable/Polea",video:"https://www.youtube.com/embed/ykJmrZ5v0Oo",nivel:"Principiante",tipo:"Aislamiento",steps:["Agarra la barra de la polea baja","Mantén los codos pegados al cuerpo","Flexiona los codos llevando la barra al pecho","Baja de forma lenta y controlada"]},
+  {id:"C5",nombre:"Cruce de poleas (Crossover)",musculo:"Pecho",equipo:"Cable/Polea",video:"https://www.youtube.com/embed/eozdVDA78K0",nivel:"Intermedio",tipo:"Aislamiento",steps:["De pie entre las dos poleas ajustadas arriba","Agarra un cable con cada mano","Lleva los brazos hacia adelante y abajo cruzándolos","Controla la vuelta a la posición inicial"]},
+
+  // BANDA ELÁSTICA
+  {id:"BE1",nombre:"Sentadilla con banda",musculo:"Cuádriceps / Glúteos",equipo:"Banda elástica",video:"https://www.youtube.com/embed/aclHkVaku9U",nivel:"Principiante",tipo:"Compuesto",steps:["Coloca la banda bajo los pies y sobre los hombros","Pies a la anchura de hombros","Baja flexionando rodillas hasta paralelo","Sube empujando con los talones contra la resistencia"]},
+  {id:"BE2",nombre:"Curl de bíceps con banda",musculo:"Bíceps",equipo:"Banda elástica",video:"https://www.youtube.com/embed/ykJmrZ5v0Oo",nivel:"Principiante",tipo:"Aislamiento",steps:["Pisa la banda con ambos pies","Agarra los extremos con agarre supino","Flexiona los codos contra la resistencia","Baja de forma lenta y controlada"]},
+  {id:"BE3",nombre:"Press de hombros con banda",musculo:"Hombros",equipo:"Banda elástica",video:"https://www.youtube.com/embed/2yjwXTZQDDI",nivel:"Principiante",tipo:"Compuesto",steps:["Pisa la banda y agarra los extremos a la altura de hombros","Empuja hacia arriba extendiendo los brazos","Controla la bajada resistiendo la tensión","Mantén el core activo durante el movimiento"]},
+  {id:"BE4",nombre:"Patada de glúteo con banda",musculo:"Glúteos",equipo:"Banda elástica",video:"https://www.youtube.com/embed/xDmFkJxPzeM",nivel:"Principiante",tipo:"Aislamiento",steps:["A cuatro patas, banda en los pies","Extiende una pierna hacia atrás y arriba","Aprieta el glúteo en la posición extendida","Baja de forma controlada y repite"]},
+  {id:"BE5",nombre:"Abducción de cadera con banda",musculo:"Glúteos",equipo:"Banda elástica",video:"https://www.youtube.com/embed/xDmFkJxPzeM",nivel:"Principiante",tipo:"Aislamiento",steps:["Coloca la banda por encima de las rodillas","De pie o tumbado de lado","Separa las piernas contra la resistencia","Controla la vuelta a la posición inicial"]},
+  {id:"BE6",nombre:"Remo con banda",musculo:"Espalda",equipo:"Banda elástica",video:"https://www.youtube.com/embed/GZbfZ033f74",nivel:"Principiante",tipo:"Compuesto",steps:["Ancla la banda a una altura media","Agarra los extremos con brazos extendidos","Tira hacia el abdomen retrayendo los omóplatos","Extiende los brazos de forma controlada"]},
+
+  // TRX
+  {id:"T1",nombre:"Remo TRX",musculo:"Espalda",equipo:"TRX",video:"https://www.youtube.com/embed/roCP2ef2T58",nivel:"Principiante",tipo:"Compuesto",steps:["Agarra las asas con brazos extendidos, cuerpo inclinado","Mantén el cuerpo en línea recta","Tira hacia el pecho retrayendo los omóplatos","Baja de forma controlada"]},
+  {id:"T2",nombre:"Flexiones TRX",musculo:"Pecho",equipo:"TRX",video:"https://www.youtube.com/embed/IODxDxX7oi4",nivel:"Intermedio",tipo:"Compuesto",steps:["Agarra las asas con brazos extendidos, cuerpo inclinado hacia adelante","Mantén el cuerpo en línea recta","Baja flexionando los codos hasta casi tocar el pecho","Empuja hacia arriba extendiendo los brazos"]},
+  {id:"T3",nombre:"Sentadilla TRX",musculo:"Cuádriceps / Glúteos",equipo:"TRX",video:"https://www.youtube.com/embed/aclHkVaku9U",nivel:"Principiante",tipo:"Compuesto",steps:["Agarra las asas frente a ti para equilibrio","Pies a la anchura de hombros","Baja como en una sentadilla normal usando el TRX como apoyo","Sube empujando con los talones"]},
+  {id:"T4",nombre:"Zancada TRX",musculo:"Cuádriceps / Glúteos",equipo:"TRX",video:"https://www.youtube.com/embed/QOVaHwm-Q6U",nivel:"Intermedio",tipo:"Compuesto",steps:["Mete un pie en el asa trasera","Da un paso adelante con la pierna libre","Baja flexionando la rodilla delantera hasta 90°","Sube empujando con el talón delantero"]},
+
+  // CARDIO
+  {id:"CA1",nombre:"Saltos al cajón (Box Jump)",musculo:"Piernas / Explosividad",equipo:"Cardio",video:"https://www.youtube.com/embed/52r_Ul5k03g",nivel:"Intermedio",tipo:"Pliométrico",steps:["De pie frente al cajón, pies a la anchura de hombros","Flexiona ligeramente las rodillas cargando el impulso","Salta explosivamente aterrizando con ambos pies en el cajón","Aterriza con rodillas semiflexionadas y baja caminando"]},
+  {id:"CA2",nombre:"Jump Rope (Comba)",musculo:"Cardio / Gemelos",equipo:"Cardio",video:"https://www.youtube.com/embed/FJmRQ5iTXKE",nivel:"Principiante",tipo:"Cardio",steps:["Agarra los extremos del cable con cada mano","Gira las muñecas hacia adelante","Salta sobre las puntas con saltos pequeños y rítmicos","Mantén los codos cerca del cuerpo"]},
+  {id:"CA3",nombre:"Sprint en cinta",musculo:"Full Body",equipo:"Cardio",video:"https://www.youtube.com/embed/dZgVxmf6jkA",nivel:"Principiante",tipo:"Cardio",steps:["Ajusta la cinta a una velocidad moderada para calentar","Aumenta la velocidad progresivamente","Mantén una postura erguida con ligera inclinación hacia adelante","Alterna fases de sprint con recuperación activa"]},
+
+  // MOVILIDAD
+  {id:"MO1",nombre:"Estiramiento de cadera (Hip Flexor)",musculo:"Cadera",equipo:"Movilidad",video:"https://www.youtube.com/embed/OoFcKPZ6eCc",nivel:"Principiante",tipo:"Estiramiento",steps:["Haz una zancada y baja la rodilla trasera al suelo","Empuja la cadera hacia adelante","Mantén el torso erguido","Aguanta 20-30 segundos y cambia de lado"]},
+  {id:"MO2",nombre:"Apertura torácica",musculo:"Columna torácica",equipo:"Movilidad",video:"https://www.youtube.com/embed/9cEXop5UKWI",nivel:"Principiante",tipo:"Movilidad",steps:["Arrodíllate o siéntate con manos detrás de la cabeza","Lleva un codo hacia el techo abriendo la caja torácica","Mantén 2-3 segundos","Alterna lados de forma lenta"]},
+  {id:"MO3",nombre:"Estiramiento isquiotibiales",musculo:"Isquiotibiales",equipo:"Movilidad",video:"https://www.youtube.com/embed/gOOnxp-VDZE",nivel:"Principiante",tipo:"Estiramiento",steps:["Siéntate con piernas extendidas y juntas","Inclínate hacia adelante desde las caderas","Alcanza los pies sin redondear la espalda","Mantén 20-30 segundos respirando profundo"]},
+  {id:"MO4",nombre:"Rotación de cadera (90/90)",musculo:"Cadera",equipo:"Movilidad",video:"https://www.youtube.com/embed/OoFcKPZ6eCc",nivel:"Principiante",tipo:"Movilidad",steps:["Siéntate en el suelo con ambas piernas a 90°","Rota el torso hacia la pierna delantera","Inclínate hacia adelante manteniendo la espalda recta","Aguanta 20-30 segundos y cambia"]},
+  {id:"MO5",nombre:"Cat-Cow (Gato-Vaca)",musculo:"Columna",equipo:"Movilidad",video:"https://www.youtube.com/embed/9cEXop5UKWI",nivel:"Principiante",tipo:"Movilidad",steps:["A cuatro patas, manos bajo hombros, rodillas bajo caderas","Inhala arqueando la espalda hacia abajo (vaca)","Exhala redondeando la espalda hacia arriba (gato)","Alterna de forma lenta y rítmica"]},
+];
+
+const STEPS_DB={};
+EXERCISES_LOCAL.forEach(e=>{STEPS_DB[e.id]=e.steps;});
+
+// ── LOGIN ─────────────────────────────────────────────────
 async function doLogin(){
   const email=document.getElementById("lemail").value.trim();
   const pass=document.getElementById("lpass").value;
@@ -224,230 +300,326 @@ async function doLogin(){
   btn.disabled=true;btn.textContent="Verificando…";errEl.textContent="";
   try{
     const user=await apiGet({action:"login",email,password:pass});
-    currentUser=user;
-    currentTab=user.rol==="trainer"?"Dashboard":"Mi Entrenamiento";
-    renderNav();renderTab();
+    U=user;
+    TAB=user.rol==="trainer"?"clientes":"entrenamiento";
+    document.getElementById("login-wrap").classList.add("hidden");
+    document.getElementById("topbar").classList.remove("hidden");
+    document.getElementById("layout").classList.remove("hidden");
+    renderTopbar();renderSidebar();renderTab();
   }catch(e){
     errEl.textContent=e.message;
-    btn.disabled=false;btn.textContent="Entrar";
+    btn.disabled=false;btn.textContent="Iniciar sesión";
   }
 }
+
+function logout(){
+  U=null;TAB=null;_ex=null;
+  document.getElementById("login-wrap").classList.remove("hidden");
+  document.getElementById("topbar").classList.add("hidden");
+  document.getElementById("layout").classList.add("hidden");
+}
+
+// ── TOPBAR ────────────────────────────────────────────────
+function renderTopbar(){
+  document.getElementById("topbar-user").innerHTML=`
+    <span style="font-size:12px;color:var(--muted)">${U.nombre}</span>
+    <div class="avatar">${U.nombre[0]}</div>
+    <button class="btn-ghost" onclick="logout()">Salir</button>`;
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────
+function renderSidebar(){
+  const items=U.rol==="trainer"?[
+    {id:"clientes",icon:"👥",label:"Clientes",sub:"Gestiona tus clientes"},
+    {id:"biblioteca",icon:"📚",label:"Librería",sub:"Ejercicios y rutinas"},
+    {id:"rutinas",icon:"⚡",label:"Rutinas",sub:"Crea y asigna rutinas"},
+    {id:"nutricion",icon:"🥗",label:"Nutrición",sub:"Planes nutricionales"},
+    {id:"agenda",icon:"📅",label:"Agenda",sub:"Próximas sesiones"},
+  ]:[
+    {id:"entrenamiento",icon:"💪",label:"Mi Entrenamiento",sub:"Tu rutina de hoy"},
+    {id:"biblioteca",icon:"📚",label:"Ejercicios",sub:"Biblioteca completa"},
+    {id:"nutricion_c",icon:"🥗",label:"Mi Nutrición",sub:"Tu plan alimenticio"},
+    {id:"progreso",icon:"📈",label:"Mi Progreso",sub:"Evolución y registros"},
+  ];
+  document.getElementById("sidebar").innerHTML=`
+    <div style="padding:8px 4px 16px;border-bottom:1px solid var(--border);margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:0 12px">Menú</div>
+    </div>
+    ${items.map(it=>`
+      <button class="sidebar-item${TAB===it.id?' active':''}" onclick="setTab('${it.id}')">
+        <span class="sidebar-icon">${it.icon}</span>
+        <div>
+          <div>${it.label}</div>
+          <div class="sidebar-sub">${it.sub}</div>
+        </div>
+      </button>`).join("")}`;
+}
+
+function setTab(t){TAB=t;renderSidebar();renderTab();}
 
 function renderTab(){
-  if(currentUser.rol==="trainer"){
-    if(currentTab==="Dashboard")renderDashboard();
-    else if(currentTab==="Clientes")renderClients();
-    else if(currentTab==="Ejercicios")renderExercises();
-    else if(currentTab==="Rutinas")renderRoutines();
-    else if(currentTab==="Nutrición")renderNutrition();
+  if(U.rol==="trainer"){
+    if(TAB==="clientes")renderClients();
+    else if(TAB==="biblioteca")renderLibrary();
+    else if(TAB==="rutinas")renderRoutines();
+    else if(TAB==="nutricion")renderNutrition();
+    else if(TAB==="agenda")renderAgenda();
   }else{
-    if(currentTab==="Mi Entrenamiento")renderClientTraining();
-    else if(currentTab==="Ejercicios")renderExercises();
-    else if(currentTab==="Mi Nutrición")renderClientNutrition();
-    else if(currentTab==="Mi Progreso")renderClientProgress();
+    if(TAB==="entrenamiento")renderClientTraining();
+    else if(TAB==="biblioteca")renderLibrary();
+    else if(TAB==="nutricion_c")renderClientNutrition();
+    else if(TAB==="progreso")renderClientProgress();
   }
 }
 
-// ── Dashboard ──────────────────────────────────────────────
-async function renderDashboard(){
-  render(spinner("Cargando dashboard…"));
-  const [clients,exercises,routines,nutrition]=await Promise.all([
-    apiGet({action:"clients"}),apiGet({action:"exercises"}),
-    apiGet({action:"routines"}),apiGet({action:"nutrition"})
-  ]);
-  _clients=clients;_routines=routines;_nutrition=nutrition;
-  render(`
-    <div class="stats-grid">
-      ${[{l:"Clientes",v:clients.length,c:"#00aaff"},{l:"Ejercicios",v:exercises.length,c:"#00cc88"},{l:"Rutinas",v:routines.length,c:"#ffaa00"},{l:"Planes nutri",v:nutrition.length,c:"#cc66ff"}]
-        .map(s=>`<div class="stat-card"><div class="stat-val" style="color:${s.c}">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join("")}
-    </div>
-    <div class="card">
-      <div style="font-weight:700;margin-bottom:14px;font-size:15px">Clientes activos</div>
-      ${clients.map(c=>{
-        const r=routines.find(r=>String(r.clienteId)===String(c.id));
-        const n=nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1e1e1e;flex-wrap:wrap;gap:8px">
-          <div>
-            <div style="font-weight:600;font-size:15px">${c.nombre}</div>
-            <div style="font-size:12px;color:#555">${c.email}</div>
-          </div>
-          <div style="display:flex;gap:6px">
-            ${r?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">Rutina ✓</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin rutina</span>`}
-            ${n?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">Nutrición ✓</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin nutrición</span>`}
-          </div>
-        </div>`;
-      }).join("")}
-    </div>`);
-}
+// ── BIBLIOTECA ────────────────────────────────────────────
+let _libEquip="Todo",_libMuscle="Todo",_libSearch="";
 
-// ── Ejercicios ─────────────────────────────────────────────
-const CATS=["Todos","Piernas","Pecho","Espalda","Hombros","Bíceps","Tríceps","Core","Cardio","Movilidad"];
-let _exCat="Todos",_exSearch="";
-
-async function renderExercises(){
-  render(spinner("Cargando ejercicios…"));
-  if(!_exercises)_exercises=await apiGet({action:"exercises"});
-  renderExGrid();
-}
-
-function renderExGrid(){
-  const filtered=_exercises.filter(e=>
-    (_exCat==="Todos"||e.categoria===_exCat)&&
-    e.nombre.toLowerCase().includes(_exSearch.toLowerCase())
+function renderLibrary(){
+  const filtered=EXERCISES_LOCAL.filter(e=>
+    (_libEquip==="Todo"||e.equipo===_libEquip)&&
+    (_libMuscle==="Todo"||e.musculo.includes(_libMuscle))&&
+    e.nombre.toLowerCase().includes(_libSearch.toLowerCase())
   );
-  document.getElementById("app").innerHTML=`
-    <div style="margin-bottom:16px">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input placeholder="Buscar ejercicio…" value="${_exSearch}" oninput="_exSearch=this.value;renderExGrid()"/>
+  render(`
+    <div class="flex-between" style="margin-bottom:20px">
+      <div>
+        <div class="section-title" style="margin-bottom:4px">Librería de Ejercicios</div>
+        <div style="color:var(--muted);font-size:13px">${EXERCISES_LOCAL.length} ejercicios disponibles</div>
       </div>
-      <div class="filter-bar">
-        ${CATS.map(c=>`<button class="filter-btn${c===_exCat?' active':''}" onclick="_exCat='${c}';renderExGrid()">${c}${c==="Todos"?"":" ("+_exercises.filter(e=>e.categoria===c).length+")"}</button>`).join("")}
-      </div>
-      <div style="color:#444;font-size:12px">${filtered.length} ejercicios</div>
     </div>
+
+    <div style="margin-bottom:18px">
+      <div class="search-box" style="max-width:340px;margin-bottom:14px">
+        <span class="search-icon">🔍</span>
+        <input placeholder="Buscar por nombre…" value="${_libSearch}" oninput="_libSearch=this.value;renderLibrary()"/>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">Equipamiento</div>
+      <div class="chips" style="margin-bottom:12px">
+        ${EQUIPMENT.map(e=>`<button class="chip${_libEquip===e?' active':''}" onclick="_libEquip='${e}';renderLibrary()">${e}</button>`).join("")}
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">Músculo</div>
+      <div class="chips">
+        ${MUSCLES.map(m=>`<button class="chip${_libMuscle===m?' active':''}" onclick="_libMuscle='${m}';renderLibrary()">${m}</button>`).join("")}
+      </div>
+    </div>
+
+    <div style="color:var(--muted);font-size:12px;margin-bottom:14px">${filtered.length} ejercicios</div>
+
     <div class="ex-grid">
       ${filtered.map(e=>`
         <div class="ex-card" onclick="openExModal('${e.id}')">
           <div class="ex-thumb">
-            <img src="${ytThumb(e.video)}" alt="${e.nombre}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22><rect fill=%22%23111%22 width=%22320%22 height=%22180%22/></svg>'"/>
-            <div class="ex-thumb-overlay"></div>
-            <div class="ex-play">▶</div>
+            <img src="${ytThumb(e.video)}" alt="${e.nombre}" loading="lazy"
+              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 200%22><rect fill=%22%23f0f2f5%22 width=%22320%22 height=%22200%22/><text x=%22160%22 y=%22105%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2214%22>Sin imagen</text></svg>'"/>
+            <div class="ex-thumb-dark"></div>
+            <div class="ex-play-btn">▶</div>
+            <div class="ex-tags-overlay">
+              <span class="tag" style="background:rgba(0,0,0,.55);color:#fff;border:none;font-size:10px">${e.equipo}</span>
+              <span class="tag" style="background:rgba(79,110,247,.8);color:#fff;border:none;font-size:10px">${e.nivel}</span>
+            </div>
           </div>
           <div class="ex-body">
             <div class="ex-name">${e.nombre}</div>
-            <div class="ex-tags">
-              <span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${e.categoria}</span>
-              <span class="tag" style="background:#33333380;color:#888;border:1px solid #333">${e.musculo}</span>
+            <div class="ex-meta">
+              <span class="tag tag-blue">${e.tipo}</span>
+              <span class="tag tag-gray">${e.musculo}</span>
             </div>
-            <div class="ex-desc">${String(e.descripcion).slice(0,70)}…</div>
           </div>
         </div>`).join("")}
-    </div>`;
+    </div>`);
 }
 
 function openExModal(id){
-  const e=_exercises.find(e=>String(e.id)===String(id));
+  const e=EXERCISES_LOCAL.find(e=>e.id===id);
   if(!e)return;
-  const steps=STEPS[String(e.id)]||[];
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="exmodal" onclick="if(event.target===this)this.remove()">
-      <div class="modal-box">
-        <div class="modal-header">
+    <div class="modal-bg" id="exmodal" onclick="if(event.target===this)closeModal('exmodal')">
+      <div class="modal">
+        <div class="modal-hd">
           <div>
-            <div style="font-weight:800;font-size:20px;margin-bottom:8px">${e.nombre}</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap">
-              <span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${e.categoria}</span>
-              <span class="tag" style="background:#33333380;color:#888;border:1px solid #333">${e.musculo}</span>
+            <div class="modal-title">${e.nombre}</div>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+              <span class="tag tag-blue">${e.equipo}</span>
+              <span class="tag tag-gray">${e.musculo}</span>
+              <span class="tag tag-green">${e.nivel}</span>
+              <span class="tag tag-purple">${e.tipo}</span>
             </div>
           </div>
-          <button class="btn-ghost" onclick="document.getElementById('exmodal').remove()" style="flex-shrink:0">✕</button>
+          <button class="modal-close" onclick="closeModal('exmodal')">✕</button>
         </div>
         <div class="modal-video">
-          <iframe src="${e.video}?autoplay=1&rel=0&modestbranding=1" allowfullscreen allow="autoplay"></iframe>
+          <iframe src="${e.video}?rel=0&modestbranding=1" allowfullscreen></iframe>
         </div>
-        <div class="modal-content">
-          <div style="font-weight:700;margin-bottom:10px;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:.8px">Cómo realizarlo</div>
+        <div class="modal-body">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Cómo realizarlo</div>
           <ol class="steps">
-            ${steps.map((s,i)=>`<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("")}
+            ${e.steps.map((s,i)=>`<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("")}
           </ol>
-          <div style="margin-top:14px;font-size:13px;color:#555;line-height:1.6;border-top:1px solid #222;padding-top:12px">${e.descripcion}</div>
         </div>
       </div>
     </div>`);
 }
 
-// ── Clientes ───────────────────────────────────────────────
+// ── CLIENTES ─────────────────────────────────────────────
 async function renderClients(){
   render(spinner("Cargando clientes…"));
   [_clients,_routines,_nutrition]=await Promise.all([
     apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})
   ]);
   render(`
-    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Clientes (${_clients.length})</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">
+    <div class="flex-between" style="margin-bottom:20px">
+      <div class="section-title" style="margin-bottom:0">Clientes (${_clients.length})</div>
+      <button class="btn" onclick="showAddClient()">+ Nuevo cliente</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
       ${_clients.map(c=>{
         const r=_routines.find(r=>String(r.clienteId)===String(c.id));
         const n=_nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div class="card" style="cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#2a2a2a'" onclick="openClientModal('${c.id}')">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-            <div style="width:42px;height:42px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff;font-size:16px">${c.nombre[0]}</div>
+        return `<div class="client-card" onclick="openClientPanel('${c.id}')">
+          <div class="flex" style="margin-bottom:14px">
+            <div class="client-avatar">${c.nombre[0]}</div>
             <div>
               <div style="font-weight:700;font-size:15px">${c.nombre}</div>
-              <div style="font-size:12px;color:#555">${c.email}</div>
+              <div style="font-size:12px;color:var(--muted)">${c.email}</div>
             </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:7px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:#555">Rutina</span>
-              ${r?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">${r.nombre}</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin asignar</span>`}
+            <div class="flex-between">
+              <span style="font-size:12px;color:var(--muted)">Rutina</span>
+              ${r?`<span class="tag tag-green">${r.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:#555">Nutrición</span>
-              ${n?`<span class="tag" style="background:#00cc8818;color:#00cc88;border:1px solid #00cc8840">${n.nombre}</span>`:`<span class="tag" style="background:#ffaa0018;color:#ffaa00;border:1px solid #ffaa0040">Sin asignar</span>`}
+            <div class="flex-between">
+              <span style="font-size:12px;color:var(--muted)">Nutrición</span>
+              ${n?`<span class="tag tag-green">${n.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}
             </div>
+          </div>
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+            <button class="btn" style="width:100%;justify-content:center;font-size:12px;padding:8px" onclick="event.stopPropagation();openClientPanel('${c.id}')">Ver perfil completo →</button>
           </div>
         </div>`;
       }).join("")}
     </div>`);
 }
 
-async function openClientModal(clientId){
+async function openClientPanel(clientId){
   const c=_clients.find(c=>String(c.id)===String(clientId));
   const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
+  const nutrition=_nutrition.find(n=>String(n.clienteId)===String(clientId));
+  const progress=await apiGet({action:"progress",clientId});
+
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="cmodal" onclick="if(event.target===this)this.remove()">
-      <div class="modal-box" style="max-width:460px">
-        <div class="modal-header" style="padding:20px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <div style="width:44px;height:44px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff;font-size:18px">${c.nombre[0]}</div>
-            <div style="font-weight:800;font-size:18px">${c.nombre}</div>
+    <div class="modal-bg" id="cpanel" onclick="if(event.target===this)closeModal('cpanel')">
+      <div class="modal" style="max-width:700px">
+        <div class="modal-hd" style="padding:22px 24px 16px">
+          <div class="flex" style="gap:14px">
+            <div class="client-avatar" style="width:50px;height:50px;font-size:20px">${c.nombre[0]}</div>
+            <div>
+              <div class="modal-title">${c.nombre}</div>
+              <div style="font-size:12px;color:var(--muted)">${c.email}</div>
+            </div>
           </div>
-          <button class="btn-ghost" onclick="document.getElementById('cmodal').remove()">✕</button>
+          <button class="modal-close" onclick="closeModal('cpanel')">✕</button>
         </div>
-        <div style="padding:0 20px 20px">
-          <div style="font-weight:700;margin-bottom:10px;font-size:13px;color:#666;text-transform:uppercase;letter-spacing:.8px">Asignar Rutina</div>
-          ${_routines.length===0?'<div style="color:#555;font-size:13px">No hay rutinas creadas aún.</div>':''}
-          ${_routines.map(r=>`
-            <div onclick="assignRoutine('${r.id}','${clientId}')" style="background:#111;border:1px solid ${assigned?.id==r.id?'#00aaff':'#222'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;transition:border-color .15s">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-weight:600">${r.nombre}</span>
-                ${assigned?.id==r.id?`<span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff40">✓ Asignada</span>`:''}
+        <div class="modal-body" style="padding-top:0">
+          <!-- RUTINA ASIGNADA -->
+          <div style="margin-bottom:20px">
+            <div class="flex-between" style="margin-bottom:10px">
+              <div style="font-size:13px;font-weight:700">Rutina asignada</div>
+              <button class="btn-sm" onclick="closeModal('cpanel');setTab('rutinas')">Gestionar rutinas</button>
+            </div>
+            ${assigned?`
+              <div style="background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:14px">
+                <div style="font-weight:700;margin-bottom:10px">${assigned.nombre}</div>
+                ${(assigned.days||[]).map(d=>`
+                  <div style="margin-bottom:8px">
+                    <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px">📅 ${d.dia}</div>
+                    ${(d.exercises||[]).map(ex=>{
+                      const exData=EXERCISES_LOCAL.find(e=>String(e.id)===String(ex.exerciseId))||{nombre:ex.exerciseId};
+                      return `<div style="font-size:12px;color:#444;padding:3px 0;padding-left:14px">• ${exData.nombre} — ${ex.series}×${ex.reps}</div>`;
+                    }).join("")}
+                  </div>`).join("")}
               </div>
-              <div style="font-size:12px;color:#555;margin-top:2px">${r.days?.length||0} días</div>
-            </div>`).join("")}
+            `:`<div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:10px;padding:12px;font-size:13px;color:#a06000">
+              Sin rutina asignada. Ve a <b>Rutinas</b> para crear y asignar una.
+            </div>`}
+          </div>
+
+          <!-- ASIGNAR RUTINA -->
+          ${_routines.length>0?`
+          <div style="margin-bottom:20px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px">Cambiar rutina asignada</div>
+            ${_routines.map(r=>`
+              <div onclick="assignRoutineToClient('${r.id}','${clientId}')" style="background:#f9fafb;border:1.5px solid ${assigned?.id==r.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s">
+                <div>
+                  <div style="font-weight:600;font-size:13px">${r.nombre}</div>
+                  <div style="font-size:11px;color:var(--muted)">${r.days?.length||0} días</div>
+                </div>
+                ${assigned?.id==r.id?`<span class="tag tag-blue">✓ Asignada</span>`:'<span style="font-size:12px;color:var(--muted)">Asignar →</span>'}
+              </div>`).join("")}
+          </div>`:''}
+
+          <!-- NUTRICIÓN -->
+          <div style="margin-bottom:20px">
+            <div class="flex-between" style="margin-bottom:10px">
+              <div style="font-size:13px;font-weight:700">Plan nutricional</div>
+              <button class="btn-sm" onclick="closeModal('cpanel');setTab('nutricion')">Gestionar</button>
+            </div>
+            ${nutrition?`<div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-weight:600">${nutrition.nombre} — ${nutrition.kcal} kcal</div>`
+            :`<div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:10px;padding:12px;font-size:13px;color:#a06000">Sin plan asignado.</div>`}
+          </div>
+
+          <!-- PROGRESO -->
+          <div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px">Últimos registros de peso</div>
+            ${progress.length===0?`<div style="color:var(--muted);font-size:13px">Sin registros aún.</div>`:""}
+            ${[...progress].reverse().slice(0,5).map(r=>`
+              <div class="prog-entry">
+                <div style="font-size:13px;color:var(--muted)">${r.fecha}</div>
+                <div style="font-size:18px;font-weight:800;color:var(--accent)">${r.peso} <span style="font-size:12px;color:var(--muted)">kg</span></div>
+              </div>`).join("")}
+          </div>
         </div>
       </div>
     </div>`);
 }
 
-async function assignRoutine(routineId,clientId){
+async function assignRoutineToClient(routineId,clientId){
   await apiGet({action:"assignRoutine",routineId,clienteId:clientId});
-  document.getElementById("cmodal")?.remove();
-  renderClients();
+  closeModal("cpanel");
+  renderClients().then(()=>openClientPanel(clientId));
 }
 
-// ── Rutinas ────────────────────────────────────────────────
+function showAddClient(){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="addclient" onclick="if(event.target===this)closeModal('addclient')">
+      <div class="modal modal-sm" style="padding:24px">
+        <div class="modal-title" style="margin-bottom:20px">Nuevo cliente</div>
+        <div style="margin-bottom:12px"><label class="lbl">Nombre</label><input id="cn" placeholder="Nombre completo"/></div>
+        <div style="margin-bottom:12px"><label class="lbl">Email</label><input id="ce" type="email" placeholder="email@ejemplo.com"/></div>
+        <div style="margin-bottom:20px"><label class="lbl">Contraseña inicial</label><input id="cp" placeholder="Contraseña"/></div>
+        <div style="color:var(--muted);font-size:12px;margin-bottom:12px">⚠️ Esta funcionalidad requiere Supabase para gestión completa de usuarios.</div>
+        <button class="btn" onclick="closeModal('addclient')">Cerrar</button>
+      </div>
+    </div>`);
+}
+
+// ── RUTINAS ───────────────────────────────────────────────
 async function renderRoutines(){
   render(spinner("Cargando rutinas…"));
-  if(!_exercises)_exercises=await apiGet({action:"exercises"});
   _routines=await apiGet({action:"routines"});
-  showRoutineList();
-}
-
-function showRoutineList(){
   render(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <div style="font-weight:700;font-size:16px">Rutinas (${_routines.length})</div>
-      <button class="btn" onclick="showCreateRoutine()">+ Nueva Rutina</button>
+    <div class="flex-between" style="margin-bottom:20px">
+      <div class="section-title" style="margin-bottom:0">Rutinas (${_routines.length})</div>
+      <button class="btn" onclick="showCreateRoutine()">+ Nueva rutina</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
       ${_routines.map(r=>`
-        <div class="card" style="cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#2a2a2a'" onclick="openRoutineEditor('${r.id}')">
+        <div class="card card-hover" onclick="openRoutineEditor('${r.id}')">
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">${r.nombre}</div>
-          <div style="font-size:12px;color:#555;margin-bottom:10px">${r.days?.length||0} día(s) entrenamiento</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${r.days?.length||0} días · ${(r.days||[]).reduce((a,d)=>a+(d.exercises?.length||0),0)} ejercicios</div>
           <div style="display:flex;flex-wrap:wrap;gap:4px">
-            ${(r.days||[]).map(d=>`<span class="tag" style="background:#00aaff18;color:#00aaff;border:1px solid #00aaff30">${d.dia}</span>`).join("")}
+            ${(r.days||[]).map(d=>`<span class="tag tag-blue">${d.dia}</span>`).join("")}
           </div>
         </div>`).join("")}
     </div>`);
@@ -455,64 +627,63 @@ function showRoutineList(){
 
 function showCreateRoutine(){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="crmodal" onclick="if(event.target===this)this.remove()">
-      <div class="modal-box" style="max-width:380px;padding:24px">
-        <div style="font-weight:800;font-size:18px;margin-bottom:18px">Nueva Rutina</div>
+    <div class="modal-bg" id="crm" onclick="if(event.target===this)closeModal('crm')">
+      <div class="modal modal-sm" style="padding:28px">
+        <div class="modal-title" style="margin-bottom:20px">Nueva rutina</div>
         <label class="lbl">Nombre de la rutina</label>
-        <input id="rname" placeholder="Ej: Rutina Fuerza A" style="margin-bottom:16px" onkeydown="if(event.key==='Enter')createRoutine()"/>
-        <button class="btn" style="width:100%" onclick="createRoutine()">Crear rutina</button>
+        <input id="rname" placeholder="Ej: Rutina de Fuerza A" style="margin-bottom:20px" onkeydown="if(event.key==='Enter')createRoutine()"/>
+        <button class="btn" style="width:100%;justify-content:center" onclick="createRoutine()">Crear rutina</button>
       </div>
     </div>`);
 }
 
 async function createRoutine(){
-  const nombre=document.getElementById("rname").value.trim();
-  if(!nombre)return;
-  await apiGet({action:"createRoutine",nombre,clienteId:""});
-  document.getElementById("crmodal")?.remove();
-  renderRoutines();
+  const n=document.getElementById("rname").value.trim();
+  if(!n)return;
+  await apiGet({action:"createRoutine",nombre:n,clienteId:""});
+  closeModal("crm");renderRoutines();
 }
 
 async function openRoutineEditor(routineId){
   const routine=_routines.find(r=>String(r.id)===String(routineId));
   const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
-  const availDays=DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
-  const exOptions=CATS.filter(c=>c!=="Todos").map(cat=>`<optgroup label="${cat}">${_exercises.filter(e=>e.categoria===cat).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}</optgroup>`).join("");
+  const avail=DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
+  const exOpts=EQUIPMENT.filter(e=>e!=="Todo").map(eq=>`<optgroup label="${eq}">${EXERCISES_LOCAL.filter(e=>e.equipo===eq).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}</optgroup>`).join("");
 
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="remodal" style="align-items:flex-start;overflow-y:auto;padding:20px">
-      <div class="modal-box" style="max-width:620px;width:100%;margin:0 auto">
-        <div class="modal-header" style="padding:20px">
-          <div style="font-weight:800;font-size:20px">${routine.nombre}</div>
-          <button class="btn-ghost" onclick="document.getElementById('remodal').remove();renderRoutines()">✓ Cerrar</button>
+    <div class="modal-bg" id="re" style="align-items:flex-start;padding:20px;overflow-y:auto">
+      <div class="modal" style="max-width:660px;width:100%;margin:0 auto">
+        <div class="modal-hd">
+          <div class="modal-title">${routine.nombre}</div>
+          <button class="modal-close" onclick="closeModal('re');renderRoutines()">✕</button>
         </div>
-        <div style="padding:0 20px 20px">
-          <div style="display:flex;gap:8px;margin-bottom:18px">
+        <div class="modal-body">
+          <div class="flex" style="margin-bottom:20px;gap:10px">
             <select id="newday" style="flex:1">
-              <option value="">+ Añadir día de entrenamiento…</option>
-              ${availDays.map(d=>`<option>${d}</option>`).join("")}
+              <option value="">+ Seleccionar día…</option>
+              ${avail.map(d=>`<option>${d}</option>`).join("")}
             </select>
-            <button class="btn" onclick="addDayToRoutine('${routine.id}')">Añadir</button>
+            <button class="btn" onclick="addDayR('${routine.id}')">Añadir día</button>
           </div>
-          <div id="days-container">
+          <div id="days-c">
             ${(routine.days||[]).map(d=>`
               <div class="day-block" id="day-${d.id}">
-                <div class="day-title">📅 ${d.dia}</div>
+                <div class="day-hd">📅 ${d.dia}</div>
                 <div id="exlist-${d.id}">
                   ${(d.exercises||[]).map(ex=>{
-                    const exData=_exercises.find(e=>String(e.id)===String(ex.exerciseId));
-                    return `<div class="ex-row" id="exrow-${ex.id}">
+                    const exData=EXERCISES_LOCAL.find(e=>String(e.id)===String(ex.exerciseId));
+                    return `<div class="ex-row-edit" id="exrow-${ex.id}">
                       <div style="flex:1">
-                        <div style="font-weight:600;font-size:13px">${exData?.nombre||""}</div>
-                        <div style="font-size:12px;color:#555">${ex.series} series × ${ex.reps} · Descanso ${ex.descanso}</div>
+                        <div style="font-weight:600;font-size:13px">${exData?.nombre||ex.exerciseId}</div>
+                        <div style="font-size:11px;color:var(--muted)">${ex.series} series × ${ex.reps} · Descanso ${ex.descanso}</div>
                       </div>
-                      <button class="btn-ghost" style="color:#ff5555;border-color:#ff555540" onclick="removeExFromDay('${ex.id}','${d.id}')">✕</button>
+                      <button class="btn-danger" onclick="removeExR('${ex.id}','${d.id}')">✕</button>
                     </div>`;
                   }).join("")}
                 </div>
-                <select style="margin-top:10px;font-size:12px" onchange="addExToDay('${d.id}',this.value);this.value=''">
-                  <option value="">+ Añadir ejercicio a ${d.dia}…</option>
-                  ${exOptions}
+                <select style="margin-top:10px;font-size:12px" onchange="addExR('${d.id}',this.value);this.value=''">
+                  <option value="">+ Añadir ejercicio…</option>
+                  ${exOpts}
                 </select>
               </div>`).join("")}
           </div>
@@ -521,38 +692,32 @@ async function openRoutineEditor(routineId){
     </div>`);
 }
 
-async function addDayToRoutine(routineId){
-  const dia=document.getElementById("newday").value;
-  if(!dia)return;
+async function addDayR(routineId){
+  const dia=document.getElementById("newday").value;if(!dia)return;
   await apiGet({action:"addDay",routineId,dia});
-  document.getElementById("remodal")?.remove();
-  _routines=await apiGet({action:"routines"});
-  await openRoutineEditor(routineId);
+  closeModal("re");_routines=await apiGet({action:"routines"});openRoutineEditor(routineId);
 }
 
-async function addExToDay(dayId,exerciseId){
-  if(!exerciseId)return;
-  const{id}=await apiGet({action:"addExercise",dayId,exerciseId,series:3,reps:"10",descanso:"60s"});
-  const ex=_exercises.find(e=>String(e.id)===String(exerciseId));
-  const container=document.getElementById(`exlist-${dayId}`);
-  if(container){
-    container.insertAdjacentHTML("beforeend",`
-      <div class="ex-row" id="exrow-${id}">
-        <div style="flex:1">
-          <div style="font-weight:600;font-size:13px">${ex?.nombre||""}</div>
-          <div style="font-size:12px;color:#555">3 series × 10 · Descanso 60s</div>
-        </div>
-        <button class="btn-ghost" style="color:#ff5555;border-color:#ff555540" onclick="removeExFromDay('${id}','${dayId}')">✕</button>
-      </div>`);
-  }
+async function addExR(dayId,exId){
+  if(!exId)return;
+  const{id}=await apiGet({action:"addExercise",dayId,exerciseId:exId,series:3,reps:"10",descanso:"60s"});
+  const ex=EXERCISES_LOCAL.find(e=>e.id===exId);
+  document.getElementById(`exlist-${dayId}`)?.insertAdjacentHTML("beforeend",`
+    <div class="ex-row-edit" id="exrow-${id}">
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:13px">${ex?.nombre||exId}</div>
+        <div style="font-size:11px;color:var(--muted)">3 series × 10 · Descanso 60s</div>
+      </div>
+      <button class="btn-danger" onclick="removeExR('${id}','${dayId}')">✕</button>
+    </div>`);
 }
 
-async function removeExFromDay(exId,dayId){
+async function removeExR(exId,dayId){
   await apiGet({action:"removeExercise",id:exId});
   document.getElementById(`exrow-${exId}`)?.remove();
 }
 
-// ── Nutrición ──────────────────────────────────────────────
+// ── NUTRICIÓN ─────────────────────────────────────────────
 const NUTRI_TPLS=[
   {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g + fruta|Media mañana: Yogur griego 200g + frutos secos 20g|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + proteína 25g|Cena: Pescado 200g + verduras salteadas"},
   {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano + mantequilla cacahuete|Comida: Ternera 250g + pasta 150g + ensalada|Pre-entreno: Arroz 80g + atún 120g|Cena: Salmón 200g + boniato 200g + brócoli"},
@@ -563,80 +728,88 @@ async function renderNutrition(){
   render(spinner("Cargando nutrición…"));
   const[clients,nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"nutrition"})]);
   render(`
-    <div style="font-weight:700;font-size:16px;margin-bottom:18px">Planes Nutricionales</div>
+    <div class="section-title">Planes Nutricionales</div>
     ${clients.map(c=>{
       const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
       return `<div class="card" style="margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:${plan?'16px':'0'}">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;background:#00aaff22;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#00aaff">${c.nombre[0]}</div>
-            <div style="font-weight:700;font-size:15px">${c.nombre}</div>
+        <div class="flex-between" style="margin-bottom:${plan?'16px':'0'}">
+          <div class="flex">
+            <div class="client-avatar" style="width:38px;height:38px;font-size:15px">${c.nombre[0]}</div>
+            <div style="font-weight:700">${c.nombre}</div>
           </div>
-          <button class="btn-sm" onclick="openNutriModal('${c.id}')">${plan?"Cambiar plan":"Asignar plan"}</button>
+          <button class="btn-sm" onclick="openNutriModal('${c.id}')">${plan?"Cambiar plan":"+ Asignar plan"}</button>
         </div>
-        ${plan?nutriCard(plan):'<div style="color:#444;font-size:13px;margin-top:10px">Sin plan asignado.</div>'}
+        ${plan?nutriCard(plan):`<div style="color:var(--muted);font-size:13px;margin-top:10px">Sin plan asignado.</div>`}
       </div>`;
     }).join("")}`);
 }
 
 function nutriCard(plan){
   const meals=Array.isArray(plan.comidas)?plan.comidas:String(plan.comidas).split("|");
-  return `
-    <div class="macro-grid">
-      ${[{l:"Calorías",v:plan.kcal,c:"#ffaa00"},{l:"Proteína",v:plan.proteina+"g",c:"#00aaff"},{l:"Carbos",v:plan.carbos+"g",c:"#00cc88"},{l:"Grasas",v:plan.grasas+"g",c:"#cc66ff"}]
-        .map(x=>`<div class="macro-card"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
+  return`
+    <div class="macro-row">
+      ${[{l:"Calorías",v:plan.kcal,c:"#e08a00"},{l:"Proteína",v:plan.proteina+"g",c:"#4f6ef7"},{l:"Carbos",v:plan.carbos+"g",c:"#00a87a"},{l:"Grasas",v:plan.grasas+"g",c:"#7c5cbf"}]
+        .map(x=>`<div class="macro"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
     </div>
-    <div style="font-weight:600;margin-bottom:10px;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:.8px">Plan: ${plan.nombre}</div>
     ${meals.map((m,i)=>`<div class="meal-row"><div class="meal-num">${i+1}</div><span>${m}</span></div>`).join("")}`;
 }
 
 async function openNutriModal(clientId){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="nmodal" onclick="if(event.target===this)this.remove()">
-      <div class="modal-box" style="max-width:420px;padding:24px">
-        <div style="font-weight:800;font-size:18px;margin-bottom:18px">Seleccionar plan nutricional</div>
+    <div class="modal-bg" id="nm" onclick="if(event.target===this)closeModal('nm')">
+      <div class="modal modal-sm" style="padding:24px">
+        <div class="modal-title" style="margin-bottom:18px">Seleccionar plan nutricional</div>
         ${NUTRI_TPLS.map((t,i)=>`
-          <div onclick="assignNutri('${clientId}',${i})" style="background:#111;border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#444'" onmouseleave="this.style.borderColor='#222'">
-            <div style="font-weight:700;margin-bottom:4px">${t.nombre}</div>
-            <div class="macro-grid" style="margin-top:8px">
-              ${[{l:"Kcal",v:t.kcal,c:"#ffaa00"},{l:"Prot",v:t.proteina+"g",c:"#00aaff"},{l:"Carb",v:t.carbos+"g",c:"#00cc88"},{l:"Gras",v:t.grasas+"g",c:"#cc66ff"}]
-                .map(x=>`<div class="macro-card" style="padding:8px"><div class="macro-val" style="color:${x.c};font-size:16px">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
+          <div onclick="assignNutri('${clientId}',${i})" class="card card-hover" style="margin-bottom:10px;padding:14px">
+            <div style="font-weight:700;margin-bottom:8px">${t.nombre}</div>
+            <div class="macro-row">
+              ${[{l:"Kcal",v:t.kcal,c:"#e08a00"},{l:"Prot",v:t.proteina+"g",c:"#4f6ef7"},{l:"Carb",v:t.carbos+"g",c:"#00a87a"},{l:"Gras",v:t.grasas+"g",c:"#7c5cbf"}]
+                .map(x=>`<div class="macro" style="padding:8px"><div class="macro-val" style="color:${x.c};font-size:16px">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
             </div>
           </div>`).join("")}
       </div>
     </div>`);
 }
 
-async function assignNutri(clientId,tplIdx){
-  const t=NUTRI_TPLS[tplIdx];
+async function assignNutri(clientId,idx){
+  const t=NUTRI_TPLS[idx];
   await apiGet({action:"saveNutrition",clienteId:clientId,...t});
-  document.getElementById("nmodal")?.remove();
-  renderNutrition();
+  closeModal("nm");renderNutrition();
 }
 
-// ── Cliente: Mi Entrenamiento ──────────────────────────────
+// ── AGENDA ────────────────────────────────────────────────
+function renderAgenda(){
+  render(`
+    <div class="section-title">Agenda</div>
+    <div class="card" style="text-align:center;padding:40px;color:var(--muted)">
+      <div style="font-size:32px;margin-bottom:12px">📅</div>
+      <div style="font-weight:600;margin-bottom:6px">Próximamente</div>
+      <div style="font-size:13px">La gestión de agenda y citas estará disponible en la próxima versión.</div>
+    </div>`);
+}
+
+// ── CLIENTE: MI ENTRENAMIENTO ─────────────────────────────
 async function renderClientTraining(){
   render(spinner("Cargando entrenamiento…"));
-  if(!_exercises)_exercises=await apiGet({action:"exercises"});
-  const routines=await apiGet({action:"routines",clientId:currentUser.id});
+  const routines=await apiGet({action:"routines",clientId:U.id});
   const routine=routines[0];
-  if(!routine){render(`<div style="padding:60px;text-align:center;color:#444">Tu entrenador aún no te ha asignado una rutina.</div>`);return;}
+  if(!routine){render(`<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:16px">💪</div><div style="font-weight:600;font-size:16px">Sin rutina asignada</div><div style="font-size:13px;margin-top:6px">Tu entrenador aún no te ha asignado una rutina.</div></div>`);return;}
   render(`
-    <div style="margin-bottom:20px">
+    <div style="margin-bottom:22px">
       <div style="font-weight:800;font-size:22px;margin-bottom:4px">${routine.nombre}</div>
-      <div style="color:#555;font-size:13px">${routine.days?.length||0} días de entrenamiento</div>
+      <div style="color:var(--muted);font-size:13px">${routine.days?.length||0} días de entrenamiento</div>
     </div>
     ${(routine.days||[]).map((d,di)=>`
       <div class="card" style="margin-bottom:16px">
-        <div style="font-weight:700;color:#00aaff;margin-bottom:14px;font-size:15px">📅 ${d.dia}</div>
+        <div style="font-weight:700;color:var(--accent);margin-bottom:14px;font-size:15px">📅 ${d.dia}</div>
         ${(d.exercises||[]).map((ex,ei)=>{
-          const e=_exercises.find(e=>String(e.id)===String(ex.exerciseId));
+          const e=EXERCISES_LOCAL.find(e=>String(e.id)===String(ex.exerciseId));
           const k=`${di}-${ei}`;
-          return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1e1e1e">
-            <input type="checkbox" id="chk-${k}" style="width:18px;height:18px;cursor:pointer;accent-color:#00aaff" onchange="toggleEx('${k}')"/>
+          return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <input type="checkbox" id="chk-${k}" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)" onchange="toggleEx('${k}')"/>
             <div style="flex:1">
-              <div id="exname-${k}" style="font-weight:600;font-size:14px">${e?.nombre||""}</div>
-              <div style="font-size:12px;color:#555;margin-top:2px">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
+              <div id="exname-${k}" style="font-weight:600;font-size:14px">${e?.nombre||ex.exerciseId}</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
             </div>
             ${e?`<button class="btn-sm" onclick="openExModal('${e.id}')">▶ Ver</button>`:""}
           </div>`;
@@ -647,61 +820,50 @@ async function renderClientTraining(){
 function toggleEx(k){
   const el=document.getElementById(`exname-${k}`);
   const chk=document.getElementById(`chk-${k}`);
-  if(el){el.style.textDecoration=chk.checked?"line-through":"none";el.style.color=chk.checked?"#444":"#f0f0f0";}
+  if(el){el.style.textDecoration=chk.checked?"line-through":"none";el.style.color=chk.checked?"var(--muted)":"var(--text)";}
 }
 
-// ── Cliente: Mi Nutrición ──────────────────────────────────
+// ── CLIENTE: MI NUTRICIÓN ─────────────────────────────────
 async function renderClientNutrition(){
   render(spinner("Cargando nutrición…"));
-  const plans=await apiGet({action:"nutrition",clientId:currentUser.id});
-  if(!plans[0]){render(`<div style="padding:60px;text-align:center;color:#444">Tu entrenador aún no te ha asignado un plan nutricional.</div>`);return;}
-  render(`<div style="font-weight:800;font-size:20px;margin-bottom:18px">Mi Plan Nutricional</div>${nutriCard(plans[0])}`);
+  const plans=await apiGet({action:"nutrition",clientId:U.id});
+  if(!plans[0]){render(`<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:16px">🥗</div><div style="font-weight:600">Sin plan asignado</div></div>`);return;}
+  render(`<div class="section-title">Mi Plan Nutricional</div><div class="card">${nutriCard(plans[0])}</div>`);
 }
 
-// ── Cliente: Mi Progreso ───────────────────────────────────
+// ── CLIENTE: MI PROGRESO ──────────────────────────────────
 async function renderClientProgress(){
   render(spinner("Cargando progreso…"));
-  const records=await apiGet({action:"progress",clientId:currentUser.id});
+  const records=await apiGet({action:"progress",clientId:U.id});
   render(`
-    <div style="font-weight:800;font-size:20px;margin-bottom:18px">Mi Progreso</div>
+    <div class="section-title">Mi Progreso</div>
     <div class="card" style="margin-bottom:20px">
       <div style="font-weight:700;margin-bottom:14px">Registrar hoy</div>
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:12px">
-        <div>
-          <label class="lbl">Peso (kg)</label>
-          <input id="ppeso" type="number" step="0.1" placeholder="75.5"/>
-        </div>
-        <div>
-          <label class="lbl">Notas</label>
-          <input id="pnotas" placeholder="Cómo te has sentido hoy…"/>
-        </div>
+      <div class="grid-2" style="margin-bottom:12px">
+        <div><label class="lbl">Peso (kg)</label><input id="ppeso" type="number" step="0.1" placeholder="75.5"/></div>
+        <div><label class="lbl">Notas</label><input id="pnotas" placeholder="Cómo te has sentido…"/></div>
       </div>
       <button class="btn" onclick="saveProgress()">Guardar registro</button>
     </div>
     <div style="font-weight:700;font-size:15px;margin-bottom:12px">Historial (${records.length} registros)</div>
-    ${records.length===0?`<div style="color:#444;font-size:13px">Aún no hay registros.</div>`:""}
-    <div id="precords">
-      ${[...records].reverse().map(r=>`
-        <div class="prog-entry">
-          <div>
-            <div style="font-weight:600">${r.fecha}</div>
-            ${r.notas?`<div style="font-size:12px;color:#555;margin-top:2px">${r.notas}</div>`:""}
-          </div>
-          <div style="font-size:28px;font-weight:800;color:#00aaff">${r.peso}<span style="font-size:14px;color:#555"> kg</span></div>
-        </div>`).join("")}
-    </div>`);
+    ${records.length===0?`<div style="color:var(--muted);font-size:13px">Aún no hay registros.</div>`:""}
+    ${[...records].reverse().map(r=>`
+      <div class="prog-entry">
+        <div>
+          <div style="font-weight:600">${r.fecha}</div>
+          ${r.notas?`<div style="font-size:12px;color:var(--muted)">${r.notas}</div>`:""}
+        </div>
+        <div style="font-size:26px;font-weight:800;color:var(--accent)">${r.peso}<span style="font-size:13px;color:var(--muted)"> kg</span></div>
+      </div>`).join("")}`);
 }
 
 async function saveProgress(){
   const peso=document.getElementById("ppeso").value;
   const notas=document.getElementById("pnotas").value;
   if(!peso)return;
-  await apiGet({action:"saveProgress",clienteId:currentUser.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
+  await apiGet({action:"saveProgress",clienteId:U.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
   renderClientProgress();
 }
-
-// ── Init ───────────────────────────────────────────────────
-renderLogin();
 </script>
 </body>
 </html>
