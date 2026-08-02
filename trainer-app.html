@@ -333,6 +333,25 @@ const EXDB=[
 ];
 
 
+// Mapeo de IDs numéricos del Sheet a IDs locales
+const ID_MAP={
+  "1":"B1","2":"B2","3":"L6","4":"B5","5":"MA2","6":"M7",
+  "7":"MA3","8":"B1","9":"B2","10":"B3","11":"B4","12":"B5",
+  "13":"L1","14":"B4","15":"L2","16":"B6","17":"M8","18":"MA4",
+  "19":"C1","20":"B7","21":"M1","22":"M2","23":"M5","24":"C2",
+  "25":"B8","26":"M3","27":"M4","28":"B9","29":"C3","30":"L3",
+  "31":"L4","32":"L5","33":"L12","34":"L8","35":"L9","36":"L10",
+  "37":"L7","38":"L8","39":"CA1","40":"CA2","41":"MO1","42":"MO2","43":"MO3",
+};
+
+function resolveExId(id){
+  const s=String(id);
+  // Si ya es un ID local (empieza por letra) devuélvelo tal cual
+  if(isNaN(s[0]))return s;
+  // Si es numérico, busca en el mapa
+  return ID_MAP[s]||null;
+}
+
 const EQUIPMENTS=["Todo","Peso corporal","Barra","Mancuernas","Máquina","Cable/Polea","Banda elástica","TRX","Cardio","Movilidad"];
 const MUSCLES_LIST=["Todo","Pecho","Dorsal","Hombros","Bíceps","Tríceps","Cuádriceps","Isquiotibiales","Glúteos","Core","Full Body"];
 
@@ -814,9 +833,10 @@ async function renderClientTraining(){
         <div class="training-day">
           <div class="training-day-hd">📅 ${d.dia}</div>
           ${(d.exercises||[]).map((ex,ei)=>{
-            const exLocal=EXDB.find(e=>String(e.id)===String(ex.exerciseId));
+            const resolvedId=resolveExId(ex.exerciseId);
+            const exLocal=resolvedId?EXDB.find(e=>e.id===resolvedId):null;
             const nombre=exLocal?exLocal.nombre:"Ejercicio #"+ex.exerciseId;
-            return `<div class="ex-item" id="exitem-${di}-${ei}" onclick="toggleExDetail('${ex.exerciseId}','${di}-${ei}')">
+            return `<div class="ex-item" id="exitem-${di}-${ei}" onclick="toggleExDetail('${resolvedId||ex.exerciseId}','${di}-${ei}')">
               <div class="ex-item-top">
                 <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()" onchange="markDone(this,'exname-${di}-${ei}')"/>
                 <div class="ex-item-thumb" id="mini-thumb-${di}-${ei}">
@@ -837,7 +857,8 @@ async function renderClientTraining(){
   // Load mini thumbnails async
   (routine.days||[]).forEach((d,di)=>{
     (d.exercises||[]).forEach((ex,ei)=>{
-      const exLocal=EXDB.find(e=>String(e.id)===String(ex.exerciseId));
+      const rId=resolveExId(ex.exerciseId);
+      const exLocal=rId?EXDB.find(e=>e.id===rId):null;
       if(exLocal&&exLocal.wger){
         loadWgerImage(exLocal).then(img=>{
           if(!img)return;
@@ -873,7 +894,8 @@ async function toggleExDetail(exId,key){
   arrowEl.textContent="⌄";
   itemEl.classList.add("active");
 
-  const exLocal=EXDB.find(e=>String(e.id)===String(exId));
+        const resolvedId=resolveExId(exId);
+      const exLocal=resolvedId?EXDB.find(e=>e.id===resolvedId):null;
   const steps=LOCAL_STEPS[exId]||[];
   const img=exLocal?await loadWgerImage(exLocal):null;
 
