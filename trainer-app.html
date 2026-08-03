@@ -664,6 +664,54 @@ async function openClientPanel(clientId){
     </div>`);
 }
 
+// ── GESTIÓN INLINE DE RUTINA DESDE PERFIL CLIENTE ────────
+async function addDayInline(routineId,clientId){
+  const dia=document.getElementById("newday-inline")?.value;
+  if(!dia)return;
+  await apiGet({action:"addDay",routineId,dia});
+  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
+  closeModal("cpanel");openClientPanel(clientId);
+}
+
+async function removeDayInline(dayId,clientId){
+  if(!confirm("¿Eliminar este día?"))return;
+  await apiGet({action:"removeDay",id:dayId});
+  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
+  closeModal("cpanel");openClientPanel(clientId);
+}
+
+async function addExInline(dayId,exId,clientId){
+  if(!exId)return;
+  const{id}=await apiGet({action:"addExercise",dayId,exerciseId:exId,series:3,reps:"10",descanso:"60s"});
+  const ex=EXDB.find(e=>e.id===exId);
+  const container=document.getElementById(`iexlist-${dayId}`);
+  if(container){
+    container.insertAdjacentHTML("beforeend",`
+      <div class="ex-row-edit" id="iexrow-${id}">
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:12px">${ex?.nombre||exId}</div>
+          <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+            <input type="number" value="3" min="1" max="10" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${id}','series',this.value)"/> series
+            <input type="number" value="10" min="1" max="100" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${id}','reps',this.value)"/> reps
+            <select style="font-size:12px;padding:4px 6px;width:auto" onchange="updateEx('${id}','descanso',this.value)">
+              ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${t==="60s"?"selected":""}>${t}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+        <button class="btn-danger" onclick="removeExInline('${id}','${dayId}')">✕</button>
+      </div>`);
+  }
+}
+
+async function removeExInline(exId,dayId){
+  await apiGet({action:"removeExercise",id:exId});
+  document.getElementById(`iexrow-${exId}`)?.remove();
+}
+
+async function updateEx(exId,field,value){
+  await apiGet({action:"updateExercise",id:exId,[field]:value});
+}
+
 async function saveComment(clientId){
   const text=document.getElementById(`comment-${clientId}`)?.value||"";
   await apiGet({action:"saveComment",clienteId:clientId,comentario:text});
