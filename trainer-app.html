@@ -169,7 +169,7 @@ label.lbl{font-size:11px;font-weight:600;color:var(--muted);display:block;margin
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzRztr-zo23olB86JlTx-YVCFg3SshKrtNbtHzLQA-xp8pTqfMmCpSBLCoIU2OmGR13Pg/exec";
+const API="https://script.google.com/macros/s/AKfycbw9zUMlHGIbwZclvRmVQU1mSWQib2c5W44cUR4RXvO-h2waJr1WLc1l61Iz123HgA8tGA/exec";
 const WGER="https://wger.de/api/v2";
 let U=null,TAB=null;
 let _clients=[],_routines=[],_nutrition=[];
@@ -444,6 +444,7 @@ function renderSidebar(){
     {id:"biblioteca",icon:"📚",label:"Ejercicios",sub:"Biblioteca completa"},
     {id:"rutinas",icon:"⚡",label:"Rutinas",sub:"Crea y asigna rutinas"},
     {id:"nutricion",icon:"🥗",label:"Nutrición",sub:"Planes nutricionales"},
+    {id:"nutricion_ia",icon:"✨",label:"Crear Plan IA",sub:"Generador automático"},
   ]:[
     {id:"entrenamiento",icon:"💪",label:"Mi Entrenamiento",sub:"Tu rutina de hoy"},
     {id:"nutricion_c",icon:"🥗",label:"Mi Nutrición",sub:"Tu plan alimenticio"},
@@ -467,6 +468,7 @@ function renderTab(){
     else if(TAB==="biblioteca")renderLibrary();
     else if(TAB==="rutinas")renderRoutines();
     else if(TAB==="nutricion")renderNutrition();
+    else if(TAB==="nutricion_ia")renderNutricionIA();
   }else{
     if(TAB==="entrenamiento")renderClientTraining();
     else if(TAB==="biblioteca")renderLibrary();
@@ -1037,10 +1039,55 @@ async function toggleExDetail(exId,key){
 
 // ── CLIENTE: MI NUTRICIÓN ─────────────────────────────────
 async function renderClientNutrition(){
-  render(spinner("Cargando…"));
-  const plans=await apiGet({action:"nutrition",clientId:U.id});
-  if(!plans[0]){render(`<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">🥗</div><div style="font-weight:600">Sin plan asignado</div></div>`);return;}
-  render(`<div class="section-title">Mi Plan Nutricional</div><div class="card">${nutriCard(plans[0])}</div>`);
+  render(spinner("Cargando nutrición…"));
+  // Try full plan first
+  let fullPlan=null;
+  try{fullPlan=await apiGet({action:"getNutritionFull",clientId:U.id});}catch(e){}
+
+  if(fullPlan&&fullPlan.comidas){
+    const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
+    render(`
+      <div style="font-weight:800;font-size:20px;margin-bottom:4px">Mi Plan Nutricional</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:18px">${objMap[fullPlan.objetivo]||""} · ${fullPlan.kcal} kcal/día</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px">
+        ${[{v:fullPlan.kcal,c:"#e08a00",l:"Calorías"},{v:fullPlan.proteina_g+"g",c:"#4f6ef7",l:"Proteína"},{v:fullPlan.carbos_g+"g",c:"#00a87a",l:"Carbos"},{v:fullPlan.grasas_g+"g",c:"#e08a00",l:"Grasas"}]
+          .map(x=>`<div class="card" style="text-align:center;padding:12px"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("")}
+      </div>
+      ${fullPlan.comidas.map((meal,mi)=>`
+        <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px">
+          <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:22px">${meal.icono}</span>
+            <div><div style="font-weight:700;font-size:15px">${meal.nombre}</div><div style="font-size:12px;opacity:.85">${meal.hora} · ~${meal.kcal} kcal</div></div>
+          </div>
+          <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
+            ${(meal.variantes||[]).map((v,vi)=>`<button id="cnt-${mi}-${vi}" onclick="cliSelectNutriTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
+          </div>
+          ${(meal.variantes||[]).map((v,vi)=>`
+            <div id="cnp-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
+              <div style="font-weight:700;margin-bottom:8px">${v.nombre}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
+                ${(v.ing||[]).map(i=>`<span style="background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600">${i}</span>`).join("")}
+              </div>
+              <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px">
+                <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Preparación</div>
+                ${(v.pasos||[]).map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${pi+1}</div><span>${p}</span></div>`).join("")}
+              </div>
+            </div>`).join("")}
+        </div>`).join("")}`);
+  }else{
+    const plans=await apiGet({action:"nutrition",clientId:U.id}).catch(()=>[]);
+    if(!plans||!plans[0]){render(`<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">🥗</div><div style="font-weight:600">Sin plan asignado</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará un plan pronto.</div></div>`);return;}
+    render(`<div class="section-title">Mi Plan Nutricional</div><div class="card">${nutriCard(plans[0])}</div>`);
+  }
+}
+
+function cliSelectNutriTab(mi,vi){
+  document.querySelectorAll(`[id^="cnt-${mi}-"]`).forEach((el,i)=>{
+    el.style.borderBottomColor=i===vi?"var(--accent)":"transparent";
+    el.style.color=i===vi?"var(--accent)":"var(--muted)";
+    el.style.fontWeight=i===vi?"700":"500";
+  });
+  document.querySelectorAll(`[id^="cnp-${mi}-"]`).forEach((el,i)=>{el.style.display=i===vi?"block":"none";});
 }
 
 // ── CLIENTE: MI PROGRESO ──────────────────────────────────
@@ -1063,6 +1110,333 @@ async function renderClientProgress(){
         <div><div style="font-weight:600">${r.fecha}</div>${r.notas?`<div style="font-size:12px;color:var(--muted)">${r.notas}</div>`:""}</div>
         <div style="font-size:26px;font-weight:800;color:var(--accent)">${r.peso}<span style="font-size:13px;color:var(--muted)"> kg</span></div>
       </div>`).join("")}`);
+}
+
+// ── NUTRICIÓN IA ──────────────────────────────────────────
+const MEAL_TEMPLATES={
+  perdida_grasa:{
+    3:[
+      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
+        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche desnatada","20g proteína","1 plátano"],pasos:["Calienta la leche 2 min","Añade la avena y remueve","Mezcla la proteína y añade el plátano"]},
+        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas con tomate"]},
+        {letra:"C",nombre:"Yogur con frutos rojos",ing:["200g yogur griego 0%","150g frutos rojos","20g granola"],pasos:["Vierte el yogur en un bol","Añade los frutos rojos","Espolvorea la granola"]}
+      ]},
+      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
+        {letra:"A",nombre:"Pollo con arroz y verduras",ing:["200g pechuga pollo","80g arroz integral","200g brócoli","aceite oliva"],pasos:["Cuece el arroz 20 min","Plancha el pollo con especias","Cocina el brócoli al vapor 8 min","Sirve junto"]},
+        {letra:"B",nombre:"Merluza con patata",ing:["200g merluza","150g patata","ensalada verde","limón"],pasos:["Cuece la patata 20 min","Hornea la merluza con limón 15 min a 180°","Sirve con ensalada"]},
+        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera magra","80g quinoa","pimiento rojo","cebolla","tomate"],pasos:["Cuece la quinoa 15 min","Saltea las verduras","Plancha la ternera","Mezcla todo"]}
+      ]},
+      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
+        {letra:"A",nombre:"Salmón con espárragos",ing:["180g salmón","200g espárragos","limón","aceite","eneldo"],pasos:["Precalienta horno 180°","Hornea el salmón 15 min","Asa los espárragos 10 min"]},
+        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","1 calabacín","pimiento","cebolla"],pasos:["Saltea las verduras 5 min","Bate los huevos y mezcla","Cuaja la tortilla a fuego medio"]},
+        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pechuga pavo","ensalada mixta","tomate cherry","vinagreta ligera"],pasos:["Plancha el pavo con hierbas","Prepara la ensalada","Aliña y sirve"]}
+      ]}
+    ],
+    4:[
+      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
+        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche desnatada","20g proteína","1 plátano"],pasos:["Calienta la leche","Añade la avena","Mezcla la proteína y el plátano"]},
+        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas"]},
+        {letra:"C",nombre:"Yogur con granola",ing:["200g yogur griego 0%","frutos rojos","20g granola"],pasos:["Vierte el yogur","Añade frutos rojos","Espolvorea granola"]}
+      ]},
+      {nombre:"Almuerzo",hora:"11:30",icono:"🍎",variantes:[
+        {letra:"A",nombre:"Fruta con proteína",ing:["1 manzana","20g proteína en polvo","200ml agua"],pasos:["Mezcla la proteína con agua","Toma con la fruta"]},
+        {letra:"B",nombre:"Queso cottage con fruta",ing:["150g queso cottage","1 naranja","10g nueces"],pasos:["Sirve el cottage en bol","Añade la naranja pelada","Añade las nueces"]},
+        {letra:"C",nombre:"Tosta de pavo",ing:["1 tosta integral","60g pavo loncheado","tomate","lechuga"],pasos:["Tuesta el pan","Monta con pavo y verduras"]}
+      ]},
+      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
+        {letra:"A",nombre:"Pollo con arroz",ing:["200g pollo","80g arroz integral","brócoli","aceite"],pasos:["Cuece el arroz","Plancha el pollo","Cocina el brócoli","Sirve junto"]},
+        {letra:"B",nombre:"Merluza con patata",ing:["200g merluza","150g patata","ensalada","limón"],pasos:["Cuece la patata","Hornea la merluza 15 min","Sirve con ensalada"]},
+        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera","80g quinoa","verduras salteadas"],pasos:["Cuece la quinoa","Plancha la ternera","Saltea las verduras","Sirve"]}
+      ]},
+      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
+        {letra:"A",nombre:"Salmón con verduras",ing:["180g salmón","espárragos","limón","aceite"],pasos:["Hornea el salmón 15 min","Asa los espárragos","Sirve con limón"]},
+        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","calabacín","pimiento","cebolla"],pasos:["Saltea las verduras","Mezcla con huevos","Cuaja a fuego medio"]},
+        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pavo","ensalada mixta","vinagreta"],pasos:["Plancha el pavo","Prepara la ensalada","Aliña y sirve"]}
+      ]}
+    ],
+    5:[
+      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
+        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche","20g proteína","1 plátano"],pasos:["Calienta la leche","Añade la avena","Mezcla la proteína y el plátano"]},
+        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas"]},
+        {letra:"C",nombre:"Yogur con granola",ing:["200g yogur griego 0%","frutos rojos","20g granola"],pasos:["Vierte el yogur","Añade frutos rojos","Espolvorea granola"]}
+      ]},
+      {nombre:"Media mañana",hora:"10:30",icono:"🍎",variantes:[
+        {letra:"A",nombre:"Batido proteico",ing:["30g proteína","300ml leche desnatada","1 plátano"],pasos:["Mezcla todo en batidora","Sirve frío"]},
+        {letra:"B",nombre:"Fruta y queso",ing:["1 manzana","100g queso fresco","canela"],pasos:["Corta la manzana","Sirve con queso y canela"]},
+        {letra:"C",nombre:"Arroz con atún",ing:["80g arroz cocido","1 lata atún","tomate","aceite"],pasos:["Mezcla el arroz con atún","Añade tomate y aliña"]}
+      ]},
+      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
+        {letra:"A",nombre:"Pollo con arroz",ing:["200g pollo","80g arroz","200g brócoli","aceite"],pasos:["Cuece el arroz","Plancha el pollo","Cocina el brócoli","Sirve"]},
+        {letra:"B",nombre:"Merluza con verduras",ing:["200g merluza","patata","judías verdes","limón"],pasos:["Cuece patata y judías","Hornea la merluza 15 min","Sirve"]},
+        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera","80g quinoa","pimiento","cebolla"],pasos:["Cuece la quinoa","Saltea las verduras","Plancha la ternera","Sirve"]}
+      ]},
+      {nombre:"Merienda",hora:"17:30",icono:"🥛",variantes:[
+        {letra:"A",nombre:"Yogur con nueces",ing:["150g yogur griego","10g nueces","miel"],pasos:["Sirve el yogur","Añade nueces y miel"]},
+        {letra:"B",nombre:"Tosta de pavo",ing:["1 tosta integral","50g pavo","tomate"],pasos:["Tuesta el pan","Monta con pavo y tomate"]},
+        {letra:"C",nombre:"Fruta y almendras",ing:["1 pera","15g almendras"],pasos:["Lava la fruta","Sirve con las almendras"]}
+      ]},
+      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
+        {letra:"A",nombre:"Salmón con espárragos",ing:["180g salmón","espárragos","limón","aceite"],pasos:["Hornea el salmón 15 min","Asa los espárragos","Sirve con limón"]},
+        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","calabacín","pimiento"],pasos:["Saltea las verduras","Mezcla con huevos","Cuaja la tortilla"]},
+        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pavo","ensalada mixta","vinagreta"],pasos:["Plancha el pavo","Prepara la ensalada","Sirve"]}
+      ]}
+    ]
+  }
+};
+["volumen","mantenimiento","rendimiento","definicion"].forEach(obj=>{
+  MEAL_TEMPLATES[obj]={};
+  [3,4,5].forEach(n=>{MEAL_TEMPLATES[obj][n]=JSON.parse(JSON.stringify(MEAL_TEMPLATES.perdida_grasa[n]));});
+});
+
+let nutriIA={numComidas:4,planData:null,selectedClient:null};
+
+async function renderNutricionIA(){
+  const clients=await apiGet({action:"clients"});
+  render(`
+    <div class="flex-between" style="margin-bottom:20px">
+      <div><div class="section-title" style="margin-bottom:2px">✨ Crear Plan Nutricional</div>
+      <div style="color:var(--muted);font-size:13px">Genera y envía planes personalizados</div></div>
+    </div>
+    <div id="nutria-config">
+      <!-- CLIENTE -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Cliente</div>
+        <select id="nutria-client" style="margin-bottom:0">
+          <option value="">Selecciona un cliente…</option>
+          ${clients.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join("")}
+        </select>
+      </div>
+      <!-- DATOS -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Datos físicos</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div><label class="lbl">Objetivo</label>
+            <select id="nutria-obj" onchange="nutriaUpdateMacros()">
+              <option value="perdida_grasa">Pérdida de grasa</option>
+              <option value="volumen">Volumen muscular</option>
+              <option value="mantenimiento">Mantenimiento</option>
+              <option value="rendimiento">Rendimiento deportivo</option>
+              <option value="definicion">Definición muscular</option>
+            </select>
+          </div>
+          <div><label class="lbl">Sexo</label>
+            <select id="nutria-sexo" onchange="nutriaUpdateMacros()">
+              <option value="hombre">Hombre</option><option value="mujer">Mujer</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
+          <div><label class="lbl">Peso (kg)</label><input id="nutria-peso" type="number" placeholder="75" oninput="nutriaUpdateMacros()"/></div>
+          <div><label class="lbl">Altura (cm)</label><input id="nutria-altura" type="number" placeholder="175"/></div>
+          <div><label class="lbl">Edad</label><input id="nutria-edad" type="number" placeholder="30" oninput="nutriaUpdateMacros()"/></div>
+        </div>
+        <div><label class="lbl">Nivel de actividad</label>
+          <select id="nutria-act" onchange="nutriaUpdateMacros()">
+            <option value="1.2">Sedentario</option>
+            <option value="1.375">Ligero (1-2 días/sem)</option>
+            <option value="1.55" selected>Moderado (3-4 días/sem)</option>
+            <option value="1.725">Activo (5-6 días/sem)</option>
+            <option value="1.9">Muy activo</option>
+          </select>
+        </div>
+      </div>
+      <!-- COMIDAS -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Comidas al día</div>
+        <div style="display:flex;gap:8px">
+          ${[3,4,5].map(n=>`<button id="ncb${n}" onclick="nutriaSelectComidas(${n})" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid ${n===4?'var(--accent)':'var(--border)'};background:${n===4?'#eef0ff':'#fff'};color:${n===4?'var(--accent)':'var(--text)'};font-weight:600;font-size:13px;cursor:pointer">${n} comidas</button>`).join("")}
+        </div>
+      </div>
+      <!-- MACROS -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">Macros</div>
+        <div style="background:#eef0ff;border:1px solid #d5dbff;border-radius:8px;padding:10px;font-size:12px;color:#4f6ef7;margin-bottom:12px">💡 Calculado automáticamente. Ajusta si es necesario.</div>
+        <div style="margin-bottom:10px"><label class="lbl">Calorías (kcal/día)</label><input id="nutria-kcal" type="number" placeholder="2000" oninput="nutriaUpdateGrams()"/></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:12px;font-weight:600;color:#4f6ef7;min-width:75px">🥩 Proteína</span>
+          <input type="range" id="nutria-prot" min="15" max="45" value="30" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#4f6ef7;border:none;padding:4px 0;background:none"/>
+          <span id="nutria-prot-val" style="font-size:12px;font-weight:700;color:#4f6ef7;min-width:32px">30%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:12px;font-weight:600;color:#00a87a;min-width:75px">🍚 Carbos</span>
+          <input type="range" id="nutria-carb" min="20" max="55" value="45" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#00a87a;border:none;padding:4px 0;background:none"/>
+          <span id="nutria-carb-val" style="font-size:12px;font-weight:700;color:#00a87a;min-width:32px">45%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:12px;font-weight:600;color:#e08a00;min-width:75px">🥑 Grasas</span>
+          <input type="range" id="nutria-fat" min="15" max="40" value="25" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#e08a00;border:none;padding:4px 0;background:none"/>
+          <span id="nutria-fat-val" style="font-size:12px;font-weight:700;color:#e08a00;min-width:32px">25%</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          ${[{id:"ng-kcal",c:"#e08a00",l:"Kcal"},{id:"ng-prot",c:"#4f6ef7",l:"Proteína"},{id:"ng-carb",c:"#00a87a",l:"Carbos"},{id:"ng-fat",c:"#e08a00",l:"Grasas"}].map(x=>`
+            <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
+              <div id="${x.id}" style="font-size:18px;font-weight:800;color:${x.c}">—</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div>
+            </div>`).join("")}
+        </div>
+      </div>
+      <button onclick="nutriaGenerate()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:24px">✨ Generar Plan</button>
+    </div>
+
+    <!-- EDITOR -->
+    <div id="nutria-editor" class="hidden">
+      <div class="flex-between" style="margin-bottom:16px">
+        <div><div style="font-weight:800;font-size:18px" id="nutria-ed-title">Plan</div>
+        <div style="color:var(--muted);font-size:12px;margin-top:2px" id="nutria-ed-sub"></div></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="document.getElementById('nutria-config').classList.remove('hidden');document.getElementById('nutria-editor').classList.add('hidden')" class="btn-ghost">← Volver</button>
+          <button onclick="nutriaSave()" class="btn">💾 Guardar y enviar</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px" id="nutria-ed-macros"></div>
+      <div id="nutria-ed-meals"></div>
+    </div>`);
+}
+
+function nutriaSelectComidas(n){
+  nutriIA.numComidas=n;
+  [3,4,5].forEach(i=>{
+    const b=document.getElementById(`ncb${i}`);
+    if(!b)return;
+    b.style.background=i===n?"#eef0ff":"#fff";
+    b.style.borderColor=i===n?"var(--accent)":"var(--border)";
+    b.style.color=i===n?"var(--accent)":"var(--text)";
+  });
+}
+
+function nutriaUpdateMacros(){
+  const peso=parseFloat(document.getElementById("nutria-peso")?.value)||0;
+  const altura=parseFloat(document.getElementById("nutria-altura")?.value)||0;
+  const edad=parseFloat(document.getElementById("nutria-edad")?.value)||0;
+  const sexo=document.getElementById("nutria-sexo")?.value||"hombre";
+  const act=parseFloat(document.getElementById("nutria-act")?.value)||1.55;
+  const obj=document.getElementById("nutria-obj")?.value||"mantenimiento";
+  if(!peso||!edad)return;
+  let tmb=sexo==="hombre"?(10*peso)+(6.25*(altura||175))-(5*edad)+5:(10*peso)+(6.25*(altura||175))-(5*edad)-161;
+  let tdee=Math.round(tmb*act);
+  if(obj==="perdida_grasa")tdee=Math.round(tdee*0.82);
+  else if(obj==="volumen")tdee=Math.round(tdee*1.12);
+  else if(obj==="definicion")tdee=Math.round(tdee*0.88);
+  const el=document.getElementById("nutria-kcal");
+  if(el)el.value=tdee;
+  nutriaUpdateGrams();
+}
+
+function nutriaUpdateGrams(){
+  const kcal=parseInt(document.getElementById("nutria-kcal")?.value)||0;
+  const p=parseInt(document.getElementById("nutria-prot")?.value)||30;
+  const c=parseInt(document.getElementById("nutria-carb")?.value)||45;
+  const f=parseInt(document.getElementById("nutria-fat")?.value)||25;
+  const pv=document.getElementById("nutria-prot-val");if(pv)pv.textContent=p+"%";
+  const cv=document.getElementById("nutria-carb-val");if(cv)cv.textContent=c+"%";
+  const fv=document.getElementById("nutria-fat-val");if(fv)fv.textContent=f+"%";
+  const kg=document.getElementById("ng-kcal");if(kg)kg.textContent=kcal||"—";
+  const pg=document.getElementById("ng-prot");if(pg)pg.textContent=kcal?Math.round(kcal*p/100/4)+"g":"—";
+  const cg=document.getElementById("ng-carb");if(cg)cg.textContent=kcal?Math.round(kcal*c/100/4)+"g":"—";
+  const fg=document.getElementById("ng-fat");if(fg)fg.textContent=kcal?Math.round(kcal*f/100/9)+"g":"—";
+}
+
+function nutriaGenerate(){
+  const clientId=document.getElementById("nutria-client")?.value;
+  if(!clientId){alert("Selecciona un cliente primero");return;}
+  const kcal=parseInt(document.getElementById("nutria-kcal")?.value)||2000;
+  const prot=parseInt(document.getElementById("nutria-prot")?.value)||30;
+  const carb=parseInt(document.getElementById("nutria-carb")?.value)||45;
+  const fat=parseInt(document.getElementById("nutria-fat")?.value)||25;
+  if(prot+carb+fat!==100){alert("Los % de macros deben sumar 100%");return;}
+  const obj=document.getElementById("nutria-obj")?.value||"perdida_grasa";
+  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
+  const template=MEAL_TEMPLATES[obj]?.[nutriIA.numComidas]||MEAL_TEMPLATES.perdida_grasa[4];
+  const mealKcal=Math.round(kcal/nutriIA.numComidas);
+  nutriIA.planData={
+    clienteId:clientId,
+    objetivo:obj,
+    macros:{kcal,prot,carb,fat,protG:Math.round(kcal*prot/100/4),carbG:Math.round(kcal*carb/100/4),fatG:Math.round(kcal*fat/100/9)},
+    comidas:template.map(m=>({...m,kcal:mealKcal,variantes:m.variantes.map(v=>({...v,ing:[...v.ing],pasos:[...v.pasos]}))}))
+  };
+  nutriaRenderEditor();
+}
+
+function nutriaRenderEditor(){
+  const {macros,comidas,objetivo}=nutriIA.planData;
+  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
+  const clientName=document.getElementById("nutria-client")?.selectedOptions[0]?.text||"Cliente";
+  document.getElementById("nutria-ed-title").textContent=`Plan de ${clientName}`;
+  document.getElementById("nutria-ed-sub").textContent=`${objMap[objetivo]} · ${macros.kcal} kcal/día`;
+  document.getElementById("nutria-ed-macros").innerHTML=
+    [{v:macros.kcal,c:"#e08a00",l:"Calorías"},{v:macros.protG+"g",c:"#4f6ef7",l:`Proteína ${macros.prot}%`},{v:macros.carbG+"g",c:"#00a87a",l:`Carbos ${macros.carb}%`},{v:macros.fatG+"g",c:"#e08a00",l:`Grasas ${macros.fat}%`}]
+    .map(x=>`<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("");
+
+  document.getElementById("nutria-ed-meals").innerHTML=comidas.map((meal,mi)=>`
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px">
+      <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:22px">${meal.icono}</span>
+        <div><div style="font-weight:700;font-size:15px">${meal.nombre}</div><div style="font-size:12px;opacity:.85">${meal.hora} · ~${meal.kcal} kcal</div></div>
+      </div>
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
+        ${meal.variantes.map((v,vi)=>`<button id="net-${mi}-${vi}" onclick="nutriaSelectTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
+      </div>
+      ${meal.variantes.map((v,vi)=>`
+        <div id="nep-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
+          <div style="font-weight:700;margin-bottom:8px;font-size:13px">${v.nombre}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Ingredientes</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
+            ${v.ing.map(i=>`<span style="background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600">${i}</span>`).join("")}
+          </div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Preparación</div>
+          <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px">
+            ${v.pasos.map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${pi+1}</div><span>${p}</span></div>`).join("")}
+          </div>
+        </div>`).join("")}
+    </div>`).join("");
+
+  document.getElementById("nutria-config").classList.add("hidden");
+  document.getElementById("nutria-editor").classList.remove("hidden");
+}
+
+function nutriaSelectTab(mi,vi){
+  nutriIA.planData.comidas[mi].variantes.forEach((_,i)=>{
+    const t=document.getElementById(`net-${mi}-${i}`);
+    const p=document.getElementById(`nep-${mi}-${i}`);
+    if(t){t.style.borderBottomColor=i===vi?"var(--accent)":"transparent";t.style.color=i===vi?"var(--accent)":"var(--muted)";t.style.fontWeight=i===vi?"700":"500";}
+    if(p)p.style.display=i===vi?"block":"none";
+  });
+}
+
+async function nutriaSave(){
+  const {clienteId,objetivo,macros,comidas}=nutriIA.planData;
+  const clientName=document.getElementById("nutria-client")?.selectedOptions[0]?.text||"Cliente";
+  try{
+    await apiGet({
+      action:"saveNutritionFull",
+      clienteId,
+      nombre:`Plan ${clientName}`,
+      objetivo,
+      kcal:macros.kcal,
+      proteina_g:macros.protG,
+      carbos_g:macros.carbG,
+      grasas_g:macros.fatG,
+      proteina_pct:macros.prot,
+      carbos_pct:macros.carb,
+      grasas_pct:macros.fat,
+      comidas_json:JSON.stringify(comidas)
+    });
+    // Also save basic plan for backward compatibility
+    await apiGet({
+      action:"saveNutrition",
+      clienteId,
+      nombre:objetivo==="perdida_grasa"?"Pérdida de Grasa":objetivo==="volumen"?"Volumen Muscular":"Mantenimiento",
+      kcal:macros.kcal,
+      proteina:macros.protG,
+      carbos:macros.carbG,
+      grasas:macros.fatG,
+      comidas:comidas.map(m=>m.nombre+": "+m.variantes[0].ing.join(", ")).join("|")
+    });
+    alert(`✅ Plan guardado y enviado a ${clientName}`);
+    setTab("nutricion");
+  }catch(e){
+    alert("Error guardando: "+e.message);
+  }
 }
 
 async function saveProgress(){
