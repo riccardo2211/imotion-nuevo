@@ -1042,7 +1042,7 @@ async function renderClientNutrition(){
   render(spinner("Cargando nutrición…"));
   // Try full plan first
   let fullPlan=null;
-  try{fullPlan=await apiGet({action:"getNutritionFull",clientId:U.id});}catch(e){}
+  try{fullPlan=await apiGet({action:"getNutritionFull",clienteId:U.id});}catch(e){}
 
   if(fullPlan&&fullPlan.comidas){
     const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
@@ -1138,10 +1138,10 @@ const MEAL_TEMPLATES={
         {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas"]},
         {letra:"C",nombre:"Yogur con granola",ing:["200g yogur griego 0%","frutos rojos","20g granola"],pasos:["Vierte el yogur","Añade frutos rojos","Espolvorea granola"]}
       ]},
-      {nombre:"Almuerzo",hora:"11:30",icono:"🍎",variantes:[
-        {letra:"A",nombre:"Fruta con proteína",ing:["1 manzana","20g proteína en polvo","200ml agua"],pasos:["Mezcla la proteína con agua","Toma con la fruta"]},
-        {letra:"B",nombre:"Queso cottage con fruta",ing:["150g queso cottage","1 naranja","10g nueces"],pasos:["Sirve el cottage en bol","Añade la naranja pelada","Añade las nueces"]},
-        {letra:"C",nombre:"Tosta de pavo",ing:["1 tosta integral","60g pavo loncheado","tomate","lechuga"],pasos:["Tuesta el pan","Monta con pavo y verduras"]}
+      {nombre:"Media mañana",hora:"11:00",icono:"🍎",variantes:[
+        {letra:"A",nombre:"Yogur griego con fruta",ing:["150g yogur griego 0%","1 plátano","canela"],pasos:["Sirve el yogur en un bol","Añade el plátano troceado","Espolvorea canela"]},
+        {letra:"B",nombre:"Frutos secos y fruta",ing:["20g almendras","1 manzana"],pasos:["Lava la manzana","Toma con las almendras"]},
+        {letra:"C",nombre:"Queso fresco con membrillo",ing:["100g queso fresco 0%","30g membrillo"],pasos:["Sirve el queso en plato","Acompaña con el membrillo"]}
       ]},
       {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
         {letra:"A",nombre:"Pollo con arroz",ing:["200g pollo","80g arroz integral","brócoli","aceite"],pasos:["Cuece el arroz","Plancha el pollo","Cocina el brócoli","Sirve junto"]},
@@ -1171,9 +1171,9 @@ const MEAL_TEMPLATES={
         {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera","80g quinoa","pimiento","cebolla"],pasos:["Cuece la quinoa","Saltea las verduras","Plancha la ternera","Sirve"]}
       ]},
       {nombre:"Merienda",hora:"17:30",icono:"🥛",variantes:[
-        {letra:"A",nombre:"Yogur con nueces",ing:["150g yogur griego","10g nueces","miel"],pasos:["Sirve el yogur","Añade nueces y miel"]},
-        {letra:"B",nombre:"Tosta de pavo",ing:["1 tosta integral","50g pavo","tomate"],pasos:["Tuesta el pan","Monta con pavo y tomate"]},
-        {letra:"C",nombre:"Fruta y almendras",ing:["1 pera","15g almendras"],pasos:["Lava la fruta","Sirve con las almendras"]}
+        {letra:"A",nombre:"Yogur con frutos rojos",ing:["150g yogur griego 0%","100g frutos rojos","10g nueces"],pasos:["Sirve el yogur en un bol","Añade los frutos rojos","Añade las nueces"]},
+        {letra:"B",nombre:"Fruta y queso",ing:["1 naranja","80g queso fresco 0%"],pasos:["Pela la naranja","Sirve con el queso fresco"]},
+        {letra:"C",nombre:"Batido ligero",ing:["150ml leche desnatada","1 plátano pequeño","canela"],pasos:["Mezcla todo en batidora","Sirve frío"]}
       ]},
       {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
         {letra:"A",nombre:"Salmón con espárragos",ing:["180g salmón","espárragos","limón","aceite"],pasos:["Hornea el salmón 15 min","Asa los espárragos","Sirve con limón"]},
