@@ -905,7 +905,178 @@ function nutriCard(plan){
     ${meals.map((m,i)=>`<div class="meal-row"><div class="meal-num">${i+1}</div><span>${m}</span></div>`).join("")}`;
 }
 
-async function openNutriModal(clientId){
+async function renderNutrition(){
+  render(spinner("Cargando nutrición…"));
+  const[clients,nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"nutrition"})]);
+  render(`
+    <div class="flex-between" style="margin-bottom:18px">
+      <div class="section-title" style="margin-bottom:0">Nutrición</div>
+      <button class="btn" onclick="setTab('nutricion_ia')">✨ Crear nuevo plan</button>
+    </div>
+    ${clients.map(c=>{
+      const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
+      return `<div class="card" style="margin-bottom:16px">
+        <div class="flex-between" style="margin-bottom:${plan?'16px':'10px'}">
+          <div class="flex">
+            <div class="client-avatar" style="width:36px;height:36px;font-size:14px">${c.nombre[0]}</div>
+            <div style="font-weight:700">${c.nombre}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            ${plan?`<button class="btn-outline" style="font-size:12px;padding:6px 12px" onclick="editNutritionPlan('${c.id}')">✏️ Editar plan</button>`:""}
+            <button class="btn-sm" onclick="quickAssignNutri('${c.id}')">${plan?"Cambiar":"+ Asignar"}</button>
+          </div>
+        </div>
+        ${plan?nutriCard(plan):`<div style="color:var(--muted);font-size:13px">Sin plan asignado.</div>`}
+      </div>`;
+    }).join("")}`);
+}
+
+async function editNutritionPlan(clientId){
+  render(spinner("Cargando plan…"));
+  let fullPlan=null;
+  try{fullPlan=await apiGet({action:"getNutritionFull",clienteId:clientId});}catch(e){}
+
+  if(!fullPlan||!fullPlan.comidas){
+    alert("No hay un plan completo para este cliente. Crea uno desde ✨ Crear Plan IA");
+    renderNutrition();return;
+  }
+
+  const client=_clients.find(c=>String(c.id)===String(clientId));
+  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
+  const exOpts=`<option value="">+ Añadir comida…</option>
+    ${["Desayuno","Media mañana","Almuerzo","Comida","Merienda","Cena","Post-entreno"].map(n=>`<option>${n}</option>`).join("")}`;
+
+  // Store plan in nutriIA for editing
+  nutriIA.planData={
+    clienteId:clientId,
+    objetivo:fullPlan.objetivo,
+    macros:{
+      kcal:fullPlan.kcal,
+      protG:fullPlan.proteina_g,carbG:fullPlan.carbos_g,fatG:fullPlan.grasas_g,
+      prot:fullPlan.proteina_pct,carb:fullPlan.carbos_pct,fat:fullPlan.grasas_pct
+    },
+    comidas:fullPlan.comidas
+  };
+
+  render(`
+    <div class="flex-between" style="margin-bottom:18px">
+      <div>
+        <div style="font-weight:800;font-size:18px">✏️ Editando plan de ${client?.nombre||"Cliente"}</div>
+        <div style="color:var(--muted);font-size:12px;margin-top:2px">${objMap[fullPlan.objetivo]||""} · ${fullPlan.kcal} kcal/día</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" onclick="renderNutrition()">← Volver</button>
+        <button class="btn" onclick="nutriaSaveEdit('${clientId}')">💾 Guardar cambios</button>
+      </div>
+    </div>
+
+    <!-- MACROS -->
+    <div class="card" style="margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        ${[{v:fullPlan.kcal,c:"#e08a00",l:"Calorías"},{v:fullPlan.proteina_g+"g",c:"#4f6ef7",l:`Proteína ${fullPlan.proteina_pct}%`},{v:fullPlan.carbos_g+"g",c:"#00a87a",l:`Carbos ${fullPlan.carbos_pct}%`},{v:fullPlan.grasas_g+"g",c:"#e08a00",l:`Grasas ${fullPlan.grasas_pct}%`}]
+          .map(x=>`<div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("")}
+      </div>
+    </div>
+
+    <!-- COMIDAS EDITOR -->
+    <div id="nutri-edit-meals">
+      ${fullPlan.comidas.map((meal,mi)=>renderMealEditor(meal,mi,clientId)).join("")}
+    </div>
+
+    <button class="btn-outline" style="width:100%;justify-content:center;margin-bottom:24px" onclick="addMealToEdit('${clientId}')">+ Añadir comida</button>
+    <button class="btn" style="width:100%;justify-content:center" onclick="nutriaSaveEdit('${clientId}')">💾 Guardar y enviar a cliente</button>
+  `);
+}
+
+function renderMealEditor(meal,mi,clientId){
+  return `<div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px" id="meal-edit-${mi}">
+    <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">${meal.icono}</span>
+        <div>
+          <input value="${meal.nombre}" onchange="nutriIA.planData.comidas[${mi}].nombre=this.value" style="background:transparent;border:none;color:#fff;font-weight:700;font-size:15px;outline:none;width:150px"/>
+          <input value="${meal.hora}" onchange="nutriIA.planData.comidas[${mi}].hora=this.value" style="background:transparent;border:none;color:rgba(255,255,255,.8);font-size:12px;outline:none;width:60px"/>
+        </div>
+      </div>
+      <button onclick="removeMealEdit(${mi},'${clientId}')" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:12px">✕ Eliminar</button>
+    </div>
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
+      ${meal.variantes.map((v,vi)=>`<button id="met-${mi}-${vi}" onclick="nutriaEditorTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
+      <button onclick="addVariantEdit(${mi},'${clientId}')" style="background:none;border:none;color:var(--accent);padding:8px 12px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif">+ Variante</button>
+    </div>
+    ${meal.variantes.map((v,vi)=>`
+      <div id="mep-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
+        <div style="margin-bottom:10px">
+          <label class="lbl">Nombre variante</label>
+          <input value="${v.nombre}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].nombre=this.value;document.getElementById('met-${mi}-${vi}').textContent='Opción ${v.letra}'"/>
+        </div>
+        <label class="lbl">Ingredientes</label>
+        <div id="ing-edit-${mi}-${vi}">
+          ${v.ing.map((ing,ii)=>`
+            <div style="display:flex;gap:6px;margin-bottom:6px">
+              <input value="${ing}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].ing[${ii}]=this.value" placeholder="Ingrediente"/>
+              <button onclick="removeIngEdit(${mi},${vi},${ii},'${clientId}')" style="background:#fff0f0;border:1px solid #ffdddd;color:var(--danger);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer">✕</button>
+            </div>`).join("")}
+        </div>
+        <button onclick="addIngEdit(${mi},${vi},'${clientId}')" style="background:#f5f6fa;border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;margin-bottom:12px">+ Ingrediente</button>
+        <label class="lbl">Pasos</label>
+        <div id="paso-edit-${mi}-${vi}">
+          ${v.pasos.map((p,pi)=>`
+            <div style="display:flex;gap:6px;margin-bottom:6px;align-items:flex-start">
+              <div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:8px">${pi+1}</div>
+              <input value="${p}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].pasos[${pi}]=this.value"/>
+              <button onclick="removePasoEdit(${mi},${vi},${pi},'${clientId}')" style="background:#fff0f0;border:1px solid #ffdddd;color:var(--danger);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;margin-top:4px">✕</button>
+            </div>`).join("")}
+        </div>
+        <button onclick="addPasoEdit(${mi},${vi},'${clientId}')" style="background:#f5f6fa;border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer">+ Paso</button>
+      </div>`).join("")}
+  </div>`;
+}
+
+function nutriaEditorTab(mi,vi){
+  nutriIA.planData.comidas[mi].variantes.forEach((_,i)=>{
+    const t=document.getElementById(`met-${mi}-${i}`);
+    const p=document.getElementById(`mep-${mi}-${i}`);
+    if(t){t.style.borderBottomColor=i===vi?"var(--accent)":"transparent";t.style.color=i===vi?"var(--accent)":"var(--muted)";t.style.fontWeight=i===vi?"700":"500";}
+    if(p)p.style.display=i===vi?"block":"none";
+  });
+}
+
+function addIngEdit(mi,vi,clientId){nutriIA.planData.comidas[mi].variantes[vi].ing.push("");editNutritionPlan(clientId);}
+function removeIngEdit(mi,vi,ii,clientId){nutriIA.planData.comidas[mi].variantes[vi].ing.splice(ii,1);editNutritionPlan(clientId);}
+function addPasoEdit(mi,vi,clientId){nutriIA.planData.comidas[mi].variantes[vi].pasos.push("");editNutritionPlan(clientId);}
+function removePasoEdit(mi,vi,pi,clientId){nutriIA.planData.comidas[mi].variantes[vi].pasos.splice(pi,1);editNutritionPlan(clientId);}
+function addVariantEdit(mi,clientId){
+  const letra=String.fromCharCode(65+nutriIA.planData.comidas[mi].variantes.length);
+  nutriIA.planData.comidas[mi].variantes.push({letra,nombre:"Nueva variante",ing:["Ingrediente"],pasos:["Paso 1"]});
+  editNutritionPlan(clientId);
+}
+function removeMealEdit(mi,clientId){nutriIA.planData.comidas.splice(mi,1);editNutritionPlan(clientId);}
+function addMealToEdit(clientId){
+  nutriIA.planData.comidas.push({nombre:"Nueva comida",hora:"12:00",icono:"🍽️",kcal:300,variantes:[{letra:"A",nombre:"Opción A",ing:["Ingrediente"],pasos:["Paso 1"]}]});
+  editNutritionPlan(clientId);
+}
+
+async function nutriaSaveEdit(clientId){
+  const{objetivo,macros,comidas}=nutriIA.planData;
+  const client=_clients.find(c=>String(c.id)===String(clientId));
+  try{
+    await apiGet({
+      action:"saveNutritionFull",
+      clienteId:clientId,
+      nombre:`Plan ${client?.nombre||"Cliente"}`,
+      objetivo,
+      kcal:macros.kcal,
+      proteina_g:macros.protG,carbos_g:macros.carbG,grasas_g:macros.fatG,
+      proteina_pct:macros.prot,carbos_pct:macros.carb,grasas_pct:macros.fat,
+      comidas_json:JSON.stringify(comidas)
+    });
+    alert(`✅ Plan actualizado y enviado a ${client?.nombre||"Cliente"}`);
+    renderNutrition();
+  }catch(e){alert("Error: "+e.message);}
+}
+
+async function quickAssignNutri(clientId){
   document.body.insertAdjacentHTML("beforeend",`
     <div class="modal-bg" id="nm" onclick="if(event.target===this)closeModal('nm')">
       <div class="modal modal-sm" style="padding:24px">
