@@ -613,12 +613,7 @@ async function renderClients(){
     </div>`);
 }
 
-async function openClientPanel(clientId){
-  const c=_clients.find(c=>String(c.id)===String(clientId));
-  const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
-  const nutri=_nutrition.find(n=>String(n.clienteId)===String(clientId));
 
-  document.body.insertAdjacentHTML("beforeend",`
     <div class="modal-bg" id="cpanel" onclick="if(event.target===this)closeModal('cpanel')">
       <div class="modal" style="max-width:680px">
         <div class="modal-hd">
