@@ -615,7 +615,128 @@ async function renderClients(){
 
 
     
+async function openClientPanel(clientId){
+  const c=_clients.find(c=>String(c.id)===String(clientId));
+  if(!c)return;
+  const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
+  const nutri=_nutrition.find(n=>String(n.clienteId)===String(clientId));
+  const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  const avail=assigned?DAYS.filter(d=>!(assigned.days||[]).find(x=>x.dia===d)):DAYS;
+  const exOpts=EQUIPMENTS.filter(e=>e!=="Todo").map(eq=>`<optgroup label="${eq}">${EXDB.filter(e=>e.equipo===eq).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}</optgroup>`).join("");
 
+  let daysHtml="";
+  if(assigned){
+    (assigned.days||[]).forEach(d=>{
+      let exRows="";
+      (d.exercises||[]).forEach(ex=>{
+        const rid=resolveExId(ex.exerciseId);
+        const exData=rid?EXDB.find(e=>e.id===rid):null;
+        const nombre=exData?exData.nombre:"Ejercicio #"+ex.exerciseId;
+        exRows+=`<div class="ex-row-edit" id="iexrow-${ex.id}">
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px;margin-bottom:5px">${nombre}</div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+              <label style="font-size:11px;color:var(--muted)">Series</label>
+              <input type="number" value="${ex.series}" min="1" max="20" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${ex.id}','series',this.value)"/>
+              <label style="font-size:11px;color:var(--muted)">Reps</label>
+              <input type="text" value="${ex.reps}" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${ex.id}','reps',this.value)"/>
+              <label style="font-size:11px;color:var(--muted)">Descanso</label>
+              <select style="font-size:12px;padding:4px 6px" onchange="updateEx('${ex.id}','descanso',this.value)">
+                ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${ex.descanso===t?"selected":""}>${t}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          <button class="btn-danger" onclick="removeExInline('${ex.id}','${d.id}')">✕</button>
+        </div>`;
+      });
+      daysHtml+=`<div class="day-block" id="iday-${d.id}">
+        <div class="day-hd" style="display:flex;justify-content:space-between;align-items:center">
+          <span>📅 ${d.dia}</span>
+          <button class="btn-danger" style="font-size:11px;padding:3px 8px" onclick="removeDayInline('${d.id}','${clientId}')">✕ Día</button>
+        </div>
+        <div id="iexlist-${d.id}">${exRows}</div>
+        <select style="margin-top:10px;font-size:12px" onchange="addExInline('${d.id}',this.value,'${clientId}');this.value=''">
+          <option value="">+ Añadir ejercicio a ${d.dia}…</option>
+          ${exOpts}
+        </select>
+      </div>`;
+    });
+  }
+
+  let rutinasBtns="";
+  _routines.forEach(r=>{
+    const isAssigned=assigned&&String(assigned.id)===String(r.id);
+    rutinasBtns+=`<div onclick="assignRoutineClient('${r.id}','${clientId}')" style="background:#f9fafb;border:1.5px solid ${isAssigned?'var(--accent)':'var(--border)'};border-radius:10px;padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div>
+        <div style="font-weight:600;font-size:13px">${r.nombre}</div>
+        <div style="font-size:11px;color:var(--muted)">${r.days?r.days.length:0} días</div>
+      </div>
+      ${isAssigned?'<span class="tag tag-blue">✓ Asignada</span>':'<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>'}
+    </div>`;
+  });
+
+  let nutriBtns="";
+  NUTRI_TPLS.forEach((t,i)=>{
+    const isAssigned=nutri&&nutri.nombre===t.nombre;
+    nutriBtns+=`<div onclick="assignNutriFromClient('${clientId}',${i})" style="background:#f9fafb;border:1.5px solid ${isAssigned?'var(--accent)':'var(--border)'};border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:8px">
+      <div style="font-weight:600;font-size:13px">${t.nombre}</div>
+      <div style="font-size:11px;color:var(--muted)">${t.kcal} kcal · P:${t.proteina}g · C:${t.carbos}g</div>
+      ${isAssigned?'<span class="tag tag-blue" style="margin-top:4px">✓ Asignado</span>':''}
+    </div>`;
+  });
+
+  const html=`<div class="modal-bg" id="cpanel" onclick="if(event.target===this)closeModal('cpanel')">
+    <div class="modal" style="max-width:720px">
+      <div class="modal-hd">
+        <div class="flex" style="gap:14px">
+          <div class="client-avatar" style="width:48px;height:48px;font-size:18px">${c.nombre[0]}</div>
+          <div>
+            <div class="modal-title">${c.nombre}</div>
+            <div style="font-size:12px;color:var(--muted)">${c.email}</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('cpanel')">✕</button>
+      </div>
+      <div style="display:flex;border-bottom:1px solid var(--border);padding:0 24px">
+        <button onclick="switchClientTab('tab-rutina')" id="tab-rutina" style="background:none;border:none;border-bottom:2px solid var(--accent);color:var(--accent);font-weight:700;padding:12px 16px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif">💪 Entrenamiento</button>
+        <button onclick="switchClientTab('tab-nutri')" id="tab-nutri" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-weight:500;padding:12px 16px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif">🥗 Nutrición</button>
+        <button onclick="switchClientTab('tab-msg')" id="tab-msg" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-weight:500;padding:12px 16px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif">💬 Mensaje</button>
+      </div>
+      <div class="modal-body">
+        <div id="tab-rutina-content">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Rutina asignada</div>
+          ${rutinasBtns||'<div style="color:var(--muted);font-size:13px;margin-bottom:12px">No hay rutinas. Crea una en la pestaña Rutinas.</div>'}
+          <button class="btn-outline" onclick="closeModal('cpanel');showCreateRoutine()" style="width:100%;justify-content:center;margin-bottom:16px;font-size:12px">+ Nueva rutina</button>
+          ${assigned?`
+            <div style="border-top:1px solid var(--border);padding-top:14px">
+              <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">✏️ Editar — ${assigned.nombre}</div>
+              <div style="display:flex;gap:8px;margin-bottom:14px">
+                <select id="newday-inline" style="flex:1;font-size:12px">
+                  <option value="">+ Añadir día…</option>
+                  ${avail.map(d=>`<option>${d}</option>`).join("")}
+                </select>
+                <button class="btn-sm" onclick="addDayInline('${assigned.id}','${clientId}')">Añadir</button>
+              </div>
+              ${daysHtml||'<div style="color:var(--muted);font-size:13px">Sin días. Añade uno arriba.</div>'}
+            </div>`
+          :'<div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:10px;padding:12px;font-size:13px;color:#a06000">Asigna una rutina arriba para editarla.</div>'}
+        </div>
+        <div id="tab-nutri-content" class="hidden">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Plan nutricional</div>
+          ${nutriBtns}
+          <button class="btn-outline" onclick="closeModal('cpanel');editNutritionPlan('${clientId}')" style="width:100%;justify-content:center;margin-top:4px;font-size:12px">✏️ Editar plan completo</button>
+        </div>
+        <div id="tab-msg-content" class="hidden">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Mensaje para ${c.nombre}</div>
+          <textarea id="comment-${clientId}" placeholder="Escribe instrucciones, feedback o motivación…" style="width:100%;background:#f9fafb;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;min-height:120px;outline:none;color:var(--text)"></textarea>
+          <button class="btn" style="margin-top:10px;width:100%;justify-content:center" onclick="saveComment('${clientId}')">📤 Enviar mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  document.body.insertAdjacentHTML("beforeend",html);
+}
 function switchClientTab(tabId){
   ["tab-rutina","tab-nutri","tab-msg"].forEach(t=>{
     const btn=document.getElementById(t);
