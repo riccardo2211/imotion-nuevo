@@ -614,52 +614,7 @@ async function renderClients(){
 }
 
 
-    <div class="modal-bg" id="cpanel" onclick="if(event.target===this)closeModal('cpanel')">
-      <div class="modal" style="max-width:680px">
-        <div class="modal-hd">
-          <div class="flex" style="gap:14px">
-            <div class="client-avatar" style="width:48px;height:48px;font-size:18px">${c.nombre[0]}</div>
-            <div><div class="modal-title">${c.nombre}</div><div style="font-size:12px;color:var(--muted)">${c.email}</div></div>
-          </div>
-          <button class="modal-close" onclick="closeModal('cpanel')">✕</button>
-        </div>
-        <div class="modal-body">
-          <!-- RUTINA -->
-          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Rutina asignada</div>
-          ${assigned?`
-            <div style="background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px">
-              <div style="font-weight:700;margin-bottom:10px;color:var(--accent)">${assigned.nombre}</div>
-              ${(assigned.days||[]).map(d=>`
-                <div style="margin-bottom:8px">
-                  <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">📅 ${d.dia}</div>
-                  ${(d.exercises||[]).map(ex=>{
-                    const exData=EXDB.find(e=>String(e.id)===String(ex.exerciseId))||{nombre:"Ejercicio #"+ex.exerciseId};
-                    return `<div style="font-size:12px;color:#444;padding:2px 0 2px 12px">• ${exData.nombre} — ${ex.series}×${ex.reps}</div>`;
-                  }).join("")}
-                </div>`).join("")}
-            </div>`
-          :`<div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:10px;padding:12px;font-size:13px;color:#a06000;margin-bottom:16px">Sin rutina asignada.</div>`}
-
-          <!-- CAMBIAR RUTINA -->
-          ${_routines.length>0?`
-            <div style="font-size:13px;font-weight:700;margin-bottom:8px">Asignar rutina</div>
-            ${_routines.map(r=>`
-              <div onclick="assignRoutineClient('${r.id}','${clientId}')" style="background:#f9fafb;border:1.5px solid ${assigned?.id==r.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
-                <div><div style="font-weight:600;font-size:13px">${r.nombre}</div><div style="font-size:11px;color:var(--muted)">${r.days?.length||0} días</div></div>
-                ${assigned?.id==r.id?`<span class="tag tag-blue">✓ Asignada</span>`:`<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>`}
-              </div>`).join("")}
-          `:''}
-
-          <!-- NUTRICIÓN -->
-          <div style="font-size:13px;font-weight:700;margin-top:16px;margin-bottom:8px">Plan nutricional</div>
-          <div class="flex-between">
-            ${nutri?`<span class="tag tag-green">${nutri.nombre} — ${nutri.kcal} kcal</span>`:`<span class="tag tag-orange">Sin plan asignado</span>`}
-            <button class="btn-sm" onclick="closeModal('cpanel');setTab('nutricion')">Gestionar →</button>
-          </div>
-        </div>
-      </div>
-    </div>`);
-}
+    
 
 function switchClientTab(tabId){
   ["tab-rutina","tab-nutri","tab-msg"].forEach(t=>{
