@@ -461,7 +461,16 @@ function renderSidebar(){
       </button>`).join("")}`;
 }
 
-function setTab(t){TAB=t;renderSidebar();renderTab();}
+function setTab(t){
+  // Restaurar estilos del app container
+  const appEl=document.getElementById("app");
+  appEl.style.maxWidth="960px";
+  appEl.style.padding="20px";
+  appEl.style.margin="0 auto";
+  const mainEl=appEl.closest(".main");
+  if(mainEl)mainEl.style.padding="24px";
+  TAB=t;renderSidebar();renderTab();
+}
 function renderTab(){
   if(U.rol==="trainer"){
     if(TAB==="clientes")renderClients();
