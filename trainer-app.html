@@ -3,604 +3,258 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>i-Motion Trainer</title>
+<title>i-Motion App</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f6fa;--card:#fff;--border:#e8eaed;--text:#1a1a2e;--muted:#8892a4;--accent:#4f6ef7;--success:#00c48c;--warn:#ffb648;--danger:#ff5c5c}
+:root{
+  --bg:#f4f6fb;--white:#fff;--border:#e5e8ef;
+  --text:#1a1d2e;--muted:#8b95a8;
+  --accent:#4361ee;--accent2:#3a0ca3;
+  --success:#06d6a0;--warn:#ffd166;--danger:#ef476f;
+}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh}
-button{font-family:'Inter',sans-serif;cursor:pointer}
-input,select{font-family:'Inter',sans-serif}
+*{font-family:'Inter',sans-serif}
 
-.topbar{background:#fff;border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{font-weight:800;font-size:18px;color:var(--accent);letter-spacing:-0.5px}
-.topbar-user{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 24px;gap:8px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nav-logo{font-weight:800;font-size:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:8px}
+.nav-btn{background:none;border:none;color:var(--muted);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.nav-btn:hover{background:#f0f2ff;color:var(--accent)}
+.nav-btn.active{background:#eef0ff;color:var(--accent);font-weight:700}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
 
-.layout{display:flex;min-height:calc(100vh - 56px)}
-.sidebar{width:230px;background:#fff;border-right:1px solid var(--border);padding:16px 10px;flex-shrink:0}
-.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
-.sidebar-item:hover{background:#f5f6fa;color:var(--text)}
-.sidebar-item.active{background:#eef0ff;color:var(--accent);font-weight:600}
-.sidebar-icon{font-size:16px;width:20px;text-align:center}
-.sidebar-sub{font-size:10px;color:var(--muted);margin-top:1px}
-.main{flex:1;padding:24px;overflow-x:hidden;min-width:0}
+/* ── LAYOUT ── */
+.page{max-width:1000px;margin:0 auto;padding:28px 24px}
 
-.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
-.btn:hover{background:#3d5ae0;box-shadow:0 4px 12px rgba(79,110,247,.3)}
-.btn-sm{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-weight:600;font-size:12px}
-.btn-outline{background:#fff;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;padding:8px 16px;font-weight:600;font-size:13px}
-.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500}
-.btn-ghost:hover{border-color:#aaa;color:var(--text)}
-.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ffdddd;border-radius:8px;padding:5px 10px;font-size:12px}
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card-hover{cursor:pointer;transition:all .15s}
+.card-hover:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(67,97,238,.1);transform:translateY(-1px)}
 
-input,select{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none;transition:border-color .15s}
-input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,110,247,.1)}
-.search-box{position:relative}
-.search-box input{padding-left:36px;background:#f5f6fa;border-color:transparent}
-.search-box input:focus{background:#fff;border-color:var(--accent)}
-.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
-label.lbl{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px}
+/* ── BUTTONS ── */
+.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn:hover{background:#3451d1;box-shadow:0 4px 12px rgba(67,97,238,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{background:var(--white);color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;padding:9px 18px;font-weight:600;font-size:13px;cursor:pointer}
+.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer}
+.btn-danger{background:#fff0f3;color:var(--danger);border:1px solid #ffc0cb;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer}
+.btn-success{background:var(--success);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:13px;cursor:pointer}
 
-.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px}
-.card-hover{transition:all .15s;cursor:pointer}
-.card-hover:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(79,110,247,.1);transform:translateY(-1px)}
+/* ── INPUTS ── */
+input,select,textarea{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-size:13px;width:100%;outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(67,97,238,.1)}
+label.lbl{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px}
 
-.tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;white-space:nowrap}
-.tag-blue{background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff}
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+.tag-blue{background:#eef0ff;color:var(--accent);border:1px solid #d5dbff}
 .tag-green{background:#e6faf4;color:#00a87a;border:1px solid #b3edd8}
-.tag-orange{background:#fff6e6;color:#e08a00;border:1px solid #ffd98a}
-.tag-gray{background:#f0f2f5;color:#6b7280;border:1px solid #e2e5ea}
-.tag-purple{background:#f3f0ff;color:#7c5cbf;border:1px solid #d4c5ff}
+.tag-orange{background:#fff6e6;color:#d08000;border:1px solid #ffd98a}
+.tag-red{background:#fff0f3;color:var(--danger);border:1px solid #ffc0cb}
+.tag-gray{background:#f4f6fb;color:var(--muted);border:1px solid var(--border)}
 
-/* EXERCISE GRID */
-.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.ex-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s}
-.ex-card:hover{border-color:#c5cbf9;box-shadow:0 6px 20px rgba(79,110,247,.12);transform:translateY(-2px)}
-.ex-thumb{position:relative;width:100%;height:140px;background:#f5f6fa;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.ex-thumb img{width:100%;height:100%;object-fit:cover}
-.ex-thumb-placeholder{font-size:40px;color:#d0d5dd}
-.ex-play{position:absolute;top:8px;right:8px;background:rgba(79,110,247,.9);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:11px}
-.ex-body{padding:11px 12px}
-.ex-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px;line-height:1.3}
-
-/* CHIPS */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.chip{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
-.chip:hover{border-color:var(--accent);color:var(--accent)}
-.chip.active{background:#eef0ff;border-color:var(--accent);color:var(--accent);font-weight:600}
-
-/* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(2px)}
-.modal{background:#fff;border-radius:18px;max-width:620px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.modal-sm{max-width:420px}
-.modal-hd{padding:22px 24px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:0;background:#fff;z-index:1;border-radius:18px 18px 0 0;border-bottom:1px solid var(--border)}
-.modal-title{font-weight:800;font-size:20px}
-.modal-close{background:#f5f6fa;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);flex-shrink:0}
-.modal-close:hover{background:#fee;color:var(--danger)}
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(3px);overflow-y:auto}
+.modal{background:var(--white);border-radius:20px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+.modal-hd{padding:22px 24px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);border-radius:20px 20px 0 0;z-index:1}
+.modal-title{font-weight:800;font-size:18px}
 .modal-body{padding:20px 24px 24px}
+.modal-close{background:#f4f6fb;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);cursor:pointer}
+.modal-close:hover{background:#fee;color:var(--danger)}
 
-/* EXERCISE DETAIL PANEL */
-.ex-panel{background:#fff;border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden}
-.ex-panel-img{width:100%;height:200px;background:#f5f6fa;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.ex-panel-img img{width:100%;height:100%;object-fit:contain;padding:16px}
-.ex-panel-body{padding:16px}
+/* ── EJERCICIOS VIDEO CARD ── */
+.ex-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .15s}
+.ex-card:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(67,97,238,.1)}
+.ex-thumb{position:relative;width:100%;padding-bottom:56.25%;background:#1a1d2e;overflow:hidden}
+.ex-thumb iframe,.ex-thumb img{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover}
+.ex-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s}
+.ex-play-overlay:hover{background:rgba(0,0,0,.5)}
+.play-btn{width:50px;height:50px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
 
-.steps{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#444;line-height:1.55}
-.step-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;min-width:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
 
-/* TRAINING VIEW */
-.training-day{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden}
-.training-day-hd{background:#f9fafb;padding:14px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--accent);font-size:15px}
-.ex-item{padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
-.ex-item:last-child{border-bottom:none}
-.ex-item:hover{background:#f9fafb}
-.ex-item.active{background:#eef0ff}
-.ex-item-top{display:flex;align-items:center;gap:12px}
-.ex-item-thumb{width:54px;height:54px;border-radius:10px;background:#f0f2f5;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.ex-item-thumb img{width:100%;height:100%;object-fit:cover}
-
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:22px}
-.stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
-.stat-val{font-size:28px;font-weight:800;line-height:1}
-.stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
-
-/* MACROS */
-.macro-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.macro{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.macro-val{font-size:20px;font-weight:800}
-.macro-lbl{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
-.meal-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;align-items:flex-start}
-.meal-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;min-width:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
-
-.prog-entry{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#f9fafb;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
-.client-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
-.day-block{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-.day-hd{font-weight:700;color:var(--accent);margin-bottom:10px;font-size:14px}
-.ex-row-edit{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
-.ex-row-edit:last-of-type{border-bottom:none}
-
+/* ── MISC ── */
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-sm{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top:2px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite}
-
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0f2ff 0%,#faf5ff 100%)}
-.login-card{background:#fff;border-radius:20px;padding:36px;width:360px;box-shadow:0 8px 32px rgba(79,110,247,.12)}
-
-.section-title{font-weight:800;font-size:18px;margin-bottom:18px}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-weight:800;font-size:18px}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 .flex{display:flex;align-items:center;gap:8px}
 .flex-between{display:flex;align-items:center;justify-content:space-between}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-#app{max-width:1100px;margin:0 auto}
 .hidden{display:none!important}
+.empty{text-align:center;padding:50px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.client-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0}
+.msg-bubble{background:#f0f2ff;border-radius:12px 12px 12px 4px;padding:12px 14px;font-size:13px;line-height:1.6;max-width:85%;margin-bottom:8px;color:var(--text)}
+.msg-bubble.mine{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:12px 12px 4px 12px;margin-left:auto}
+.macro-box{background:#f9faff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.macro-val{font-size:22px;font-weight:800;margin-bottom:2px}
+.macro-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 
-/* WGER CATEGORY CHIPS */
-.cat-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0f2ff 0%,#e8f4ff 100%)}
+.login-card{background:var(--white);border-radius:22px;padding:40px;width:360px;box-shadow:0 8px 40px rgba(67,97,238,.15)}
+.login-logo{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+
+/* ── TRAINING VIEW ── */
+.training-day{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.training-day-hd{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px 18px;font-weight:700;font-size:15px}
+.training-ex{padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.training-ex:last-child{border-bottom:none}
+.training-ex:hover{background:#f9faff}
+.training-ex.done{opacity:.5}
+.training-ex-expanded{padding:0 18px 16px;background:#f9faff;border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
 
-<div id="topbar" class="topbar hidden">
-  <span class="logo">i-Motion</span>
-  <div id="topbar-user" class="topbar-user"></div>
-</div>
-
-<div id="layout" class="layout hidden">
-  <aside class="sidebar" id="sidebar"></aside>
-  <main class="main"><div id="app"></div></main>
-</div>
-
-<div id="login-wrap" class="login-wrap">
-  <div class="login-card">
-    <div style="text-align:center;margin-bottom:28px">
-      <div style="font-size:26px;font-weight:800;color:var(--accent);letter-spacing:-1px">i-Motion</div>
-      <div style="color:var(--muted);font-size:12px;margin-top:4px;font-weight:500">EMS TRAINER PLATFORM</div>
-    </div>
-    <div style="margin-bottom:14px"><label class="lbl">Email</label><input id="lemail" placeholder="trainer@imotion.com" type="email"/></div>
-    <div style="margin-bottom:20px"><label class="lbl">Contraseña</label><input id="lpass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-    <div id="lerr" style="color:var(--danger);font-size:12px;margin-bottom:12px;text-align:center"></div>
-    <button class="btn" style="width:100%;justify-content:center;padding:11px" id="lbtn" onclick="doLogin()">Iniciar sesión</button>
-    <div style="margin-top:20px;text-align:center;font-size:11px;color:var(--muted);line-height:1.9">
-      trainer@imotion.com · imotion2024<br>carlos@demo.com / maria@demo.com · 1234
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">i-Motion</div>
+      <div style="color:var(--muted);font-size:12px;margin-bottom:28px;font-weight:500">EMS PERSONAL TRAINER</div>
+      <div style="margin-bottom:14px">
+        <label class="lbl">Email</label>
+        <input id="l-email" type="email" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div style="margin-bottom:20px">
+        <label class="lbl">Contraseña</label>
+        <input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div id="l-err" style="color:var(--danger);font-size:12px;margin-bottom:12px;text-align:center"></div>
+      <button class="btn" style="width:100%;justify-content:center;padding:12px" id="l-btn" onclick="doLogin()">Iniciar sesión</button>
+      <div style="margin-top:18px;text-align:center;font-size:11px;color:var(--muted);line-height:1.9">
+        trainer@imotion.com · imotion2024<br>carlos@demo.com / maria@demo.com · 1234
+      </div>
     </div>
   </div>
 </div>
 
+<!-- APP -->
+<div id="app-screen" class="hidden">
+  <nav class="nav" id="main-nav"></nav>
+  <div class="page" id="main-page"></div>
+</div>
+
 <script>
+// ── CONFIG ────────────────────────────────────────────────
 const API="https://script.google.com/macros/s/AKfycbw9zUMlHGIbwZclvRmVQU1mSWQib2c5W44cUR4RXvO-h2waJr1WLc1l61Iz123HgA8tGA/exec";
-const WGER="https://wger.de/api/v2";
-let U=null,TAB=null;
-let _clients=[],_routines=[],_nutrition=[];
-let _wgerCache={};
+let U=null, TAB=null;
+let _clients=[], _routines=[], _nutrition=[];
 
 // ── API ───────────────────────────────────────────────────
-async function apiGet(p){
-  const r=await fetch(API+"?"+new URLSearchParams(p));
+async function api(params){
+  const r=await fetch(API+"?"+new URLSearchParams(params));
   const j=await r.json();
-  if(!j.ok)throw new Error(j.error);
+  if(!j.ok)throw new Error(j.error||"Error");
   return j.data;
 }
 
-async function wgerGet(endpoint){
-  if(_wgerCache[endpoint])return _wgerCache[endpoint];
-  const r=await fetch(WGER+endpoint);
-  const j=await r.json();
-  _wgerCache[endpoint]=j;
-  return j;
-}
-
-async function wgerExerciseInfo(id){
-  try{
-    const data=await wgerGet(`/exerciseinfo/${id}/?format=json`);
-    return data;
-  }catch(e){return null;}
-}
-
-function render(h){document.getElementById("app").innerHTML=h;}
-function spinner(t="Cargando…"){return`<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:var(--muted);margin-top:14px;font-size:13px">${t}</div></div>`;}
+// ── UTILS ─────────────────────────────────────────────────
+function render(html){document.getElementById("main-page").innerHTML=html;}
+function spin(t="Cargando…"){return`<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:var(--muted);margin-top:14px;font-size:13px">${t}</div></div>`;}
 function closeModal(id){document.getElementById(id)?.remove();}
-
-// Get exercise image from wger data
-function getWgerImage(exInfo){
-  if(!exInfo||!exInfo.images||!exInfo.images.length)return null;
-  return exInfo.images[0].image;
-}
-
-// Strip HTML tags from wger description
-function stripHtml(html){
-  const d=document.createElement("div");
-  d.innerHTML=html||"";
-  return d.textContent||d.innerText||"";
-}
-
-// ── LOCAL EXERCISE STEPS ──────────────────────────────────
-const LOCAL_STEPS={
-  // peso corporal
-  "L1":["Coloca las manos ligeramente más anchas que los hombros","Mantén el cuerpo en línea recta de cabeza a talones","Baja el pecho hasta casi tocar el suelo","Empuja hacia arriba hasta extender los brazos"],
-  "L2":["Agarra la barra con agarre prono a la anchura de hombros","Activa el core y los hombros antes de subir","Tira hasta que la barbilla supere la barra","Baja de forma lenta y controlada"],
-  "L3":["Agarra las barras y eleva el cuerpo con brazos extendidos","Inclínate hacia adelante para mayor activación pectoral","Baja flexionando los codos hasta 90°","Empuja hacia arriba hasta extender los brazos"],
-  "L4":["Apoya antebrazos y puntas de los pies","Mantén cuerpo en línea recta","Activa core y glúteos","Respira de forma controlada"],
-  "L5":["Pies a la anchura de hombros, punteras ligeramente abiertas","Baja flexionando rodillas hasta paralelo","Mantén el pecho arriba y talones en el suelo","Sube empujando con los talones"],
-  "L6":["Da un paso largo hacia adelante","Baja verticalmente hasta casi tocar el suelo con la rodilla trasera","Mantén el torso erguido","Empuja con el talón delantero para volver"],
-  "L7":["De pie, baja en cuclillas y apoya las manos","Salta los pies hacia atrás a posición de plancha","Realiza una flexión (opcional)","Salta los pies hacia las manos y salta hacia arriba"],
-  "L8":["Posición de plancha alta con brazos extendidos","Alterna llevando rodillas al pecho rápidamente","Mantén las caderas bajas y el core activo","Cuanto más rápido, mayor demanda cardiovascular"],
-  // barra
-  "B1":["Barra sobre trapecios, pies a la anchura de hombros","Inspira y baja flexionando rodillas hasta paralelo","Mantén espalda neutra y pecho arriba","Empuja con los talones espirando hasta arriba"],
-  "B2":["Túmbate en el banco, agarra la barra más ancha que los hombros","Baja la barra controlando hasta el pecho","Mantén los codos a 75° respecto al torso","Empuja hacia arriba espirando"],
-  "B3":["Ajusta el banco a 30-45°","Baja la barra hasta la parte alta del pecho","Mantén los pies firmes y espalda baja apoyada","Empuja hacia arriba y ligeramente hacia atrás"],
-  "B4":["De pie frente a la barra, pies a la anchura de caderas","Agarra la barra justo fuera de las piernas, espalda neutra","Empuja el suelo extendiendo caderas y rodillas","Baja de forma controlada invirtiendo el movimiento"],
-  "B5":["De pie con la barra, agarre prono","Empuja las caderas hacia atrás, espalda neutra","Baja hasta sentir tensión en los isquios","Vuelve empujando caderas hacia adelante"],
-  "B6":["Inclínate 45-60° con espalda neutra","Agarra la barra a la anchura de hombros","Tira hacia el ombligo retrayendo omóplatos","Baja de forma controlada"],
-  "B7":["De pie o sentado con la barra a la barbilla","Empuja hacia arriba hasta casi extender los brazos","Baja de forma controlada","Mantén el core activo"],
-  "B8":["Agarra la barra con agarre supino","Mantén los codos pegados a los costados","Flexiona los codos llevando la barra al pecho","Baja de forma lenta y controlada"],
-  // mancuernas
-  "M1":["Sentado con mancuernas a la altura del hombro, palmas hacia ti","Gira las muñecas al subir hasta palmas hacia adelante","Extiende los brazos hacia arriba","Invierte el giro al bajar"],
-  "M2":["De pie, mancuernas a los lados, codos ligeramente flexionados","Eleva los brazos lateralmente hasta la altura de hombros","Los codos lideran el movimiento","Baja de forma lenta y controlada"],
-  "M3":["De pie, mancuernas con agarre supino","Alterna la flexión girando la muñeca al subir","Lleva la mancuerna hasta el hombro","Baja de forma controlada y repite"],
-  "M4":["De pie, mancuernas con agarre neutro (palmas enfrentadas)","Flexiona los codos manteniendo el agarre","Sube hasta el nivel del hombro","Baja de forma controlada"],
-  "M5":["Inclínate con caderas flexionadas y espalda neutra","Mancuernas con codos ligeramente flexionados","Eleva los brazos lateralmente hasta hombros","Aprieta deltoides posteriores en la cima"],
-  "M6":["Túmbate en el banco, mancuernas con brazos extendidos","Abre los brazos describiendo un arco amplio","Mantén un ligero codo doblado","Cierra los brazos apretando el pecho"],
-  "M7":["Apoya la espalda alta en un banco","Coloca la mancuerna sobre las caderas","Empuja con los talones elevando las caderas","Aprieta glúteos en la parte alta"],
-  "M8":["Apoya mano y rodilla del mismo lado en un banco","Agarra la mancuerna con el brazo extendido","Tira hacia la cadera retrayendo el omóplato","Baja de forma controlada"],
-  // máquina
-  "MA1":["Siéntate con la espalda bien apoyada","Pies en la plataforma a la anchura de hombros","Flexiona hasta 90°","Empuja con los talones hasta casi extender"],
-  "MA2":["Túmbate boca abajo en la máquina","Rodillo justo por encima de los talones","Flexiona las rodillas llevando talones a glúteos","Controla la bajada lentamente"],
-  "MA3":["Coloca los hombros bajo los apoyos","Sube de puntillas lo más alto posible","Mantén 1 segundo en la cima","Baja lentamente hasta estirar el gemelo"],
-  "MA4":["Siéntate con los muslos bajo los rodillos","Agarra la barra con agarre prono ancho","Tira hacia el pecho llevando los codos hacia abajo","Controla la subida"],
-  // cable
-  "C1":["Siéntate con pies en los apoyos","Agarra el cable con brazos extendidos y espalda erguida","Tira hacia el abdomen llevando codos hacia atrás","Extiende los brazos de forma controlada"],
-  "C2":["Ajusta la polea a la altura de los ojos","Agarra la cuerda con palmas hacia abajo","Tira hacia tu cara separando los extremos","Mantén los codos elevados"],
-  "C3":["Agarra el cable con codos pegados al cuerpo","Desde 90° de flexión extiende hacia abajo","Aprieta tríceps en la posición extendida","Sube de forma controlada"],
-  "C4":["Agarra la barra de la polea baja","Mantén los codos pegados al cuerpo","Flexiona los codos llevando la barra al pecho","Baja de forma lenta"],
-  "C5":["De pie entre las dos poleas ajustadas arriba","Agarra un cable con cada mano","Lleva los brazos hacia adelante y abajo cruzándolos","Controla la vuelta a la posición inicial"],
-  // banda
-  "BE1":["Coloca la banda bajo los pies y sobre los hombros","Pies a la anchura de hombros","Baja flexionando rodillas hasta paralelo","Sube empujando contra la resistencia"],
-  "BE2":["Pisa la banda con ambos pies","Agarra los extremos con agarre supino","Flexiona los codos contra la resistencia","Baja de forma lenta y controlada"],
-  "BE3":["Pisa la banda y agarra los extremos a la altura de hombros","Empuja hacia arriba extendiendo los brazos","Controla la bajada resistiendo la tensión","Mantén el core activo"],
-  "BE4":["A cuatro patas, banda en los pies","Extiende una pierna hacia atrás y arriba","Aprieta el glúteo en la posición extendida","Baja de forma controlada"],
-  "BE5":["Coloca la banda por encima de las rodillas","De pie o tumbado de lado","Separa las piernas contra la resistencia","Controla la vuelta"],
-  "BE6":["Ancla la banda a una altura media","Agarra los extremos con brazos extendidos","Tira hacia el abdomen retrayendo los omóplatos","Extiende los brazos de forma controlada"],
-  // trx
-  "T1":["Agarra las asas con brazos extendidos, cuerpo inclinado","Mantén el cuerpo en línea recta","Tira hacia el pecho retrayendo los omóplatos","Baja de forma controlada"],
-  "T2":["Agarra las asas con brazos extendidos hacia adelante","Mantén el cuerpo en línea recta","Baja flexionando los codos","Empuja hacia arriba extendiendo los brazos"],
-  "T3":["Agarra las asas frente a ti para equilibrio","Pies a la anchura de hombros","Baja como en una sentadilla normal","Sube empujando con los talones"],
-  "T4":["Mete un pie en el asa trasera","Da un paso adelante con la pierna libre","Baja flexionando la rodilla delantera hasta 90°","Sube empujando con el talón delantero"],
-  // cardio
-  "CA1":["De pie frente al cajón, pies a la anchura de hombros","Flexiona ligeramente las rodillas","Salta explosivamente aterrizando en el cajón","Aterriza con rodillas semiflexionadas"],
-  "CA2":["Agarra los extremos del cable con cada mano","Gira las muñecas hacia adelante","Salta sobre las puntas con saltos pequeños y rítmicos","Mantén los codos cerca del cuerpo"],
-  // movilidad
-  "MO1":["Haz una zancada y baja la rodilla trasera al suelo","Empuja la cadera hacia adelante","Mantén el torso erguido","Aguanta 20-30 segundos y cambia de lado"],
-  "MO2":["Arrodíllate con manos detrás de la cabeza","Lleva un codo hacia el techo","Mantén 2-3 segundos","Alterna lados de forma lenta"],
-  "MO3":["Siéntate con piernas extendidas y juntas","Inclínate hacia adelante desde las caderas","Alcanza los pies sin redondear la espalda","Mantén 20-30 segundos respirando profundo"],
-  "MO4":["Siéntate con ambas piernas a 90°","Rota el torso hacia la pierna delantera","Inclínate hacia adelante","Aguanta 20-30 segundos y cambia"],
-  "MO5":["A cuatro patas, manos bajo hombros","Inhala arqueando la espalda hacia abajo (vaca)","Exhala redondeando la espalda (gato)","Alterna de forma lenta y rítmica"],
-};
-
-// ── LOCAL EXERCISE DB ─────────────────────────────────────
-const EXDB=[
-  {id:"L1",nombre:"Flexiones",musculo:"Pecho / Tríceps",equipo:"Peso corporal",nivel:"Principiante",wger:8,video:"https://www.youtube.com/embed/IODxDxX7oi4"},
-  {id:"L2",nombre:"Dominadas",musculo:"Dorsal",equipo:"Peso corporal",nivel:"Intermedio",wger:31,video:"https://www.youtube.com/embed/eGo4IYlbE5g"},
-  {id:"L3",nombre:"Fondos en paralelas",musculo:"Pecho / Tríceps",equipo:"Peso corporal",nivel:"Intermedio",wger:37,video:"https://www.youtube.com/embed/wjUmnZH528Y"},
-  {id:"L4",nombre:"Plancha",musculo:"Core",equipo:"Peso corporal",nivel:"Principiante",wger:71,video:"https://www.youtube.com/embed/pSHjTRCQxIw"},
-  {id:"L5",nombre:"Sentadilla peso corporal",musculo:"Cuádriceps",equipo:"Peso corporal",nivel:"Principiante",wger:73,video:"https://www.youtube.com/embed/aclHkVaku9U"},
-  {id:"L6",nombre:"Zancada",musculo:"Cuádriceps / Glúteos",equipo:"Peso corporal",nivel:"Principiante",wger:74,video:"https://www.youtube.com/embed/QOVaHwm-Q6U"},
-  {id:"L7",nombre:"Burpees",musculo:"Full Body",equipo:"Peso corporal",nivel:"Intermedio",wger:91,video:"https://www.youtube.com/embed/dZgVxmf6jkA"},
-  {id:"L8",nombre:"Mountain Climbers",musculo:"Core / Cardio",equipo:"Peso corporal",nivel:"Principiante",wger:85,video:"https://www.youtube.com/embed/nmwgirgXLYM"},
-  {id:"B1",nombre:"Sentadilla con barra",musculo:"Cuádriceps",equipo:"Barra",nivel:"Intermedio",wger:6,video:"https://www.youtube.com/embed/bEv6CCg2BC8"},
-  {id:"B2",nombre:"Press banca plano",musculo:"Pecho",equipo:"Barra",nivel:"Principiante",wger:192,video:"https://www.youtube.com/embed/rT7DgCr-3pg"},
-  {id:"B3",nombre:"Press banca inclinado",musculo:"Pecho superior",equipo:"Barra",nivel:"Intermedio",wger:355,video:"https://www.youtube.com/embed/DbFgADa2PL8"},
-  {id:"B4",nombre:"Peso muerto convencional",musculo:"Espalda / Glúteos",equipo:"Barra",nivel:"Intermedio",wger:29,video:"https://www.youtube.com/embed/op9kVnSso6Q"},
-  {id:"B5",nombre:"Peso muerto rumano",musculo:"Isquiotibiales",equipo:"Barra",nivel:"Intermedio",wger:45,video:"https://www.youtube.com/embed/JCXUYuzwNrM"},
-  {id:"B6",nombre:"Remo con barra",musculo:"Dorsal",equipo:"Barra",nivel:"Intermedio",wger:101,video:"https://www.youtube.com/embed/G8l_8chR5BE"},
-  {id:"B7",nombre:"Press militar",musculo:"Hombros",equipo:"Barra",nivel:"Intermedio",wger:53,video:"https://www.youtube.com/embed/2yjwXTZQDDI"},
-  {id:"B8",nombre:"Curl con barra",musculo:"Bíceps",equipo:"Barra",nivel:"Principiante",wger:11,video:"https://www.youtube.com/embed/ykJmrZ5v0Oo"},
-  {id:"M1",nombre:"Press Arnold",musculo:"Hombros",equipo:"Mancuernas",nivel:"Principiante",wger:196,video:"https://www.youtube.com/embed/6Z15_WdXmVw"},
-  {id:"M2",nombre:"Elevaciones laterales",musculo:"Hombros",equipo:"Mancuernas",nivel:"Principiante",wger:26,video:"https://www.youtube.com/embed/3VcKaXpzqRo"},
-  {id:"M3",nombre:"Curl mancuernas alterno",musculo:"Bíceps",equipo:"Mancuernas",nivel:"Principiante",wger:72,video:"https://www.youtube.com/embed/sAq_ocpRh_I"},
-  {id:"M4",nombre:"Curl martillo",musculo:"Bíceps / Braquial",equipo:"Mancuernas",nivel:"Principiante",wger:194,video:"https://www.youtube.com/embed/zC3nLlEvin4"},
-  {id:"M5",nombre:"Pájaro (Rear Delt Fly)",musculo:"Deltoides posterior",equipo:"Mancuernas",nivel:"Principiante",wger:27,video:"https://www.youtube.com/embed/EA7u4Q_8HQ0"},
-  {id:"M6",nombre:"Aperturas con mancuernas",musculo:"Pecho",equipo:"Mancuernas",nivel:"Principiante",wger:40,video:"https://www.youtube.com/embed/eozdVDA78K0"},
-  {id:"M7",nombre:"Hip Thrust con mancuerna",musculo:"Glúteos",equipo:"Mancuernas",nivel:"Principiante",wger:175,video:"https://www.youtube.com/embed/xDmFkJxPzeM"},
-  {id:"M8",nombre:"Remo con mancuerna",musculo:"Dorsal",equipo:"Mancuernas",nivel:"Principiante",wger:57,video:"https://www.youtube.com/embed/roCP2ef2T58"},
-  {id:"MA1",nombre:"Prensa de piernas",musculo:"Cuádriceps",equipo:"Máquina",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/IZxyjW7MPJQ"},
-  {id:"MA2",nombre:"Curl femoral en máquina",musculo:"Isquiotibiales",equipo:"Máquina",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/1Tq3QdYUuHs"},
-  {id:"MA3",nombre:"Elevación de talones",musculo:"Gemelos",equipo:"Máquina",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/gwLzBJYoWlI"},
-  {id:"MA4",nombre:"Jalón al pecho en polea",musculo:"Dorsal",equipo:"Máquina",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/CAwf7n6Luuc"},
-  {id:"C1",nombre:"Remo en polea baja",musculo:"Dorsal",equipo:"Cable/Polea",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/GZbfZ033f74"},
-  {id:"C2",nombre:"Face Pull en polea",musculo:"Hombros",equipo:"Cable/Polea",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/rep-qVOkqgk"},
-  {id:"C3",nombre:"Extensión tríceps en polea",musculo:"Tríceps",equipo:"Cable/Polea",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/2-LAMcpzODU"},
-  {id:"C4",nombre:"Curl en polea baja",musculo:"Bíceps",equipo:"Cable/Polea",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/ykJmrZ5v0Oo"},
-  {id:"C5",nombre:"Cruce de poleas",musculo:"Pecho",equipo:"Cable/Polea",nivel:"Intermedio",wger:null,video:"https://www.youtube.com/embed/eozdVDA78K0"},
-  {id:"BE1",nombre:"Sentadilla con banda",musculo:"Cuádriceps / Glúteos",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/aclHkVaku9U"},
-  {id:"BE2",nombre:"Curl bíceps con banda",musculo:"Bíceps",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/ykJmrZ5v0Oo"},
-  {id:"BE3",nombre:"Press hombros con banda",musculo:"Hombros",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/2yjwXTZQDDI"},
-  {id:"BE4",nombre:"Patada de glúteo con banda",musculo:"Glúteos",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/xDmFkJxPzeM"},
-  {id:"BE5",nombre:"Abducción cadera con banda",musculo:"Glúteos",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/xDmFkJxPzeM"},
-  {id:"BE6",nombre:"Remo con banda",musculo:"Dorsal",equipo:"Banda elástica",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/GZbfZ033f74"},
-  {id:"T1",nombre:"Remo TRX",musculo:"Dorsal",equipo:"TRX",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/roCP2ef2T58"},
-  {id:"T2",nombre:"Flexiones TRX",musculo:"Pecho",equipo:"TRX",nivel:"Intermedio",wger:null,video:"https://www.youtube.com/embed/IODxDxX7oi4"},
-  {id:"T3",nombre:"Sentadilla TRX",musculo:"Cuádriceps",equipo:"TRX",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/aclHkVaku9U"},
-  {id:"T4",nombre:"Zancada TRX",musculo:"Cuádriceps / Glúteos",equipo:"TRX",nivel:"Intermedio",wger:null,video:"https://www.youtube.com/embed/QOVaHwm-Q6U"},
-  {id:"CA1",nombre:"Saltos al cajón",musculo:"Piernas",equipo:"Cardio",nivel:"Intermedio",wger:null,video:"https://www.youtube.com/embed/52r_Ul5k03g"},
-  {id:"CA2",nombre:"Jump Rope (Comba)",musculo:"Cardio / Gemelos",equipo:"Cardio",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/FJmRQ5iTXKE"},
-  {id:"MO1",nombre:"Estiramiento de cadera",musculo:"Cadera",equipo:"Movilidad",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/OoFcKPZ6eCc"},
-  {id:"MO2",nombre:"Apertura torácica",musculo:"Columna",equipo:"Movilidad",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/9cEXop5UKWI"},
-  {id:"MO3",nombre:"Estiramiento isquiotibiales",musculo:"Isquiotibiales",equipo:"Movilidad",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/gOOnxp-VDZE"},
-  {id:"MO4",nombre:"Rotación de cadera 90/90",musculo:"Cadera",equipo:"Movilidad",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/OoFcKPZ6eCc"},
-  {id:"MO5",nombre:"Cat-Cow",musculo:"Columna",equipo:"Movilidad",nivel:"Principiante",wger:null,video:"https://www.youtube.com/embed/9cEXop5UKWI"},
-];
-
-
-// Mapeo de IDs numéricos del Sheet (ejercicios originales) a IDs locales
-const ID_MAP={
-  "1":"B1",   // Sentadilla con barra
-  "2":"B2",   // Press banca plano
-  "3":"L6",   // Zancada
-  "4":"B5",   // Peso muerto rumano
-  "5":"MA2",  // Curl femoral en máquina
-  "6":"M7",   // Hip Thrust
-  "7":"MA3",  // Elevación de talones
-  "8":"B1",   // Sentadilla búlgara → mapeado a sentadilla barra
-  "9":"B2",   // Press banca plano
-  "10":"B3",  // Press banca inclinado
-  "11":"M6",  // Aperturas mancuernas
-  "12":"L3",  // Fondos en paralelas
-  "13":"L1",  // Flexiones
-  "14":"B4",  // Peso muerto convencional
-  "15":"L2",  // Dominadas
-  "16":"B6",  // Remo con barra
-  "17":"M8",  // Remo con mancuerna
-  "18":"MA4", // Jalón al pecho
-  "19":"C1",  // Remo polea baja
-  "20":"B7",  // Press militar
-  "21":"M1",  // Press Arnold
-  "22":"M2",  // Elevaciones laterales
-  "23":"M5",  // Pájaro
-  "24":"C2",  // Face Pull
-  "25":"B8",  // Curl con barra
-  "26":"M3",  // Curl mancuernas alterno
-  "27":"M4",  // Curl martillo
-  "28":"B9",  // Press francés — no existe en EXDB, usar C3
-  "29":"C3",  // Extensión tríceps polea
-  "30":"L3",  // Fondos banco → fondos paralelas
-  "31":"L4",  // Plancha
-  "32":"L5",  // Crunch → sentadilla corporal
-  "33":"L12", // Elevación piernas
-  "34":"L8",  // Ab Wheel → Mountain Climbers
-  "35":"L9",  // Plancha lateral
-  "36":"L10", // Dead Bug
-  "37":"L7",  // Burpees
-  "38":"L8",  // Mountain Climbers
-  "39":"CA1", // Box Jump
-  "40":"CA2", // Jump Rope
-  "41":"MO1", // Estiramiento cadera
-  "42":"MO2", // Apertura torácica
-  "43":"MO3", // Estiramiento isquios
-};
-
-function resolveExId(id){
-  const s=String(id);
-  // Si ya es un ID local (empieza por letra) devuélvelo tal cual
-  if(isNaN(s[0]))return s;
-  // Si es numérico, busca en el mapa
-  return ID_MAP[s]||null;
-}
-
-const EQUIPMENTS=["Todo","Peso corporal","Barra","Mancuernas","Máquina","Cable/Polea","Banda elástica","TRX","Cardio","Movilidad"];
-const MUSCLES_LIST=["Todo","Pecho","Dorsal","Hombros","Bíceps","Tríceps","Cuádriceps","Isquiotibiales","Glúteos","Core","Full Body"];
-
-// Wger image cache
-const wgerImgCache={};
-async function loadWgerImage(ex){
-  if(!ex.wger)return null;
-  if(wgerImgCache[ex.id])return wgerImgCache[ex.id];
-  try{
-    const d=await wgerGet(`/exerciseimage/?exercise=${ex.wger}&format=json`);
-    const img=d.results&&d.results.length?d.results[0].image:null;
-    wgerImgCache[ex.id]=img;
-    return img;
-  }catch(e){return null;}
-}
+function ytId(url){return url?.match(/embed\/([^?]+)/)?.[1]||"";}
+function ytThumb(url){const id=ytId(url);return id?`https://img.youtube.com/vi/${id}/mqdefault.jpg`:"";}
 
 // ── LOGIN ─────────────────────────────────────────────────
 async function doLogin(){
-  const email=document.getElementById("lemail").value.trim();
-  const pass=document.getElementById("lpass").value;
-  const btn=document.getElementById("lbtn");
-  const errEl=document.getElementById("lerr");
+  const email=document.getElementById("l-email").value.trim();
+  const pass=document.getElementById("l-pass").value;
+  const btn=document.getElementById("l-btn");
+  const err=document.getElementById("l-err");
   if(!email||!pass)return;
-  btn.disabled=true;btn.textContent="Verificando…";errEl.textContent="";
+  btn.disabled=true;btn.textContent="Verificando…";err.textContent="";
   try{
-    const user=await apiGet({action:"login",email,password:pass});
-    U=user;TAB=user.rol==="trainer"?"clientes":"entrenamiento";
-    document.getElementById("login-wrap").classList.add("hidden");
-    document.getElementById("topbar").classList.remove("hidden");
-    document.getElementById("layout").classList.remove("hidden");
-    renderTopbar();renderSidebar();renderTab();
+    U=await api({action:"login",email,password:pass});
+    document.getElementById("login-screen").classList.add("hidden");
+    document.getElementById("app-screen").classList.remove("hidden");
+    TAB=U.rol==="trainer"?"clientes":"entrenamiento";
+    renderNav();renderTab();
   }catch(e){
-    errEl.textContent=e.message;btn.disabled=false;btn.textContent="Iniciar sesión";
+    err.textContent=e.message;
+    btn.disabled=false;btn.textContent="Iniciar sesión";
   }
 }
 
 function logout(){
   U=null;TAB=null;
-  document.getElementById("login-wrap").classList.remove("hidden");
-  document.getElementById("topbar").classList.add("hidden");
-  document.getElementById("layout").classList.add("hidden");
+  document.getElementById("app-screen").classList.add("hidden");
+  document.getElementById("login-screen").classList.remove("hidden");
+  document.getElementById("l-email").value="";
+  document.getElementById("l-pass").value="";
 }
 
-function renderTopbar(){
-  document.getElementById("topbar-user").innerHTML=`
-    <span style="font-size:12px;color:var(--muted)">${U.nombre}</span>
-    <div class="avatar">${U.nombre[0]}</div>
-    <button class="btn-ghost" onclick="logout()">Salir</button>`;
-}
-
-function renderSidebar(){
-  const items=U.rol==="trainer"?[
-    {id:"clientes",icon:"👥",label:"Clientes",sub:"Gestiona tus clientes"},
-    {id:"biblioteca",icon:"📚",label:"Ejercicios",sub:"Biblioteca completa"},
-    {id:"rutinas",icon:"⚡",label:"Rutinas",sub:"Crea y asigna rutinas"},
-    {id:"nutricion",icon:"🥗",label:"Nutrición",sub:"Planes nutricionales"},
-    {id:"nutricion_ia",icon:"✨",label:"Crear Plan IA",sub:"Generador automático"},
-  ]:[
-    {id:"entrenamiento",icon:"💪",label:"Mi Entrenamiento",sub:"Tu rutina de hoy"},
-    {id:"nutricion_c",icon:"🥗",label:"Mi Nutrición",sub:"Tu plan alimenticio"},
-    {id:"progreso",icon:"📈",label:"Mi Progreso",sub:"Evolución y registros"},
+// ── NAV ───────────────────────────────────────────────────
+function renderNav(){
+  const trainerTabs=[
+    {id:"clientes",label:"👥 Clientes"},
+    {id:"rutinas",label:"⚡ Rutinas"},
+    {id:"nutricion",label:"🥗 Nutrición"},
+    {id:"mensajes",label:"💬 Mensajes"},
   ];
-  document.getElementById("sidebar").innerHTML=`
-    <div style="padding:8px 4px 14px;border-bottom:1px solid var(--border);margin-bottom:10px">
-      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:0 12px">Menú</div>
-    </div>
-    ${items.map(it=>`
-      <button class="sidebar-item${TAB===it.id?' active':''}" onclick="setTab('${it.id}')">
-        <span class="sidebar-icon">${it.icon}</span>
-        <div><div>${it.label}</div><div class="sidebar-sub">${it.sub}</div></div>
-      </button>`).join("")}`;
+  const clientTabs=[
+    {id:"entrenamiento",label:"💪 Mi Entrenamiento"},
+    {id:"nutricion_c",label:"🥗 Mi Nutrición"},
+    {id:"mensajes_c",label:"💬 Mensajes"},
+    {id:"progreso",label:"📈 Mi Progreso"},
+  ];
+  const tabs=U.rol==="trainer"?trainerTabs:clientTabs;
+  document.getElementById("main-nav").innerHTML=`
+    <span class="nav-logo">i-Motion</span>
+    ${tabs.map(t=>`<button class="nav-btn${TAB===t.id?" active":""}" onclick="goTab('${t.id}')">${t.label}</button>`).join("")}
+    <div class="nav-right">
+      <div class="avatar">${U.nombre[0]}</div>
+      <span style="font-size:12px;color:var(--muted)">${U.nombre}</span>
+      <button class="btn-ghost" onclick="logout()">Salir</button>
+    </div>`;
 }
 
-function setTab(t){
-  // Restaurar estilos del app container
-  const appEl=document.getElementById("app");
-  appEl.style.maxWidth="960px";
-  appEl.style.padding="20px";
-  appEl.style.margin="0 auto";
-  const mainEl=appEl.closest(".main");
-  if(mainEl)mainEl.style.padding="24px";
-  TAB=t;renderSidebar();renderTab();
-}
+function goTab(t){TAB=t;renderNav();renderTab();}
 function renderTab(){
   if(U.rol==="trainer"){
     if(TAB==="clientes")renderClients();
-    else if(TAB==="biblioteca")renderLibrary();
     else if(TAB==="rutinas")renderRoutines();
-    else if(TAB==="nutricion")renderNutrition();
-    else if(TAB==="nutricion_ia")renderNutricionIA();
+    else if(TAB==="nutricion")renderNutricion();
+    else if(TAB==="mensajes")renderMensajes();
   }else{
-    if(TAB==="entrenamiento")renderClientTraining();
-    else if(TAB==="biblioteca")renderLibrary();
-    else if(TAB==="nutricion_c")renderClientNutrition();
-    else if(TAB==="progreso")renderClientProgress();
+    if(TAB==="entrenamiento")renderEntrenamiento();
+    else if(TAB==="nutricion_c")renderNutricionCliente();
+    else if(TAB==="mensajes_c")renderMensajesCliente();
+    else if(TAB==="progreso")renderProgreso();
   }
 }
 
-// ── BIBLIOTECA ────────────────────────────────────────────
-let _libEquip="Todo",_libMuscle="Todo",_libSearch="";
+// ════════════════════════════════════════════════════════
+// TRAINER VIEWS
+// ════════════════════════════════════════════════════════
 
-function renderLibrary(){
-  const filtered=EXDB.filter(e=>
-    (_libEquip==="Todo"||e.equipo===_libEquip)&&
-    (_libMuscle==="Todo"||e.musculo.includes(_libMuscle))&&
-    e.nombre.toLowerCase().includes(_libSearch.toLowerCase())
-  );
-  render(`
-    <div class="flex-between" style="margin-bottom:18px">
-      <div>
-        <div class="section-title" style="margin-bottom:2px">Ejercicios</div>
-        <div style="color:var(--muted);font-size:13px">${EXDB.length} ejercicios · con imágenes de wger</div>
-      </div>
-    </div>
-    <div class="search-box" style="max-width:320px;margin-bottom:14px">
-      <span class="search-icon">🔍</span>
-      <input placeholder="Buscar ejercicio…" value="${_libSearch}" oninput="_libSearch=this.value;renderLibrary()"/>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Equipamiento</div>
-    <div class="chips" style="margin-bottom:12px">
-      ${EQUIPMENTS.map(e=>`<button class="chip${_libEquip===e?' active':''}" onclick="_libEquip='${e}';renderLibrary()">${e}</button>`).join("")}
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Músculo</div>
-    <div class="chips">
-      ${MUSCLES_LIST.map(m=>`<button class="chip${_libMuscle===m?' active':''}" onclick="_libMuscle='${m}';renderLibrary()">${m}</button>`).join("")}
-    </div>
-    <div style="color:var(--muted);font-size:12px;margin-bottom:14px">${filtered.length} ejercicios</div>
-    <div class="ex-grid" id="ex-grid">
-      ${filtered.map(e=>`
-        <div class="ex-card" onclick="openExModal('${e.id}')" id="excard-${e.id}">
-          <div class="ex-thumb" id="thumb-${e.id}">
-            <div class="ex-thumb-placeholder">🏋️</div>
-            <div class="ex-play">▶</div>
-          </div>
-          <div class="ex-body">
-            <div class="ex-name">${e.nombre}</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap">
-              <span class="tag tag-blue">${e.equipo}</span>
-              <span class="tag tag-gray">${e.musculo}</span>
-            </div>
-          </div>
-        </div>`).join("")}
-    </div>`);
-  // Load wger images async
-  filtered.forEach(e=>{if(e.wger)loadAndSetThumb(e);});
-}
-
-async function loadAndSetThumb(ex){
-  const img=await loadWgerImage(ex);
-  if(!img)return;
-  const el=document.getElementById(`thumb-${ex.id}`);
-  if(!el)return;
-  el.innerHTML=`<img src="${img}" alt="${ex.nombre}" loading="lazy"/><div class="ex-play">▶</div>`;
-}
-
-async function openExModal(id){
-  const ex=EXDB.find(e=>e.id===id);
-  if(!ex)return;
-  const steps=LOCAL_STEPS[id]||[];
-  // Get wger image
-  const img=await loadWgerImage(ex);
-
-  document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="exmodal" onclick="if(event.target===this)closeModal('exmodal')">
-      <div class="modal">
-        <div class="modal-hd">
-          <div>
-            <div class="modal-title">${ex.nombre}</div>
-            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-              <span class="tag tag-blue">${ex.equipo}</span>
-              <span class="tag tag-gray">${ex.musculo}</span>
-              <span class="tag tag-green">${ex.nivel}</span>
-            </div>
-          </div>
-          <button class="modal-close" onclick="closeModal('exmodal')">✕</button>
-        </div>
-        <div class="modal-body">
-          ${ex.video?`
-            <div style="position:relative;padding-bottom:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-bottom:20px">
-              <iframe src="${ex.video}?rel=0&modestbranding=1" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
-            </div>`:""}
-          ${img?`
-            <div style="background:#f5f6fa;border-radius:12px;overflow:hidden;margin-bottom:16px;display:flex;align-items:center;justify-content:center">
-              <img src="${img}" alt="${ex.nombre}" style="max-width:100%;max-height:200px;object-fit:contain;padding:12px"/>
-            </div>`:`${!ex.video?'<div style="background:#f5f6fa;border-radius:12px;padding:40px;text-align:center;margin-bottom:20px;font-size:48px">🏋️</div>':''}`}
-          ${steps.length?`
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Cómo realizarlo</div>
-            <ol class="steps">
-              ${steps.map((s,i)=>`<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("")}
-            </ol>`:""}
-          ${ex.wger?`<div style="margin-top:16px;font-size:11px;color:var(--muted)">Fuente: wger.de · CC-BY-SA</div>`:""}
-        </div>
-      </div>
-    </div>`);
-}
-
-// ── CLIENTES ──────────────────────────────────────────────
+// ── CLIENTES ─────────────────────────────────────────────
 async function renderClients(){
-  render(spinner("Cargando clientes…"));
+  render(spin("Cargando clientes…"));
   [_clients,_routines,_nutrition]=await Promise.all([
-    apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})
+    api({action:"clients"}),
+    api({action:"routines"}),
+    api({action:"nutrition"}),
   ]);
   render(`
-    <div class="flex-between" style="margin-bottom:20px">
-      <div class="section-title" style="margin-bottom:0">Clientes (${_clients.length})</div>
+    <div class="section-hd">
+      <div class="section-title">Clientes (${_clients.length})</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
       ${_clients.map(c=>{
         const r=_routines.find(r=>String(r.clienteId)===String(c.id));
         const n=_nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div class="card card-hover" onclick="openClientPanel('${c.id}')">
+        return `<div class="card card-hover" onclick="openClientProfile('${c.id}')">
           <div class="flex" style="margin-bottom:14px">
-            <div class="client-avatar">${c.nombre[0]}</div>
+            <div class="client-av">${c.nombre[0]}</div>
             <div>
               <div style="font-weight:700;font-size:15px">${c.nombre}</div>
               <div style="font-size:12px;color:var(--muted)">${c.email}</div>
@@ -616,168 +270,135 @@ async function renderClients(){
               ${n?`<span class="tag tag-green">${n.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}
             </div>
           </div>
-          <button class="btn" style="width:100%;justify-content:center;font-size:12px;padding:8px;margin-top:14px" onclick="event.stopPropagation();openClientPanel('${c.id}')">Ver perfil →</button>
+          <button class="btn" style="width:100%;justify-content:center;margin-top:14px;font-size:12px;padding:8px">Ver perfil →</button>
         </div>`;
       }).join("")}
     </div>`);
 }
 
-async function openClientPanel(clientId){
+async function openClientProfile(clientId){
   const c=_clients.find(c=>String(c.id)===String(clientId));
   const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
   const nutri=_nutrition.find(n=>String(n.clienteId)===String(clientId));
 
+  // Build routine days HTML
+  let rutinaHtml="";
+  if(assigned){
+    rutinaHtml=`<div style="font-weight:600;color:var(--accent);margin-bottom:10px">${assigned.nombre}</div>`;
+    (assigned.days||[]).forEach(d=>{
+      rutinaHtml+=`<div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px">📅 ${d.dia}</div>
+        ${(d.exercises||[]).map(ex=>`<div style="font-size:12px;padding:2px 0 2px 12px;color:#444">• ${ex.nombre||"Ejercicio"} — ${ex.series}×${ex.reps}</div>`).join("")}
+      </div>`;
+    });
+  }
+
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="cpanel" onclick="if(event.target===this)closeModal('cpanel')">
+    <div class="modal-bg" id="cp-modal" onclick="if(event.target===this)closeModal('cp-modal')">
       <div class="modal" style="max-width:680px">
         <div class="modal-hd">
-          <div class="flex" style="gap:14px">
-            <div class="client-avatar" style="width:48px;height:48px;font-size:18px">${c.nombre[0]}</div>
-            <div><div class="modal-title">${c.nombre}</div><div style="font-size:12px;color:var(--muted)">${c.email}</div></div>
+          <div class="flex" style="gap:12px">
+            <div class="client-av" style="width:48px;height:48px;font-size:18px">${c.nombre[0]}</div>
+            <div>
+              <div class="modal-title">${c.nombre}</div>
+              <div style="font-size:12px;color:var(--muted)">${c.email}</div>
+            </div>
           </div>
-          <button class="modal-close" onclick="closeModal('cpanel')">✕</button>
+          <button class="modal-close" onclick="closeModal('cp-modal')">✕</button>
         </div>
         <div class="modal-body">
-          <!-- RUTINA -->
-          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Rutina asignada</div>
-          ${assigned?`
-            <div style="background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px">
-              <div style="font-weight:700;margin-bottom:10px;color:var(--accent)">${assigned.nombre}</div>
-              ${(assigned.days||[]).map(d=>`
-                <div style="margin-bottom:8px">
-                  <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">📅 ${d.dia}</div>
-                  ${(d.exercises||[]).map(ex=>{
-                    const exData=EXDB.find(e=>String(e.id)===String(ex.exerciseId))||{nombre:"Ejercicio #"+ex.exerciseId};
-                    return `<div style="font-size:12px;color:#444;padding:2px 0 2px 12px">• ${exData.nombre} — ${ex.series}×${ex.reps}</div>`;
-                  }).join("")}
-                </div>`).join("")}
-            </div>`
-          :`<div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:10px;padding:12px;font-size:13px;color:#a06000;margin-bottom:16px">Sin rutina asignada.</div>`}
 
-          <!-- CAMBIAR RUTINA -->
-          ${_routines.length>0?`
-            <div style="font-size:13px;font-weight:700;margin-bottom:8px">Asignar rutina</div>
-            ${_routines.map(r=>`
-              <div onclick="assignRoutineClient('${r.id}','${clientId}')" style="background:#f9fafb;border:1.5px solid ${assigned?.id==r.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
-                <div><div style="font-weight:600;font-size:13px">${r.nombre}</div><div style="font-size:11px;color:var(--muted)">${r.days?.length||0} días</div></div>
-                ${assigned?.id==r.id?`<span class="tag tag-blue">✓ Asignada</span>`:`<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>`}
-              </div>`).join("")}
-          `:''}
-
-          <!-- NUTRICIÓN -->
-          <div style="font-size:13px;font-weight:700;margin-top:16px;margin-bottom:8px">Plan nutricional</div>
-          <div class="flex-between">
-            ${nutri?`<span class="tag tag-green">${nutri.nombre} — ${nutri.kcal} kcal</span>`:`<span class="tag tag-orange">Sin plan asignado</span>`}
-            <button class="btn-sm" onclick="closeModal('cpanel');setTab('nutricion')">Gestionar →</button>
+          <!-- TABS -->
+          <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:18px">
+            ${["💪 Rutina","🥗 Nutrición","💬 Mensaje"].map((t,i)=>`
+              <button id="cptab-${i}" onclick="switchCPTab(${i})" style="background:none;border:none;border-bottom:2px solid ${i===0?'var(--accent)':'transparent'};color:${i===0?'var(--accent)':'var(--muted)'};padding:8px 16px;font-size:13px;font-weight:${i===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">${t}</button>`).join("")}
           </div>
+
+          <!-- TAB 0: RUTINA -->
+          <div id="cp-tab-0">
+            <div style="margin-bottom:14px">
+              <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Rutina actual</div>
+              ${assigned?`<div class="card" style="background:#f9faff;padding:14px">${rutinaHtml}</div>`:`<div style="color:var(--muted);font-size:13px;margin-bottom:10px">Sin rutina asignada.</div>`}
+            </div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Asignar rutina</div>
+            ${_routines.map(r=>`
+              <div onclick="assignRutina('${r.id}','${clientId}')" style="background:#f9faff;border:1.5px solid ${assigned?.id==r.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:600">${r.nombre}</div>
+                  <div style="font-size:11px;color:var(--muted)">${r.days?.length||0} días</div>
+                </div>
+                ${assigned?.id==r.id?`<span class="tag tag-blue">✓ Asignada</span>`:`<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>`}
+              </div>`).join("")||`<div style="color:var(--muted);font-size:13px">No hay rutinas creadas aún.</div>`}
+          </div>
+
+          <!-- TAB 1: NUTRICIÓN -->
+          <div id="cp-tab-1" class="hidden">
+            ${nutri?`<div class="card" style="background:#f9faff;padding:14px;margin-bottom:14px">
+              <div style="font-weight:600;margin-bottom:8px">${nutri.nombre}</div>
+              <div class="grid-4" style="margin-bottom:0">
+                <div class="macro-box"><div class="macro-val" style="color:#e08a00">${nutri.kcal}</div><div class="macro-lbl">kcal</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${nutri.proteina}g</div><div class="macro-lbl">prot</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:#00a87a">${nutri.carbos}g</div><div class="macro-lbl">carbs</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${nutri.grasas}g</div><div class="macro-lbl">grasas</div></div>
+              </div>
+            </div>`:`<div style="color:var(--muted);font-size:13px;margin-bottom:14px">Sin plan asignado.</div>`}
+            <button class="btn" onclick="closeModal('cp-modal');goTab('nutricion')">🥗 Gestionar nutrición →</button>
+          </div>
+
+          <!-- TAB 2: MENSAJE -->
+          <div id="cp-tab-2" class="hidden">
+            <label class="lbl">Escribir mensaje a ${c.nombre}</label>
+            <textarea id="msg-text-${clientId}" placeholder="Instrucciones, motivación, feedback…" style="min-height:120px;resize:vertical;margin-bottom:12px"></textarea>
+            <button class="btn-success" style="width:100%;justify-content:center" onclick="sendMsg('${clientId}')">📤 Enviar mensaje</button>
+          </div>
+
         </div>
       </div>
     </div>`);
 }
 
-function switchClientTab(tabId){
-  ["tab-rutina","tab-nutri","tab-msg"].forEach(t=>{
-    const btn=document.getElementById(t);
-    const content=document.getElementById(t+"-content");
-    if(t===tabId){
-      btn.style.borderBottomColor="var(--accent)";
-      btn.style.color="var(--accent)";
-      btn.style.fontWeight="700";
-      content?.classList.remove("hidden");
-    }else{
-      btn.style.borderBottomColor="transparent";
-      btn.style.color="var(--muted)";
-      btn.style.fontWeight="500";
-      content?.classList.add("hidden");
-    }
+function switchCPTab(idx){
+  [0,1,2].forEach(i=>{
+    const btn=document.getElementById(`cptab-${i}`);
+    const tab=document.getElementById(`cp-tab-${i}`);
+    btn.style.borderBottomColor=i===idx?'var(--accent)':'transparent';
+    btn.style.color=i===idx?'var(--accent)':'var(--muted)';
+    btn.style.fontWeight=i===idx?'700':'500';
+    tab?.classList.toggle("hidden",i!==idx);
   });
 }
 
-async function assignNutriFromClient(clientId,idx){
-  const t=NUTRI_TPLS[idx];
-  await apiGet({action:"saveNutrition",clienteId:clientId,...t});
-  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
-  closeModal("cpanel");openClientPanel(clientId);
-  setTimeout(()=>switchClientTab("tab-nutri"),100);
+async function assignRutina(routineId,clientId){
+  await api({action:"assignRoutine",routineId,clienteId:clientId});
+  closeModal("cp-modal");
+  renderClients();
 }
 
-// ── GESTIÓN INLINE DE RUTINA DESDE PERFIL CLIENTE ────────
-async function addDayInline(routineId,clientId){
-  const dia=document.getElementById("newday-inline")?.value;
-  if(!dia)return;
-  await apiGet({action:"addDay",routineId,dia});
-  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
-  closeModal("cpanel");openClientPanel(clientId);
-}
-
-async function removeDayInline(dayId,clientId){
-  if(!confirm("¿Eliminar este día?"))return;
-  await apiGet({action:"removeDay",id:dayId});
-  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
-  closeModal("cpanel");openClientPanel(clientId);
-}
-
-async function addExInline(dayId,exId,clientId){
-  if(!exId)return;
-  const{id}=await apiGet({action:"addExercise",dayId,exerciseId:exId,series:3,reps:"10",descanso:"60s"});
-  const ex=EXDB.find(e=>e.id===exId);
-  const container=document.getElementById(`iexlist-${dayId}`);
-  if(container){
-    container.insertAdjacentHTML("beforeend",`
-      <div class="ex-row-edit" id="iexrow-${id}">
-        <div style="flex:1">
-          <div style="font-weight:600;font-size:12px">${ex?.nombre||exId}</div>
-          <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
-            <input type="number" value="3" min="1" max="10" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${id}','series',this.value)"/> series
-            <input type="number" value="10" min="1" max="100" style="width:52px;padding:4px 6px;font-size:12px" onchange="updateEx('${id}','reps',this.value)"/> reps
-            <select style="font-size:12px;padding:4px 6px;width:auto" onchange="updateEx('${id}','descanso',this.value)">
-              ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${t==="60s"?"selected":""}>${t}</option>`).join("")}
-            </select>
-          </div>
-        </div>
-        <button class="btn-danger" onclick="removeExInline('${id}','${dayId}')">✕</button>
-      </div>`);
-  }
-}
-
-async function removeExInline(exId,dayId){
-  await apiGet({action:"removeExercise",id:exId});
-  document.getElementById(`iexrow-${exId}`)?.remove();
-}
-
-async function updateEx(exId,field,value){
-  await apiGet({action:"updateExercise",id:exId,[field]:value});
-}
-
-async function saveComment(clientId){
-  const text=document.getElementById(`comment-${clientId}`)?.value||"";
-  await apiGet({action:"saveComment",clienteId:clientId,comentario:text});
+async function sendMsg(clientId){
+  const text=document.getElementById(`msg-text-${clientId}`)?.value?.trim();
+  if(!text)return;
+  await api({action:"saveComment",clienteId:clientId,comentario:text});
   const btn=event.target;
-  btn.textContent="✓ Enviado";btn.style.background="var(--success)";
-  setTimeout(()=>{btn.textContent="Enviar comentario";btn.style.background="";},2000);
-}
-
-async function assignRoutineClient(routineId,clientId){
-  await apiGet({action:"assignRoutine",routineId,clienteId:clientId});
-  closeModal("cpanel");
-  [_clients,_routines,_nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"routines"}),apiGet({action:"nutrition"})]);
-  openClientPanel(clientId);
+  btn.textContent="✅ Enviado";
+  setTimeout(()=>{btn.textContent="📤 Enviar mensaje";},2000);
+  document.getElementById(`msg-text-${clientId}`).value="";
 }
 
 // ── RUTINAS ───────────────────────────────────────────────
 async function renderRoutines(){
-  render(spinner("Cargando rutinas…"));
-  _routines=await apiGet({action:"routines"});
+  render(spin("Cargando rutinas…"));
+  _routines=await api({action:"routines"});
+
   render(`
-    <div class="flex-between" style="margin-bottom:20px">
-      <div class="section-title" style="margin-bottom:0">Rutinas (${_routines.length})</div>
+    <div class="section-hd">
+      <div class="section-title">Rutinas (${_routines.length})</div>
       <button class="btn" onclick="showCreateRoutine()">+ Nueva rutina</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
       ${_routines.map(r=>`
         <div class="card card-hover" onclick="openRoutineEditor('${r.id}')">
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">${r.nombre}</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:10px">${r.days?.length||0} días</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:10px">${r.days?.length||0} días · ${(r.days||[]).reduce((a,d)=>a+(d.exercises?.length||0),0)} ejercicios</div>
           <div style="display:flex;flex-wrap:wrap;gap:4px">
             ${(r.days||[]).map(d=>`<span class="tag tag-blue">${d.dia}</span>`).join("")}
           </div>
@@ -787,12 +408,17 @@ async function renderRoutines(){
 
 function showCreateRoutine(){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="crm" onclick="if(event.target===this)closeModal('crm')">
-      <div class="modal modal-sm" style="padding:28px">
-        <div class="modal-title" style="margin-bottom:20px">Nueva rutina</div>
-        <label class="lbl">Nombre</label>
-        <input id="rname" placeholder="Ej: Rutina de Fuerza A" style="margin-bottom:20px" onkeydown="if(event.key==='Enter')createRoutine()"/>
-        <button class="btn" style="width:100%;justify-content:center" onclick="createRoutine()">Crear rutina</button>
+    <div class="modal-bg" id="cr-modal" onclick="if(event.target===this)closeModal('cr-modal')">
+      <div class="modal" style="max-width:400px">
+        <div class="modal-hd">
+          <div class="modal-title">Nueva rutina</div>
+          <button class="modal-close" onclick="closeModal('cr-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <label class="lbl">Nombre de la rutina</label>
+          <input id="rname" placeholder="Ej: Fuerza Full Body" style="margin-bottom:16px" onkeydown="if(event.key==='Enter')createRoutine()"/>
+          <button class="btn" style="width:100%;justify-content:center" onclick="createRoutine()">Crear rutina</button>
+        </div>
       </div>
     </div>`);
 }
@@ -800,831 +426,456 @@ function showCreateRoutine(){
 async function createRoutine(){
   const n=document.getElementById("rname").value.trim();
   if(!n)return;
-  await apiGet({action:"createRoutine",nombre:n,clienteId:""});
-  closeModal("crm");renderRoutines();
+  await api({action:"createRoutine",nombre:n,clienteId:""});
+  closeModal("cr-modal");
+  renderRoutines();
 }
 
 async function openRoutineEditor(routineId){
-  const routine=_routines.find(r=>String(r.id)===String(routineId));
+  const r=_routines.find(r=>String(r.id)===String(routineId));
   const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
-  const avail=DAYS.filter(d=>!(routine.days||[]).find(x=>x.dia===d));
-  const exOpts=EQUIPMENTS.filter(e=>e!=="Todo").map(eq=>`<optgroup label="${eq}">${EXDB.filter(e=>e.equipo===eq).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("")}</optgroup>`).join("");
+  const avail=DAYS.filter(d=>!(r.days||[]).find(x=>x.dia===d));
+
+  let daysHtml=(r.days||[]).map((d,di)=>`
+    <div style="background:#f9faff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px" id="day-${d.id}">
+      <div class="flex-between" style="margin-bottom:10px">
+        <div style="font-weight:700;color:var(--accent)">📅 ${d.dia}</div>
+        <button class="btn-danger" onclick="removeDay('${d.id}','${routineId}')">✕ Eliminar día</button>
+      </div>
+      <div id="exlist-${d.id}">
+        ${(d.exercises||[]).map(ex=>`
+          <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--border)" id="exrow-${ex.id}">
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">${ex.nombre||"Ejercicio"}</div>
+              <div style="font-size:11px;color:var(--muted)">${ex.series} series × ${ex.reps} · ${ex.descanso}</div>
+            </div>
+            <button class="btn-danger" onclick="removeEx('${ex.id}')">✕</button>
+          </div>`).join("")}
+      </div>
+      <button class="btn-outline" style="width:100%;justify-content:center;margin-top:10px;font-size:12px" onclick="showAddEx('${d.id}')">+ Añadir ejercicio</button>
+    </div>`).join("");
 
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="re" style="align-items:flex-start;padding:20px;overflow-y:auto">
-      <div class="modal" style="max-width:660px;width:100%;margin:0 auto">
+    <div class="modal-bg" id="re-modal" style="align-items:flex-start;overflow-y:auto;padding:20px">
+      <div class="modal" style="max-width:640px;width:100%;margin:0 auto">
         <div class="modal-hd">
-          <div class="modal-title">${routine.nombre}</div>
-          <button class="modal-close" onclick="closeModal('re');renderRoutines()">✕</button>
+          <div class="modal-title">${r.nombre}</div>
+          <button class="modal-close" onclick="closeModal('re-modal');renderRoutines()">✕</button>
         </div>
         <div class="modal-body">
-          <div class="flex" style="margin-bottom:20px;gap:10px">
-            <select id="newday" style="flex:1">
-              <option value="">+ Seleccionar día…</option>
+          <div class="flex" style="margin-bottom:16px">
+            <select id="new-day-sel" style="flex:1">
+              <option value="">+ Añadir día…</option>
               ${avail.map(d=>`<option>${d}</option>`).join("")}
             </select>
-            <button class="btn" onclick="addDayR('${routine.id}')">Añadir</button>
+            <button class="btn" onclick="addDay('${routineId}')">Añadir</button>
           </div>
-          <div id="days-c">
-            ${(routine.days||[]).map(d=>`
-              <div class="day-block" id="day-${d.id}">
-                <div class="day-hd">📅 ${d.dia}</div>
-                <div id="exlist-${d.id}">
-                  ${(d.exercises||[]).map(ex=>{
-                    const exData=EXDB.find(e=>String(e.id)===String(ex.exerciseId))||{nombre:"Ejercicio #"+ex.exerciseId};
-                    return `<div class="ex-row-edit" id="exrow-${ex.id}">
-                      <div style="flex:1">
-                        <div style="font-weight:600;font-size:13px">${exData.nombre}</div>
-                        <div style="font-size:11px;color:var(--muted)">${ex.series} series × ${ex.reps} · Descanso ${ex.descanso}</div>
-                      </div>
-                      <button class="btn-danger" onclick="removeExR('${ex.id}','${d.id}')">✕</button>
-                    </div>`;
-                  }).join("")}
-                </div>
-                <select style="margin-top:10px;font-size:12px" onchange="addExR('${d.id}',this.value);this.value=''">
-                  <option value="">+ Añadir ejercicio…</option>
-                  ${exOpts}
-                </select>
-              </div>`).join("")}
-          </div>
+          <div id="days-container">${daysHtml}</div>
         </div>
       </div>
     </div>`);
 }
 
-async function addDayR(routineId){
-  const dia=document.getElementById("newday").value;if(!dia)return;
-  await apiGet({action:"addDay",routineId,dia});
-  closeModal("re");_routines=await apiGet({action:"routines"});openRoutineEditor(routineId);
+async function addDay(routineId){
+  const dia=document.getElementById("new-day-sel")?.value;
+  if(!dia)return;
+  await api({action:"addDay",routineId,dia});
+  closeModal("re-modal");
+  _routines=await api({action:"routines"});
+  openRoutineEditor(routineId);
 }
 
-async function addExR(dayId,exId){
-  if(!exId)return;
-  const{id}=await apiGet({action:"addExercise",dayId,exerciseId:exId,series:3,reps:"10",descanso:"60s"});
-  const ex=EXDB.find(e=>e.id===exId);
-  document.getElementById(`exlist-${dayId}`)?.insertAdjacentHTML("beforeend",`
-    <div class="ex-row-edit" id="exrow-${id}">
-      <div style="flex:1">
-        <div style="font-weight:600;font-size:13px">${ex?.nombre||exId}</div>
-        <div style="font-size:11px;color:var(--muted)">3 series × 10 · Descanso 60s</div>
+async function removeDay(dayId,routineId){
+  if(!confirm("¿Eliminar este día?"))return;
+  await api({action:"removeDay",id:dayId});
+  closeModal("re-modal");
+  _routines=await api({action:"routines"});
+  openRoutineEditor(routineId);
+}
+
+function showAddEx(dayId){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="addex-modal" onclick="if(event.target===this)closeModal('addex-modal')">
+      <div class="modal" style="max-width:500px">
+        <div class="modal-hd">
+          <div class="modal-title">Añadir ejercicio</div>
+          <button class="modal-close" onclick="closeModal('addex-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="margin-bottom:12px">
+            <label class="lbl">Nombre del ejercicio</label>
+            <input id="ex-nombre" placeholder="Ej: Sentadilla con barra"/>
+          </div>
+          <div class="grid-2" style="margin-bottom:12px">
+            <div>
+              <label class="lbl">Series</label>
+              <input id="ex-series" type="number" value="3" min="1" max="20"/>
+            </div>
+            <div>
+              <label class="lbl">Repeticiones</label>
+              <input id="ex-reps" value="10"/>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="lbl">Descanso</label>
+            <select id="ex-descanso">
+              ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${t==="60s"?"selected":""}>${t}</option>`).join("")}
+            </select>
+          </div>
+          <div style="margin-bottom:16px">
+            <label class="lbl">Vídeo (URL YouTube o enlace directo)</label>
+            <input id="ex-video" placeholder="https://youtube.com/watch?v=... o https://drive.google.com/..."/>
+            <div style="font-size:11px;color:var(--muted);margin-top:5px">Puedes subir tu propio vídeo a YouTube o Google Drive y pegar el enlace aquí</div>
+          </div>
+          <button class="btn" style="width:100%;justify-content:center" onclick="addEx('${dayId}')">Añadir ejercicio</button>
+        </div>
       </div>
-      <button class="btn-danger" onclick="removeExR('${id}','${dayId}')">✕</button>
     </div>`);
 }
 
-async function removeExR(exId){
-  await apiGet({action:"removeExercise",id:exId});
+async function addEx(dayId){
+  const nombre=document.getElementById("ex-nombre").value.trim();
+  if(!nombre){alert("Escribe el nombre del ejercicio");return;}
+  const series=document.getElementById("ex-series").value||"3";
+  const reps=document.getElementById("ex-reps").value||"10";
+  const descanso=document.getElementById("ex-descanso").value||"60s";
+  let video=document.getElementById("ex-video").value.trim();
+
+  // Convert YouTube watch URL to embed
+  if(video.includes("youtube.com/watch")){
+    const id=video.match(/[?&]v=([^&]+)/)?.[1];
+    if(id)video=`https://www.youtube.com/embed/${id}`;
+  }else if(video.includes("youtu.be/")){
+    const id=video.split("youtu.be/")[1]?.split("?")[0];
+    if(id)video=`https://www.youtube.com/embed/${id}`;
+  }
+
+  const {id}=await api({action:"addExercise",dayId,exerciseId:nombre,series,reps,descanso,nombre,video:video||""});
+
+  const container=document.getElementById(`exlist-${dayId}`);
+  if(container){
+    container.insertAdjacentHTML("beforeend",`
+      <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--border)" id="exrow-${id}">
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px">${nombre}</div>
+          <div style="font-size:11px;color:var(--muted)">${series} series × ${reps} · ${descanso}</div>
+        </div>
+        <button class="btn-danger" onclick="removeEx('${id}')">✕</button>
+      </div>`);
+  }
+  closeModal("addex-modal");
+}
+
+async function removeEx(exId){
+  await api({action:"removeExercise",id:exId});
   document.getElementById(`exrow-${exId}`)?.remove();
 }
 
-// ── NUTRICIÓN ─────────────────────────────────────────────
+// ── NUTRICIÓN TRAINER ─────────────────────────────────────
 const NUTRI_TPLS=[
-  {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g + fruta|Media mañana: Yogur griego 200g + frutos secos 20g|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + proteína 25g|Cena: Pescado 200g + verduras salteadas"},
-  {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano + mantequilla cacahuete|Comida: Ternera 250g + pasta 150g + ensalada|Pre-entreno: Arroz 80g + atún 120g|Cena: Salmón 200g + boniato 200g + brócoli"},
-  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral + fruta|Media mañana: Frutos secos 30g + yogur 150g|Comida: Pollo 180g + patata 150g + ensalada|Merienda: Fruta + proteína 25g|Cena: Pescado 180g + verduras + arroz 60g"},
+  {nombre:"Pérdida de grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g|Media mañana: Yogur griego + frutos secos|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + yogur|Cena: Pescado 180g + verduras"},
+  {nombre:"Volumen muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano|Comida: Ternera 250g + pasta 150g|Merienda: Arroz 80g + atún|Cena: Salmón 200g + boniato 200g"},
+  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral|Media mañana: Frutos secos + yogur|Comida: Pollo 180g + patata 150g|Merienda: Fruta + queso fresco|Cena: Pescado 180g + verduras + arroz"},
 ];
 
-async function renderNutrition(){
-  render(spinner("Cargando nutrición…"));
-  const[clients,nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"nutrition"})]);
+async function renderNutricion(){
+  render(spin("Cargando…"));
+  const[clients,nutrition]=await Promise.all([api({action:"clients"}),api({action:"nutrition"})]);
   render(`
-    <div class="section-title">Nutrición</div>
+    <div class="section-hd">
+      <div class="section-title">Nutrición</div>
+    </div>
     ${clients.map(c=>{
       const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
-      return `<div class="card" style="margin-bottom:16px">
-        <div class="flex-between" style="margin-bottom:${plan?'16px':'10px'}">
+      return `<div class="card" style="margin-bottom:14px">
+        <div class="flex-between" style="margin-bottom:${plan?'14px':'0'}">
           <div class="flex">
-            <div class="client-avatar" style="width:36px;height:36px;font-size:14px">${c.nombre[0]}</div>
+            <div class="client-av" style="width:36px;height:36px;font-size:14px">${c.nombre[0]}</div>
             <div style="font-weight:700">${c.nombre}</div>
           </div>
-          <button class="btn-sm" onclick="openNutriModal('${c.id}')">${plan?"Cambiar":"+ Asignar"}</button>
+          <button class="btn" style="font-size:12px;padding:7px 14px" onclick="openNutriModal('${c.id}')">
+            ${plan?"Cambiar plan":"+ Asignar plan"}
+          </button>
         </div>
-        ${plan?nutriCard(plan):`<div style="color:var(--muted);font-size:13px">Sin plan asignado.</div>`}
+        ${plan?`
+          <div class="grid-4" style="margin-bottom:12px">
+            <div class="macro-box"><div class="macro-val" style="color:#e08a00">${plan.kcal}</div><div class="macro-lbl">kcal</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${plan.proteina}g</div><div class="macro-lbl">prot</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:#00a87a">${plan.carbos}g</div><div class="macro-lbl">carbs</div></div>
+            <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${plan.grasas}g</div><div class="macro-lbl">grasas</div></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">${plan.nombre}</div>
+          ${String(plan.comidas).split("|").map((m,i)=>`<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${i+1}</span><span>${m}</span></div>`).join("")}
+        `:""}
       </div>`;
     }).join("")}`);
 }
 
-function nutriCard(plan){
-  const meals=Array.isArray(plan.comidas)?plan.comidas:String(plan.comidas).split("|");
-  return`
-    <div class="macro-row">
-      ${[{l:"Calorías",v:plan.kcal,c:"#e08a00"},{l:"Proteína",v:plan.proteina+"g",c:"#4f6ef7"},{l:"Carbos",v:plan.carbos+"g",c:"#00a87a"},{l:"Grasas",v:plan.grasas+"g",c:"#7c5cbf"}]
-        .map(x=>`<div class="macro"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
-    </div>
-    ${meals.map((m,i)=>`<div class="meal-row"><div class="meal-num">${i+1}</div><span>${m}</span></div>`).join("")}`;
-}
-
-async function renderNutrition(){
-  render(spinner("Cargando nutrición…"));
-  const[clients,nutrition]=await Promise.all([apiGet({action:"clients"}),apiGet({action:"nutrition"})]);
-  render(`
-    <div class="flex-between" style="margin-bottom:18px">
-      <div class="section-title" style="margin-bottom:0">Nutrición</div>
-      <button class="btn" onclick="setTab('nutricion_ia')">✨ Crear nuevo plan</button>
-    </div>
-    ${clients.map(c=>{
-      const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
-      return `<div class="card" style="margin-bottom:16px">
-        <div class="flex-between" style="margin-bottom:${plan?'16px':'10px'}">
-          <div class="flex">
-            <div class="client-avatar" style="width:36px;height:36px;font-size:14px">${c.nombre[0]}</div>
-            <div style="font-weight:700">${c.nombre}</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            ${plan?`<button class="btn-outline" style="font-size:12px;padding:6px 12px" onclick="editNutritionPlan('${c.id}')">✏️ Editar plan</button>`:""}
-            <button class="btn-sm" onclick="quickAssignNutri('${c.id}')">${plan?"Cambiar":"+ Asignar"}</button>
-          </div>
-        </div>
-        ${plan?nutriCard(plan):`<div style="color:var(--muted);font-size:13px">Sin plan asignado.</div>`}
-      </div>`;
-    }).join("")}`);
-}
-
-async function editNutritionPlan(clientId){
-  render(spinner("Cargando plan…"));
-  let fullPlan=null;
-  try{fullPlan=await apiGet({action:"getNutritionFull",clienteId:clientId});}catch(e){}
-
-  if(!fullPlan||!fullPlan.comidas){
-    alert("No hay un plan completo para este cliente. Crea uno desde ✨ Crear Plan IA");
-    renderNutrition();return;
-  }
-
-  const client=_clients.find(c=>String(c.id)===String(clientId));
-  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
-  const exOpts=`<option value="">+ Añadir comida…</option>
-    ${["Desayuno","Media mañana","Almuerzo","Comida","Merienda","Cena","Post-entreno"].map(n=>`<option>${n}</option>`).join("")}`;
-
-  // Store plan in nutriIA for editing
-  nutriIA.planData={
-    clienteId:clientId,
-    objetivo:fullPlan.objetivo,
-    macros:{
-      kcal:fullPlan.kcal,
-      protG:fullPlan.proteina_g,carbG:fullPlan.carbos_g,fatG:fullPlan.grasas_g,
-      prot:fullPlan.proteina_pct,carb:fullPlan.carbos_pct,fat:fullPlan.grasas_pct
-    },
-    comidas:fullPlan.comidas
-  };
-
-  render(`
-    <div class="flex-between" style="margin-bottom:18px">
-      <div>
-        <div style="font-weight:800;font-size:18px">✏️ Editando plan de ${client?.nombre||"Cliente"}</div>
-        <div style="color:var(--muted);font-size:12px;margin-top:2px">${objMap[fullPlan.objetivo]||""} · ${fullPlan.kcal} kcal/día</div>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-ghost" onclick="renderNutrition()">← Volver</button>
-        <button class="btn" onclick="nutriaSaveEdit('${clientId}')">💾 Guardar cambios</button>
-      </div>
-    </div>
-
-    <!-- MACROS -->
-    <div class="card" style="margin-bottom:16px">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-        ${[{v:fullPlan.kcal,c:"#e08a00",l:"Calorías"},{v:fullPlan.proteina_g+"g",c:"#4f6ef7",l:`Proteína ${fullPlan.proteina_pct}%`},{v:fullPlan.carbos_g+"g",c:"#00a87a",l:`Carbos ${fullPlan.carbos_pct}%`},{v:fullPlan.grasas_g+"g",c:"#e08a00",l:`Grasas ${fullPlan.grasas_pct}%`}]
-          .map(x=>`<div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("")}
-      </div>
-    </div>
-
-    <!-- COMIDAS EDITOR -->
-    <div id="nutri-edit-meals">
-      ${fullPlan.comidas.map((meal,mi)=>renderMealEditor(meal,mi,clientId)).join("")}
-    </div>
-
-    <button class="btn-outline" style="width:100%;justify-content:center;margin-bottom:24px" onclick="addMealToEdit('${clientId}')">+ Añadir comida</button>
-    <button class="btn" style="width:100%;justify-content:center" onclick="nutriaSaveEdit('${clientId}')">💾 Guardar y enviar a cliente</button>
-  `);
-}
-
-function renderMealEditor(meal,mi,clientId){
-  return `<div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px" id="meal-edit-${mi}">
-    <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:20px">${meal.icono}</span>
-        <div>
-          <input value="${meal.nombre}" onchange="nutriIA.planData.comidas[${mi}].nombre=this.value" style="background:transparent;border:none;color:#fff;font-weight:700;font-size:15px;outline:none;width:150px"/>
-          <input value="${meal.hora}" onchange="nutriIA.planData.comidas[${mi}].hora=this.value" style="background:transparent;border:none;color:rgba(255,255,255,.8);font-size:12px;outline:none;width:60px"/>
-        </div>
-      </div>
-      <button onclick="removeMealEdit(${mi},'${clientId}')" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:12px">✕ Eliminar</button>
-    </div>
-    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
-      ${meal.variantes.map((v,vi)=>`<button id="met-${mi}-${vi}" onclick="nutriaEditorTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
-      <button onclick="addVariantEdit(${mi},'${clientId}')" style="background:none;border:none;color:var(--accent);padding:8px 12px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif">+ Variante</button>
-    </div>
-    ${meal.variantes.map((v,vi)=>`
-      <div id="mep-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
-        <div style="margin-bottom:10px">
-          <label class="lbl">Nombre variante</label>
-          <input value="${v.nombre}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].nombre=this.value;document.getElementById('met-${mi}-${vi}').textContent='Opción ${v.letra}'"/>
-        </div>
-        <label class="lbl">Ingredientes</label>
-        <div id="ing-edit-${mi}-${vi}">
-          ${v.ing.map((ing,ii)=>`
-            <div style="display:flex;gap:6px;margin-bottom:6px">
-              <input value="${ing}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].ing[${ii}]=this.value" placeholder="Ingrediente"/>
-              <button onclick="removeIngEdit(${mi},${vi},${ii},'${clientId}')" style="background:#fff0f0;border:1px solid #ffdddd;color:var(--danger);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer">✕</button>
-            </div>`).join("")}
-        </div>
-        <button onclick="addIngEdit(${mi},${vi},'${clientId}')" style="background:#f5f6fa;border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;margin-bottom:12px">+ Ingrediente</button>
-        <label class="lbl">Pasos</label>
-        <div id="paso-edit-${mi}-${vi}">
-          ${v.pasos.map((p,pi)=>`
-            <div style="display:flex;gap:6px;margin-bottom:6px;align-items:flex-start">
-              <div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:8px">${pi+1}</div>
-              <input value="${p}" onchange="nutriIA.planData.comidas[${mi}].variantes[${vi}].pasos[${pi}]=this.value"/>
-              <button onclick="removePasoEdit(${mi},${vi},${pi},'${clientId}')" style="background:#fff0f0;border:1px solid #ffdddd;color:var(--danger);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;margin-top:4px">✕</button>
-            </div>`).join("")}
-        </div>
-        <button onclick="addPasoEdit(${mi},${vi},'${clientId}')" style="background:#f5f6fa;border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer">+ Paso</button>
-      </div>`).join("")}
-  </div>`;
-}
-
-function nutriaEditorTab(mi,vi){
-  nutriIA.planData.comidas[mi].variantes.forEach((_,i)=>{
-    const t=document.getElementById(`met-${mi}-${i}`);
-    const p=document.getElementById(`mep-${mi}-${i}`);
-    if(t){t.style.borderBottomColor=i===vi?"var(--accent)":"transparent";t.style.color=i===vi?"var(--accent)":"var(--muted)";t.style.fontWeight=i===vi?"700":"500";}
-    if(p)p.style.display=i===vi?"block":"none";
-  });
-}
-
-function addIngEdit(mi,vi,clientId){nutriIA.planData.comidas[mi].variantes[vi].ing.push("");editNutritionPlan(clientId);}
-function removeIngEdit(mi,vi,ii,clientId){nutriIA.planData.comidas[mi].variantes[vi].ing.splice(ii,1);editNutritionPlan(clientId);}
-function addPasoEdit(mi,vi,clientId){nutriIA.planData.comidas[mi].variantes[vi].pasos.push("");editNutritionPlan(clientId);}
-function removePasoEdit(mi,vi,pi,clientId){nutriIA.planData.comidas[mi].variantes[vi].pasos.splice(pi,1);editNutritionPlan(clientId);}
-function addVariantEdit(mi,clientId){
-  const letra=String.fromCharCode(65+nutriIA.planData.comidas[mi].variantes.length);
-  nutriIA.planData.comidas[mi].variantes.push({letra,nombre:"Nueva variante",ing:["Ingrediente"],pasos:["Paso 1"]});
-  editNutritionPlan(clientId);
-}
-function removeMealEdit(mi,clientId){nutriIA.planData.comidas.splice(mi,1);editNutritionPlan(clientId);}
-function addMealToEdit(clientId){
-  nutriIA.planData.comidas.push({nombre:"Nueva comida",hora:"12:00",icono:"🍽️",kcal:300,variantes:[{letra:"A",nombre:"Opción A",ing:["Ingrediente"],pasos:["Paso 1"]}]});
-  editNutritionPlan(clientId);
-}
-
-async function nutriaSaveEdit(clientId){
-  const{objetivo,macros,comidas}=nutriIA.planData;
-  const client=_clients.find(c=>String(c.id)===String(clientId));
-  try{
-    await apiGet({
-      action:"saveNutritionFull",
-      clienteId:clientId,
-      nombre:`Plan ${client?.nombre||"Cliente"}`,
-      objetivo,
-      kcal:macros.kcal,
-      proteina_g:macros.protG,carbos_g:macros.carbG,grasas_g:macros.fatG,
-      proteina_pct:macros.prot,carbos_pct:macros.carb,grasas_pct:macros.fat,
-      comidas_json:JSON.stringify(comidas)
-    });
-    alert(`✅ Plan actualizado y enviado a ${client?.nombre||"Cliente"}`);
-    renderNutrition();
-  }catch(e){alert("Error: "+e.message);}
-}
-
-async function quickAssignNutri(clientId){
+function openNutriModal(clientId){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="nm" onclick="if(event.target===this)closeModal('nm')">
-      <div class="modal modal-sm" style="padding:24px">
-        <div class="modal-title" style="margin-bottom:18px">Seleccionar plan</div>
-        ${NUTRI_TPLS.map((t,i)=>`
-          <div onclick="assignNutri('${clientId}',${i})" class="card card-hover" style="margin-bottom:10px;padding:14px">
-            <div style="font-weight:700;margin-bottom:10px">${t.nombre}</div>
-            <div class="macro-row">
-              ${[{l:"Kcal",v:t.kcal,c:"#e08a00"},{l:"Prot",v:t.proteina+"g",c:"#4f6ef7"},{l:"Carb",v:t.carbos+"g",c:"#00a87a"},{l:"Gras",v:t.grasas+"g",c:"#7c5cbf"}]
-                .map(x=>`<div class="macro" style="padding:8px"><div class="macro-val" style="color:${x.c};font-size:16px">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
-            </div>
-          </div>`).join("")}
+    <div class="modal-bg" id="nutri-modal" onclick="if(event.target===this)closeModal('nutri-modal')">
+      <div class="modal" style="max-width:440px">
+        <div class="modal-hd">
+          <div class="modal-title">Seleccionar plan</div>
+          <button class="modal-close" onclick="closeModal('nutri-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+          ${NUTRI_TPLS.map((t,i)=>`
+            <div onclick="assignNutri('${clientId}',${i})" class="card card-hover" style="margin-bottom:10px;padding:14px">
+              <div style="font-weight:700;margin-bottom:10px">${t.nombre}</div>
+              <div class="grid-4">
+                <div class="macro-box"><div class="macro-val" style="color:#e08a00;font-size:16px">${t.kcal}</div><div class="macro-lbl">kcal</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:var(--accent);font-size:16px">${t.proteina}g</div><div class="macro-lbl">prot</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:#00a87a;font-size:16px">${t.carbos}g</div><div class="macro-lbl">carbs</div></div>
+                <div class="macro-box"><div class="macro-val" style="color:#9b59b6;font-size:16px">${t.grasas}g</div><div class="macro-lbl">grasas</div></div>
+              </div>
+            </div>`).join("")}
+        </div>
       </div>
     </div>`);
 }
 
 async function assignNutri(clientId,idx){
   const t=NUTRI_TPLS[idx];
-  await apiGet({action:"saveNutrition",clienteId:clientId,...t});
-  closeModal("nm");renderNutrition();
+  await api({action:"saveNutrition",clienteId:clientId,...t});
+  closeModal("nutri-modal");
+  renderNutricion();
 }
 
-// ── CLIENTE: MI ENTRENAMIENTO ─────────────────────────────
-let _activeExId=null;
-
-async function renderClientTraining(){
-  render(spinner("Cargando entrenamiento…"));
-  const routines=await apiGet({action:"routines",clientId:U.id});
-  const routine=routines[0];
-  if(!routine){
-    render(`<div style="padding:60px;text-align:center;color:var(--muted)">
-      <div style="font-size:48px;margin-bottom:16px">💪</div>
-      <div style="font-weight:700;font-size:16px">Sin rutina asignada</div>
-      <div style="font-size:13px;margin-top:6px">Tu entrenador te asignará una rutina pronto.</div>
-    </div>`);return;
-  }
-
+// ── MENSAJES TRAINER ──────────────────────────────────────
+async function renderMensajes(){
+  render(spin("Cargando…"));
+  if(!_clients.length)_clients=await api({action:"clients"});
   render(`
-    <div style="margin-bottom:22px">
-      <div style="font-weight:800;font-size:22px;margin-bottom:4px">${routine.nombre}</div>
-      <div style="color:var(--muted);font-size:13px">${routine.days?.length||0} días · Toca un ejercicio para ver cómo hacerlo</div>
-    </div>
-    <div id="training-content">
-      ${(routine.days||[]).map((d,di)=>`
-        <div class="training-day">
-          <div class="training-day-hd">📅 ${d.dia}</div>
-          ${(d.exercises||[]).map((ex,ei)=>{
-            const resolvedId=resolveExId(ex.exerciseId);
-            const exLocal=resolvedId?EXDB.find(e=>e.id===resolvedId):null;
-            const nombre=exLocal?exLocal.nombre:"Ejercicio #"+ex.exerciseId;
-            return `<div class="ex-item" id="exitem-${di}-${ei}" onclick="toggleExDetail('${resolvedId||ex.exerciseId}','${di}-${ei}')">
-              <div class="ex-item-top">
-                <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()" onchange="markDone(this,'exname-${di}-${ei}')"/>
-                <div class="ex-item-thumb" id="mini-thumb-${di}-${ei}">
-                  <span style="font-size:20px">🏋️</span>
-                </div>
-                <div style="flex:1;min-width:0">
-                  <div id="exname-${di}-${ei}" style="font-weight:600;font-size:14px">${nombre}</div>
-                  <div style="font-size:12px;color:var(--muted);margin-top:2px">${ex.series} series × ${ex.reps} · Descanso: ${ex.descanso}</div>
-                </div>
-                <div style="color:var(--muted);font-size:18px" id="arrow-${di}-${ei}">›</div>
-              </div>
-              <div id="exdetail-${di}-${ei}" class="hidden"></div>
-            </div>`;
-          }).join("")}
+    <div class="section-title" style="margin-bottom:18px">Mensajes</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+      ${_clients.map(c=>`
+        <div class="card card-hover" onclick="openChat('${c.id}')">
+          <div class="flex">
+            <div class="client-av">${c.nombre[0]}</div>
+            <div>
+              <div style="font-weight:700">${c.nombre}</div>
+              <div style="font-size:12px;color:var(--muted)">Abrir conversación →</div>
+            </div>
+          </div>
         </div>`).join("")}
     </div>`);
-
-  // Load mini thumbnails async
-  (routine.days||[]).forEach((d,di)=>{
-    (d.exercises||[]).forEach((ex,ei)=>{
-      const rId=resolveExId(ex.exerciseId);
-      const exLocal=rId?EXDB.find(e=>e.id===rId):null;
-      if(exLocal&&exLocal.wger){
-        loadWgerImage(exLocal).then(img=>{
-          if(!img)return;
-          const el=document.getElementById(`mini-thumb-${di}-${ei}`);
-          if(el)el.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover"/>`;
-        });
-      }
-    });
-  });
 }
 
-function markDone(cb,nameId){
-  const el=document.getElementById(nameId);
-  if(el){el.style.textDecoration=cb.checked?"line-through":"none";el.style.color=cb.checked?"var(--muted)":"var(--text)";}
+async function openChat(clientId){
+  const c=_clients.find(c=>String(c.id)===String(clientId));
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="chat-modal" onclick="if(event.target===this)closeModal('chat-modal')">
+      <div class="modal" style="max-width:500px">
+        <div class="modal-hd">
+          <div class="modal-title">💬 ${c.nombre}</div>
+          <button class="modal-close" onclick="closeModal('chat-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <label class="lbl">Mensaje para ${c.nombre}</label>
+          <textarea id="chat-txt-${clientId}" placeholder="Escribe aquí tu mensaje…" style="min-height:120px;resize:vertical;margin-bottom:12px"></textarea>
+          <button class="btn-success" style="width:100%;justify-content:center" onclick="sendChatMsg('${clientId}')">📤 Enviar</button>
+        </div>
+      </div>
+    </div>`);
 }
 
-async function toggleExDetail(exId,key){
-  const detailEl=document.getElementById(`exdetail-${key}`);
-  const arrowEl=document.getElementById(`arrow-${key}`);
-  const itemEl=document.getElementById(`exitem-${key}`);
-  if(!detailEl)return;
+async function sendChatMsg(clientId){
+  const text=document.getElementById(`chat-txt-${clientId}`)?.value?.trim();
+  if(!text)return;
+  await api({action:"saveComment",clienteId:clientId,comentario:text});
+  document.getElementById(`chat-txt-${clientId}`).value="";
+  const btn=event.target;
+  btn.textContent="✅ Enviado";
+  setTimeout(()=>btn.textContent="📤 Enviar",2000);
+}
 
-  if(!detailEl.classList.contains("hidden")){
-    detailEl.classList.add("hidden");
-    arrowEl.textContent="›";
-    itemEl.classList.remove("active");
+// ════════════════════════════════════════════════════════
+// CLIENT VIEWS
+// ════════════════════════════════════════════════════════
+
+// ── MI ENTRENAMIENTO ──────────────────────────────────────
+async function renderEntrenamiento(){
+  render(spin("Cargando entrenamiento…"));
+  const routines=await api({action:"routines",clientId:U.id});
+  const routine=routines[0];
+  if(!routine){
+    render(`<div class="empty"><div class="empty-icon">💪</div><div style="font-weight:700;font-size:16px">Sin rutina asignada</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará una rutina pronto.</div></div>`);
     return;
   }
-
-  // Show loading
-  detailEl.innerHTML=`<div style="padding:16px;text-align:center"><div class="loading-sm"></div></div>`;
-  detailEl.classList.remove("hidden");
-  arrowEl.textContent="⌄";
-  itemEl.classList.add("active");
-
-        const resolvedId=resolveExId(exId);
-      const exLocal=resolvedId?EXDB.find(e=>e.id===resolvedId):null;
-  const steps=LOCAL_STEPS[exId]||[];
-  const img=exLocal?await loadWgerImage(exLocal):null;
-
-  detailEl.innerHTML=`
-    <div style="padding:16px;border-top:1px solid var(--border)">
-      ${exLocal?.video?`
-        <div style="position:relative;padding-bottom:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-bottom:14px">
-          <iframe src="${exLocal.video}?rel=0&modestbranding=1" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
-        </div>`:""}
-      ${img?`
-        <div style="background:#f5f6fa;border-radius:10px;overflow:hidden;margin-bottom:14px;display:flex;align-items:center;justify-content:center">
-          <img src="${img}" alt="${exLocal?.nombre||''}" style="max-width:100%;max-height:160px;object-fit:contain;padding:10px"/>
-        </div>`:""}
-      ${steps.length?`
-        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Cómo realizarlo</div>
-        <ol class="steps">
-          ${steps.map((s,i)=>`<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("")}
-        </ol>`:`<div style="color:var(--muted);font-size:13px">Pregunta a tu entrenador por la técnica correcta.</div>`}
-    </div>`;
+  render(`
+    <div style="margin-bottom:20px">
+      <div style="font-weight:800;font-size:22px;margin-bottom:4px">${routine.nombre}</div>
+      <div style="color:var(--muted);font-size:13px">${routine.days?.length||0} días · Toca un ejercicio para ver el vídeo</div>
+    </div>
+    ${(routine.days||[]).map((d,di)=>`
+      <div class="training-day">
+        <div class="training-day-hd">📅 ${d.dia}</div>
+        ${(d.exercises||[]).map((ex,ei)=>`
+          <div>
+            <div class="training-ex" id="tex-${di}-${ei}" onclick="toggleEx(${di},${ei})">
+              <div class="flex">
+                <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()" onchange="markDone(this,'tex-${di}-${ei}')"/>
+                <div style="flex:1">
+                  <div style="font-weight:600;font-size:14px">${ex.nombre||"Ejercicio"}</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:2px">${ex.series||3} series × ${ex.reps||10} · Descanso: ${ex.descanso||"60s"}</div>
+                </div>
+                <span id="arr-${di}-${ei}" style="color:var(--muted);font-size:18px;transition:transform .2s">›</span>
+              </div>
+            </div>
+            <div id="exv-${di}-${ei}" class="training-ex-expanded hidden">
+              ${ex.video?`
+                <div style="position:relative;padding-bottom:56.25%;margin-bottom:10px;background:#000;border-radius:10px;overflow:hidden">
+                  <iframe src="${ex.video}?rel=0&modestbranding=1" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+                </div>`:`<div style="background:#f4f6fb;border-radius:10px;padding:20px;text-align:center;color:var(--muted);margin-bottom:10px;font-size:13px">Sin vídeo asignado</div>`}
+            </div>
+          </div>`).join("")}
+      </div>`).join("")}`);
 }
 
-// ── CLIENTE: MI NUTRICIÓN ─────────────────────────────────
-async function renderClientNutrition(){
-  render(spinner("Cargando nutrición…"));
-  // Try full plan first
-  let fullPlan=null;
-  try{fullPlan=await apiGet({action:"getNutritionFull",clienteId:U.id});}catch(e){}
+function toggleEx(di,ei){
+  const panel=document.getElementById(`exv-${di}-${ei}`);
+  const arr=document.getElementById(`arr-${di}-${ei}`);
+  const isOpen=!panel.classList.contains("hidden");
+  panel.classList.toggle("hidden",isOpen);
+  if(arr)arr.style.transform=isOpen?"":"rotate(90deg)";
+}
 
-  if(fullPlan&&fullPlan.comidas){
-    const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
+function markDone(cb,rowId){
+  const row=document.getElementById(rowId);
+  if(row)row.classList.toggle("done",cb.checked);
+}
+
+// ── MI NUTRICIÓN ──────────────────────────────────────────
+async function renderNutricionCliente(){
+  render(spin("Cargando…"));
+  let fullPlan=null;
+  try{fullPlan=await api({action:"getNutritionFull",clienteId:U.id});}catch(e){}
+  
+  if(fullPlan?.comidas){
+    const meals=fullPlan.comidas;
     render(`
-      <div style="font-weight:800;font-size:20px;margin-bottom:4px">Mi Plan Nutricional</div>
-      <div style="color:var(--muted);font-size:13px;margin-bottom:18px">${objMap[fullPlan.objetivo]||""} · ${fullPlan.kcal} kcal/día</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px">
-        ${[{v:fullPlan.kcal,c:"#e08a00",l:"Calorías"},{v:fullPlan.proteina_g+"g",c:"#4f6ef7",l:"Proteína"},{v:fullPlan.carbos_g+"g",c:"#00a87a",l:"Carbos"},{v:fullPlan.grasas_g+"g",c:"#e08a00",l:"Grasas"}]
-          .map(x=>`<div class="card" style="text-align:center;padding:12px"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("")}
+      <div style="font-weight:800;font-size:22px;margin-bottom:4px">Mi Plan Nutricional</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:20px">${fullPlan.kcal} kcal/día</div>
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="macro-box"><div class="macro-val" style="color:#e08a00">${fullPlan.kcal}</div><div class="macro-lbl">Calorías</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${fullPlan.proteina_g}g</div><div class="macro-lbl">Proteína</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:#00a87a">${fullPlan.carbos_g}g</div><div class="macro-lbl">Carbos</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${fullPlan.grasas_g}g</div><div class="macro-lbl">Grasas</div></div>
       </div>
-      ${fullPlan.comidas.map((meal,mi)=>`
-        <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px">
-          <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px">
-            <span style="font-size:22px">${meal.icono}</span>
-            <div><div style="font-weight:700;font-size:15px">${meal.nombre}</div><div style="font-size:12px;opacity:.85">${meal.hora} · ~${meal.kcal} kcal</div></div>
+      ${meals.map((meal,mi)=>`
+        <div class="card" style="margin-bottom:14px">
+          <div class="flex" style="margin-bottom:12px">
+            <span style="font-size:20px">${meal.icono||"🍽️"}</span>
+            <div>
+              <div style="font-weight:700;font-size:15px">${meal.nombre}</div>
+              <div style="font-size:12px;color:var(--muted)">${meal.hora} · ~${meal.kcal} kcal</div>
+            </div>
           </div>
-          <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
-            ${(meal.variantes||[]).map((v,vi)=>`<button id="cnt-${mi}-${vi}" onclick="cliSelectNutriTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            ${(meal.variantes||[]).map((v,vi)=>`<button id="mvt-${mi}-${vi}" onclick="selectMealVariant(${mi},${vi},${(meal.variantes||[]).length})" style="background:${vi===0?'var(--accent)':'#f4f6fb'};color:${vi===0?'#fff':'var(--muted)'};border:1px solid ${vi===0?'var(--accent)':'var(--border)'};border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer">Opción ${v.letra}</button>`).join("")}
           </div>
           ${(meal.variantes||[]).map((v,vi)=>`
-            <div id="cnp-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
-              <div style="font-weight:700;margin-bottom:8px">${v.nombre}</div>
-              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
-                ${(v.ing||[]).map(i=>`<span style="background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600">${i}</span>`).join("")}
+            <div id="mvp-${mi}-${vi}" style="display:${vi===0?'block':'none'}">
+              <div style="font-weight:600;margin-bottom:6px">${v.nombre}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
+                ${(v.ing||[]).map(i=>`<span class="tag tag-blue">${i}</span>`).join("")}
               </div>
-              <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px">
-                <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Preparación</div>
-                ${(v.pasos||[]).map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${pi+1}</div><span>${p}</span></div>`).join("")}
+              <div style="background:#f9faff;border:1px solid var(--border);border-radius:10px;padding:12px">
+                ${(v.pasos||[]).map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${pi+1}</div><span>${p}</span></div>`).join("")}
               </div>
             </div>`).join("")}
         </div>`).join("")}`);
   }else{
-    const plans=await apiGet({action:"nutrition",clientId:U.id}).catch(()=>[]);
-    if(!plans||!plans[0]){render(`<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">🥗</div><div style="font-weight:600">Sin plan asignado</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará un plan pronto.</div></div>`);return;}
-    render(`<div class="section-title">Mi Plan Nutricional</div><div class="card">${nutriCard(plans[0])}</div>`);
+    const plans=await api({action:"nutrition",clientId:U.id}).catch(()=>[]);
+    if(!plans||!plans[0]){
+      render(`<div class="empty"><div class="empty-icon">🥗</div><div style="font-weight:700;font-size:16px">Sin plan asignado</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará un plan pronto.</div></div>`);
+      return;
+    }
+    const p=plans[0];
+    const meals=String(p.comidas).split("|");
+    render(`
+      <div style="font-weight:800;font-size:22px;margin-bottom:18px">Mi Plan Nutricional</div>
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="macro-box"><div class="macro-val" style="color:#e08a00">${p.kcal}</div><div class="macro-lbl">kcal</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${p.proteina}g</div><div class="macro-lbl">prot</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:#00a87a">${p.carbos}g</div><div class="macro-lbl">carbs</div></div>
+        <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${p.grasas}g</div><div class="macro-lbl">grasas</div></div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">${p.nombre}</div>
+        ${meals.map((m,i)=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><div style="background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;min-width:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${i+1}</div><span>${m}</span></div>`).join("")}
+      </div>`);
   }
 }
 
-function cliSelectNutriTab(mi,vi){
-  document.querySelectorAll(`[id^="cnt-${mi}-"]`).forEach((el,i)=>{
-    el.style.borderBottomColor=i===vi?"var(--accent)":"transparent";
-    el.style.color=i===vi?"var(--accent)":"var(--muted)";
-    el.style.fontWeight=i===vi?"700":"500";
-  });
-  document.querySelectorAll(`[id^="cnp-${mi}-"]`).forEach((el,i)=>{el.style.display=i===vi?"block":"none";});
+function selectMealVariant(mi,vi,total){
+  for(let i=0;i<total;i++){
+    const btn=document.getElementById(`mvt-${mi}-${i}`);
+    const panel=document.getElementById(`mvp-${mi}-${i}`);
+    if(btn){btn.style.background=i===vi?'var(--accent)':'#f4f6fb';btn.style.color=i===vi?'#fff':'var(--muted)';btn.style.borderColor=i===vi?'var(--accent)':'var(--border)';}
+    if(panel)panel.style.display=i===vi?'block':'none';
+  }
 }
 
-// ── CLIENTE: MI PROGRESO ──────────────────────────────────
-async function renderClientProgress(){
-  render(spinner("Cargando…"));
-  const records=await apiGet({action:"progress",clientId:U.id});
+// ── MENSAJES CLIENTE ──────────────────────────────────────
+async function renderMensajesCliente(){
+  render(spin("Cargando…"));
+  let msg="";
+  try{
+    const clients=await api({action:"clients"});
+    const me=clients.find(c=>String(c.id)===String(U.id));
+    msg=me?.comentario||"";
+  }catch(e){}
   render(`
-    <div class="section-title">Mi Progreso</div>
+    <div style="font-weight:800;font-size:22px;margin-bottom:18px">💬 Mensajes de tu entrenador</div>
+    ${msg?`
+      <div class="card" style="margin-bottom:14px">
+        <div class="flex" style="margin-bottom:10px">
+          <div class="client-av" style="background:linear-gradient(135deg,#4361ee,#3a0ca3)">R</div>
+          <div>
+            <div style="font-weight:700">Ric — i-Motion</div>
+            <div style="font-size:11px;color:var(--muted)">Tu entrenador personal</div>
+          </div>
+        </div>
+        <div class="msg-bubble">${msg}</div>
+      </div>`
+    :`<div class="empty"><div class="empty-icon">💬</div><div style="font-weight:700">Sin mensajes aún</div><div style="font-size:13px;margin-top:6px">Tu entrenador te enviará mensajes aquí.</div></div>`}
+  `);
+}
+
+// ── MI PROGRESO ───────────────────────────────────────────
+async function renderProgreso(){
+  render(spin("Cargando…"));
+  const records=await api({action:"progress",clientId:U.id});
+  render(`
+    <div style="font-weight:800;font-size:22px;margin-bottom:18px">📈 Mi Progreso</div>
     <div class="card" style="margin-bottom:20px">
       <div style="font-weight:700;margin-bottom:14px">Registrar hoy</div>
       <div class="grid-2" style="margin-bottom:12px">
-        <div><label class="lbl">Peso (kg)</label><input id="ppeso" type="number" step="0.1" placeholder="75.5"/></div>
-        <div><label class="lbl">Notas</label><input id="pnotas" placeholder="Cómo me he sentido…"/></div>
+        <div><label class="lbl">Peso (kg)</label><input id="p-peso" type="number" step="0.1" placeholder="75.5"/></div>
+        <div><label class="lbl">Notas</label><input id="p-notas" placeholder="Cómo me he sentido…"/></div>
       </div>
-      <button class="btn" onclick="saveProgress()">Guardar</button>
+      <button class="btn" onclick="saveProgreso()">Guardar registro</button>
     </div>
-    <div style="font-weight:700;font-size:15px;margin-bottom:12px">Historial (${records.length})</div>
+    <div style="font-weight:700;font-size:15px;margin-bottom:12px">Historial (${records.length} registros)</div>
+    ${records.length===0?`<div class="empty"><div class="empty-icon">📊</div><div style="font-weight:700">Sin registros aún</div></div>`:""}
     ${[...records].reverse().map(r=>`
-      <div class="prog-entry">
-        <div><div style="font-weight:600">${r.fecha}</div>${r.notas?`<div style="font-size:12px;color:var(--muted)">${r.notas}</div>`:""}</div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:14px">
+        <div>
+          <div style="font-weight:600">${r.fecha}</div>
+          ${r.notas?`<div style="font-size:12px;color:var(--muted)">${r.notas}</div>`:""}
+        </div>
         <div style="font-size:26px;font-weight:800;color:var(--accent)">${r.peso}<span style="font-size:13px;color:var(--muted)"> kg</span></div>
       </div>`).join("")}`);
 }
 
-// ── NUTRICIÓN IA ──────────────────────────────────────────
-const MEAL_TEMPLATES={
-  perdida_grasa:{
-    3:[
-      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
-        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche desnatada","20g proteína","1 plátano"],pasos:["Calienta la leche 2 min","Añade la avena y remueve","Mezcla la proteína y añade el plátano"]},
-        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas con tomate"]},
-        {letra:"C",nombre:"Yogur con frutos rojos",ing:["200g yogur griego 0%","150g frutos rojos","20g granola"],pasos:["Vierte el yogur en un bol","Añade los frutos rojos","Espolvorea la granola"]}
-      ]},
-      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
-        {letra:"A",nombre:"Pollo con arroz y verduras",ing:["200g pechuga pollo","80g arroz integral","200g brócoli","aceite oliva"],pasos:["Cuece el arroz 20 min","Plancha el pollo con especias","Cocina el brócoli al vapor 8 min","Sirve junto"]},
-        {letra:"B",nombre:"Merluza con patata",ing:["200g merluza","150g patata","ensalada verde","limón"],pasos:["Cuece la patata 20 min","Hornea la merluza con limón 15 min a 180°","Sirve con ensalada"]},
-        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera magra","80g quinoa","pimiento rojo","cebolla","tomate"],pasos:["Cuece la quinoa 15 min","Saltea las verduras","Plancha la ternera","Mezcla todo"]}
-      ]},
-      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
-        {letra:"A",nombre:"Salmón con espárragos",ing:["180g salmón","200g espárragos","limón","aceite","eneldo"],pasos:["Precalienta horno 180°","Hornea el salmón 15 min","Asa los espárragos 10 min"]},
-        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","1 calabacín","pimiento","cebolla"],pasos:["Saltea las verduras 5 min","Bate los huevos y mezcla","Cuaja la tortilla a fuego medio"]},
-        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pechuga pavo","ensalada mixta","tomate cherry","vinagreta ligera"],pasos:["Plancha el pavo con hierbas","Prepara la ensalada","Aliña y sirve"]}
-      ]}
-    ],
-    4:[
-      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
-        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche desnatada","20g proteína","1 plátano"],pasos:["Calienta la leche","Añade la avena","Mezcla la proteína y el plátano"]},
-        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas"]},
-        {letra:"C",nombre:"Yogur con granola",ing:["200g yogur griego 0%","frutos rojos","20g granola"],pasos:["Vierte el yogur","Añade frutos rojos","Espolvorea granola"]}
-      ]},
-      {nombre:"Media mañana",hora:"11:00",icono:"🍎",variantes:[
-        {letra:"A",nombre:"Yogur griego con fruta",ing:["150g yogur griego 0%","1 plátano","canela"],pasos:["Sirve el yogur en un bol","Añade el plátano troceado","Espolvorea canela"]},
-        {letra:"B",nombre:"Frutos secos y fruta",ing:["20g almendras","1 manzana"],pasos:["Lava la manzana","Toma con las almendras"]},
-        {letra:"C",nombre:"Queso fresco con membrillo",ing:["100g queso fresco 0%","30g membrillo"],pasos:["Sirve el queso en plato","Acompaña con el membrillo"]}
-      ]},
-      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
-        {letra:"A",nombre:"Pollo con arroz",ing:["200g pollo","80g arroz integral","brócoli","aceite"],pasos:["Cuece el arroz","Plancha el pollo","Cocina el brócoli","Sirve junto"]},
-        {letra:"B",nombre:"Merluza con patata",ing:["200g merluza","150g patata","ensalada","limón"],pasos:["Cuece la patata","Hornea la merluza 15 min","Sirve con ensalada"]},
-        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera","80g quinoa","verduras salteadas"],pasos:["Cuece la quinoa","Plancha la ternera","Saltea las verduras","Sirve"]}
-      ]},
-      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
-        {letra:"A",nombre:"Salmón con verduras",ing:["180g salmón","espárragos","limón","aceite"],pasos:["Hornea el salmón 15 min","Asa los espárragos","Sirve con limón"]},
-        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","calabacín","pimiento","cebolla"],pasos:["Saltea las verduras","Mezcla con huevos","Cuaja a fuego medio"]},
-        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pavo","ensalada mixta","vinagreta"],pasos:["Plancha el pavo","Prepara la ensalada","Aliña y sirve"]}
-      ]}
-    ],
-    5:[
-      {nombre:"Desayuno",hora:"8:00",icono:"☀️",variantes:[
-        {letra:"A",nombre:"Avena proteica",ing:["80g avena","200ml leche","20g proteína","1 plátano"],pasos:["Calienta la leche","Añade la avena","Mezcla la proteína y el plátano"]},
-        {letra:"B",nombre:"Tostadas con huevo",ing:["2 tostadas integrales","3 claras","1 huevo","tomate"],pasos:["Tuesta el pan","Revuelve los huevos","Sirve sobre las tostadas"]},
-        {letra:"C",nombre:"Yogur con granola",ing:["200g yogur griego 0%","frutos rojos","20g granola"],pasos:["Vierte el yogur","Añade frutos rojos","Espolvorea granola"]}
-      ]},
-      {nombre:"Media mañana",hora:"10:30",icono:"🍎",variantes:[
-        {letra:"A",nombre:"Batido proteico",ing:["30g proteína","300ml leche desnatada","1 plátano"],pasos:["Mezcla todo en batidora","Sirve frío"]},
-        {letra:"B",nombre:"Fruta y queso",ing:["1 manzana","100g queso fresco","canela"],pasos:["Corta la manzana","Sirve con queso y canela"]},
-        {letra:"C",nombre:"Arroz con atún",ing:["80g arroz cocido","1 lata atún","tomate","aceite"],pasos:["Mezcla el arroz con atún","Añade tomate y aliña"]}
-      ]},
-      {nombre:"Comida",hora:"14:00",icono:"🍽️",variantes:[
-        {letra:"A",nombre:"Pollo con arroz",ing:["200g pollo","80g arroz","200g brócoli","aceite"],pasos:["Cuece el arroz","Plancha el pollo","Cocina el brócoli","Sirve"]},
-        {letra:"B",nombre:"Merluza con verduras",ing:["200g merluza","patata","judías verdes","limón"],pasos:["Cuece patata y judías","Hornea la merluza 15 min","Sirve"]},
-        {letra:"C",nombre:"Ternera con quinoa",ing:["180g ternera","80g quinoa","pimiento","cebolla"],pasos:["Cuece la quinoa","Saltea las verduras","Plancha la ternera","Sirve"]}
-      ]},
-      {nombre:"Merienda",hora:"17:30",icono:"🥛",variantes:[
-        {letra:"A",nombre:"Yogur con frutos rojos",ing:["150g yogur griego 0%","100g frutos rojos","10g nueces"],pasos:["Sirve el yogur en un bol","Añade los frutos rojos","Añade las nueces"]},
-        {letra:"B",nombre:"Fruta y queso",ing:["1 naranja","80g queso fresco 0%"],pasos:["Pela la naranja","Sirve con el queso fresco"]},
-        {letra:"C",nombre:"Batido ligero",ing:["150ml leche desnatada","1 plátano pequeño","canela"],pasos:["Mezcla todo en batidora","Sirve frío"]}
-      ]},
-      {nombre:"Cena",hora:"20:00",icono:"🌙",variantes:[
-        {letra:"A",nombre:"Salmón con espárragos",ing:["180g salmón","espárragos","limón","aceite"],pasos:["Hornea el salmón 15 min","Asa los espárragos","Sirve con limón"]},
-        {letra:"B",nombre:"Tortilla de verduras",ing:["3 huevos","calabacín","pimiento"],pasos:["Saltea las verduras","Mezcla con huevos","Cuaja la tortilla"]},
-        {letra:"C",nombre:"Pavo con ensalada",ing:["180g pavo","ensalada mixta","vinagreta"],pasos:["Plancha el pavo","Prepara la ensalada","Sirve"]}
-      ]}
-    ]
-  }
-};
-["volumen","mantenimiento","rendimiento","definicion"].forEach(obj=>{
-  MEAL_TEMPLATES[obj]={};
-  [3,4,5].forEach(n=>{MEAL_TEMPLATES[obj][n]=JSON.parse(JSON.stringify(MEAL_TEMPLATES.perdida_grasa[n]));});
-});
-
-let nutriIA={numComidas:4,planData:null,selectedClient:null};
-
-async function renderNutricionIA(){
-  const clients=await apiGet({action:"clients"});
-  render(`
-    <div class="flex-between" style="margin-bottom:20px">
-      <div><div class="section-title" style="margin-bottom:2px">✨ Crear Plan Nutricional</div>
-      <div style="color:var(--muted);font-size:13px">Genera y envía planes personalizados</div></div>
-    </div>
-    <div id="nutria-config">
-      <!-- CLIENTE -->
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Cliente</div>
-        <select id="nutria-client" style="margin-bottom:0">
-          <option value="">Selecciona un cliente…</option>
-          ${clients.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join("")}
-        </select>
-      </div>
-      <!-- DATOS -->
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Datos físicos</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div><label class="lbl">Objetivo</label>
-            <select id="nutria-obj" onchange="nutriaUpdateMacros()">
-              <option value="perdida_grasa">Pérdida de grasa</option>
-              <option value="volumen">Volumen muscular</option>
-              <option value="mantenimiento">Mantenimiento</option>
-              <option value="rendimiento">Rendimiento deportivo</option>
-              <option value="definicion">Definición muscular</option>
-            </select>
-          </div>
-          <div><label class="lbl">Sexo</label>
-            <select id="nutria-sexo" onchange="nutriaUpdateMacros()">
-              <option value="hombre">Hombre</option><option value="mujer">Mujer</option>
-            </select>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
-          <div><label class="lbl">Peso (kg)</label><input id="nutria-peso" type="number" placeholder="75" oninput="nutriaUpdateMacros()"/></div>
-          <div><label class="lbl">Altura (cm)</label><input id="nutria-altura" type="number" placeholder="175"/></div>
-          <div><label class="lbl">Edad</label><input id="nutria-edad" type="number" placeholder="30" oninput="nutriaUpdateMacros()"/></div>
-        </div>
-        <div><label class="lbl">Nivel de actividad</label>
-          <select id="nutria-act" onchange="nutriaUpdateMacros()">
-            <option value="1.2">Sedentario</option>
-            <option value="1.375">Ligero (1-2 días/sem)</option>
-            <option value="1.55" selected>Moderado (3-4 días/sem)</option>
-            <option value="1.725">Activo (5-6 días/sem)</option>
-            <option value="1.9">Muy activo</option>
-          </select>
-        </div>
-      </div>
-      <!-- COMIDAS -->
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Comidas al día</div>
-        <div style="display:flex;gap:8px">
-          ${[3,4,5].map(n=>`<button id="ncb${n}" onclick="nutriaSelectComidas(${n})" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid ${n===4?'var(--accent)':'var(--border)'};background:${n===4?'#eef0ff':'#fff'};color:${n===4?'var(--accent)':'var(--text)'};font-weight:600;font-size:13px;cursor:pointer">${n} comidas</button>`).join("")}
-        </div>
-      </div>
-      <!-- MACROS -->
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:6px">Macros</div>
-        <div style="background:#eef0ff;border:1px solid #d5dbff;border-radius:8px;padding:10px;font-size:12px;color:#4f6ef7;margin-bottom:12px">💡 Calculado automáticamente. Ajusta si es necesario.</div>
-        <div style="margin-bottom:10px"><label class="lbl">Calorías (kcal/día)</label><input id="nutria-kcal" type="number" placeholder="2000" oninput="nutriaUpdateGrams()"/></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-          <span style="font-size:12px;font-weight:600;color:#4f6ef7;min-width:75px">🥩 Proteína</span>
-          <input type="range" id="nutria-prot" min="15" max="45" value="30" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#4f6ef7;border:none;padding:4px 0;background:none"/>
-          <span id="nutria-prot-val" style="font-size:12px;font-weight:700;color:#4f6ef7;min-width:32px">30%</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-          <span style="font-size:12px;font-weight:600;color:#00a87a;min-width:75px">🍚 Carbos</span>
-          <input type="range" id="nutria-carb" min="20" max="55" value="45" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#00a87a;border:none;padding:4px 0;background:none"/>
-          <span id="nutria-carb-val" style="font-size:12px;font-weight:700;color:#00a87a;min-width:32px">45%</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <span style="font-size:12px;font-weight:600;color:#e08a00;min-width:75px">🥑 Grasas</span>
-          <input type="range" id="nutria-fat" min="15" max="40" value="25" oninput="nutriaUpdateGrams()" style="flex:1;accent-color:#e08a00;border:none;padding:4px 0;background:none"/>
-          <span id="nutria-fat-val" style="font-size:12px;font-weight:700;color:#e08a00;min-width:32px">25%</span>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-          ${[{id:"ng-kcal",c:"#e08a00",l:"Kcal"},{id:"ng-prot",c:"#4f6ef7",l:"Proteína"},{id:"ng-carb",c:"#00a87a",l:"Carbos"},{id:"ng-fat",c:"#e08a00",l:"Grasas"}].map(x=>`
-            <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
-              <div id="${x.id}" style="font-size:18px;font-weight:800;color:${x.c}">—</div>
-              <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div>
-            </div>`).join("")}
-        </div>
-      </div>
-      <button onclick="nutriaGenerate()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:24px">✨ Generar Plan</button>
-    </div>
-
-    <!-- EDITOR -->
-    <div id="nutria-editor" class="hidden">
-      <div class="flex-between" style="margin-bottom:16px">
-        <div><div style="font-weight:800;font-size:18px" id="nutria-ed-title">Plan</div>
-        <div style="color:var(--muted);font-size:12px;margin-top:2px" id="nutria-ed-sub"></div></div>
-        <div style="display:flex;gap:8px">
-          <button onclick="document.getElementById('nutria-config').classList.remove('hidden');document.getElementById('nutria-editor').classList.add('hidden')" class="btn-ghost">← Volver</button>
-          <button onclick="nutriaSave()" class="btn">💾 Guardar y enviar</button>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px" id="nutria-ed-macros"></div>
-      <div id="nutria-ed-meals"></div>
-    </div>`);
-}
-
-function nutriaSelectComidas(n){
-  nutriIA.numComidas=n;
-  [3,4,5].forEach(i=>{
-    const b=document.getElementById(`ncb${i}`);
-    if(!b)return;
-    b.style.background=i===n?"#eef0ff":"#fff";
-    b.style.borderColor=i===n?"var(--accent)":"var(--border)";
-    b.style.color=i===n?"var(--accent)":"var(--text)";
-  });
-}
-
-function nutriaUpdateMacros(){
-  const peso=parseFloat(document.getElementById("nutria-peso")?.value)||0;
-  const altura=parseFloat(document.getElementById("nutria-altura")?.value)||0;
-  const edad=parseFloat(document.getElementById("nutria-edad")?.value)||0;
-  const sexo=document.getElementById("nutria-sexo")?.value||"hombre";
-  const act=parseFloat(document.getElementById("nutria-act")?.value)||1.55;
-  const obj=document.getElementById("nutria-obj")?.value||"mantenimiento";
-  if(!peso||!edad)return;
-  let tmb=sexo==="hombre"?(10*peso)+(6.25*(altura||175))-(5*edad)+5:(10*peso)+(6.25*(altura||175))-(5*edad)-161;
-  let tdee=Math.round(tmb*act);
-  if(obj==="perdida_grasa")tdee=Math.round(tdee*0.82);
-  else if(obj==="volumen")tdee=Math.round(tdee*1.12);
-  else if(obj==="definicion")tdee=Math.round(tdee*0.88);
-  const el=document.getElementById("nutria-kcal");
-  if(el)el.value=tdee;
-  nutriaUpdateGrams();
-}
-
-function nutriaUpdateGrams(){
-  const kcal=parseInt(document.getElementById("nutria-kcal")?.value)||0;
-  const p=parseInt(document.getElementById("nutria-prot")?.value)||30;
-  const c=parseInt(document.getElementById("nutria-carb")?.value)||45;
-  const f=parseInt(document.getElementById("nutria-fat")?.value)||25;
-  const pv=document.getElementById("nutria-prot-val");if(pv)pv.textContent=p+"%";
-  const cv=document.getElementById("nutria-carb-val");if(cv)cv.textContent=c+"%";
-  const fv=document.getElementById("nutria-fat-val");if(fv)fv.textContent=f+"%";
-  const kg=document.getElementById("ng-kcal");if(kg)kg.textContent=kcal||"—";
-  const pg=document.getElementById("ng-prot");if(pg)pg.textContent=kcal?Math.round(kcal*p/100/4)+"g":"—";
-  const cg=document.getElementById("ng-carb");if(cg)cg.textContent=kcal?Math.round(kcal*c/100/4)+"g":"—";
-  const fg=document.getElementById("ng-fat");if(fg)fg.textContent=kcal?Math.round(kcal*f/100/9)+"g":"—";
-}
-
-function nutriaGenerate(){
-  const clientId=document.getElementById("nutria-client")?.value;
-  if(!clientId){alert("Selecciona un cliente primero");return;}
-  const kcal=parseInt(document.getElementById("nutria-kcal")?.value)||2000;
-  const prot=parseInt(document.getElementById("nutria-prot")?.value)||30;
-  const carb=parseInt(document.getElementById("nutria-carb")?.value)||45;
-  const fat=parseInt(document.getElementById("nutria-fat")?.value)||25;
-  if(prot+carb+fat!==100){alert("Los % de macros deben sumar 100%");return;}
-  const obj=document.getElementById("nutria-obj")?.value||"perdida_grasa";
-  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
-  const template=MEAL_TEMPLATES[obj]?.[nutriIA.numComidas]||MEAL_TEMPLATES.perdida_grasa[4];
-  const mealKcal=Math.round(kcal/nutriIA.numComidas);
-  nutriIA.planData={
-    clienteId:clientId,
-    objetivo:obj,
-    macros:{kcal,prot,carb,fat,protG:Math.round(kcal*prot/100/4),carbG:Math.round(kcal*carb/100/4),fatG:Math.round(kcal*fat/100/9)},
-    comidas:template.map(m=>({...m,kcal:mealKcal,variantes:m.variantes.map(v=>({...v,ing:[...v.ing],pasos:[...v.pasos]}))}))
-  };
-  nutriaRenderEditor();
-}
-
-function nutriaRenderEditor(){
-  const {macros,comidas,objetivo}=nutriIA.planData;
-  const objMap={perdida_grasa:"Pérdida de grasa",volumen:"Volumen muscular",mantenimiento:"Mantenimiento",rendimiento:"Rendimiento",definicion:"Definición"};
-  const clientName=document.getElementById("nutria-client")?.selectedOptions[0]?.text||"Cliente";
-  document.getElementById("nutria-ed-title").textContent=`Plan de ${clientName}`;
-  document.getElementById("nutria-ed-sub").textContent=`${objMap[objetivo]} · ${macros.kcal} kcal/día`;
-  document.getElementById("nutria-ed-macros").innerHTML=
-    [{v:macros.kcal,c:"#e08a00",l:"Calorías"},{v:macros.protG+"g",c:"#4f6ef7",l:`Proteína ${macros.prot}%`},{v:macros.carbG+"g",c:"#00a87a",l:`Carbos ${macros.carb}%`},{v:macros.fatG+"g",c:"#e08a00",l:`Grasas ${macros.fat}%`}]
-    .map(x=>`<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:800;color:${x.c}">${x.v}</div><div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase">${x.l}</div></div>`).join("");
-
-  document.getElementById("nutria-ed-meals").innerHTML=comidas.map((meal,mi)=>`
-    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px">
-      <div style="background:linear-gradient(135deg,#4f6ef7,#6c63ff);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px">
-        <span style="font-size:22px">${meal.icono}</span>
-        <div><div style="font-weight:700;font-size:15px">${meal.nombre}</div><div style="font-size:12px;opacity:.85">${meal.hora} · ~${meal.kcal} kcal</div></div>
-      </div>
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 12px">
-        ${meal.variantes.map((v,vi)=>`<button id="net-${mi}-${vi}" onclick="nutriaSelectTab(${mi},${vi})" style="background:none;border:none;border-bottom:2px solid ${vi===0?'var(--accent)':'transparent'};color:${vi===0?'var(--accent)':'var(--muted)'};padding:8px 12px;font-size:12px;font-weight:${vi===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
-      </div>
-      ${meal.variantes.map((v,vi)=>`
-        <div id="nep-${mi}-${vi}" style="display:${vi===0?'block':'none'};padding:14px 16px">
-          <div style="font-weight:700;margin-bottom:8px;font-size:13px">${v.nombre}</div>
-          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Ingredientes</div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
-            ${v.ing.map(i=>`<span style="background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600">${i}</span>`).join("")}
-          </div>
-          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Preparación</div>
-          <div style="background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:12px">
-            ${v.pasos.map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${pi+1}</div><span>${p}</span></div>`).join("")}
-          </div>
-        </div>`).join("")}
-    </div>`).join("");
-
-  document.getElementById("nutria-config").classList.add("hidden");
-  document.getElementById("nutria-editor").classList.remove("hidden");
-}
-
-function nutriaSelectTab(mi,vi){
-  nutriIA.planData.comidas[mi].variantes.forEach((_,i)=>{
-    const t=document.getElementById(`net-${mi}-${i}`);
-    const p=document.getElementById(`nep-${mi}-${i}`);
-    if(t){t.style.borderBottomColor=i===vi?"var(--accent)":"transparent";t.style.color=i===vi?"var(--accent)":"var(--muted)";t.style.fontWeight=i===vi?"700":"500";}
-    if(p)p.style.display=i===vi?"block":"none";
-  });
-}
-
-async function nutriaSave(){
-  const {clienteId,objetivo,macros,comidas}=nutriIA.planData;
-  const clientName=document.getElementById("nutria-client")?.selectedOptions[0]?.text||"Cliente";
-  try{
-    await apiGet({
-      action:"saveNutritionFull",
-      clienteId,
-      nombre:`Plan ${clientName}`,
-      objetivo,
-      kcal:macros.kcal,
-      proteina_g:macros.protG,
-      carbos_g:macros.carbG,
-      grasas_g:macros.fatG,
-      proteina_pct:macros.prot,
-      carbos_pct:macros.carb,
-      grasas_pct:macros.fat,
-      comidas_json:JSON.stringify(comidas)
-    });
-    // Also save basic plan for backward compatibility
-    await apiGet({
-      action:"saveNutrition",
-      clienteId,
-      nombre:objetivo==="perdida_grasa"?"Pérdida de Grasa":objetivo==="volumen"?"Volumen Muscular":"Mantenimiento",
-      kcal:macros.kcal,
-      proteina:macros.protG,
-      carbos:macros.carbG,
-      grasas:macros.fatG,
-      comidas:comidas.map(m=>m.nombre+": "+m.variantes[0].ing.join(", ")).join("|")
-    });
-    alert(`✅ Plan guardado y enviado a ${clientName}`);
-    setTab("nutricion");
-  }catch(e){
-    alert("Error guardando: "+e.message);
-  }
-}
-
-async function saveProgress(){
-  const peso=document.getElementById("ppeso").value;
-  const notas=document.getElementById("pnotas").value;
+async function saveProgreso(){
+  const peso=document.getElementById("p-peso").value;
+  const notas=document.getElementById("p-notas").value;
   if(!peso)return;
-  await apiGet({action:"saveProgress",clienteId:U.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
-  renderClientProgress();
+  await api({action:"saveProgress",clienteId:U.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
+  renderProgreso();
 }
 </script>
 </body>
