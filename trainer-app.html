@@ -3,153 +3,168 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>i-Motion App</title>
+<title>i-Motion</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f4f6fb;--white:#fff;--border:#e5e8ef;
-  --text:#1a1d2e;--muted:#8b95a8;
-  --accent:#4361ee;--accent2:#3a0ca3;
-  --success:#06d6a0;--warn:#ffd166;--danger:#ef476f;
+  --bg:#f5f6fa;--white:#fff;--border:#e8eaed;
+  --text:#1a1a2e;--muted:#8892a4;
+  --accent:#4f6ef7;--success:#00c48c;--warn:#ffb648;--danger:#ff5c5c;
 }
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh}
-*{font-family:'Inter',sans-serif}
+button,input,select,textarea{font-family:'Inter',sans-serif}
 
-/* ── NAV ── */
-.nav{background:var(--white);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 24px;gap:8px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.nav-logo{font-weight:800;font-size:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:8px}
-.nav-btn{background:none;border:none;color:var(--muted);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
-.nav-btn:hover{background:#f0f2ff;color:var(--accent)}
-.nav-btn.active{background:#eef0ff;color:var(--accent);font-weight:700}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+/* ── TOPBAR ── */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.logo{font-weight:800;font-size:17px;color:var(--accent);letter-spacing:-.5px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
 
 /* ── LAYOUT ── */
-.page{max-width:1000px;margin:0 auto;padding:28px 24px}
-
-/* ── CARDS ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.card-hover{cursor:pointer;transition:all .15s}
-.card-hover:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(67,97,238,.1);transform:translateY(-1px)}
+.layout{display:flex;min-height:calc(100vh - 54px)}
+.sidebar{width:220px;background:var(--white);border-right:1px solid var(--border);padding:16px 10px;flex-shrink:0}
+.sidebar-section{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:0 10px;margin:14px 0 6px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.sidebar-item:hover{background:#f0f2ff;color:var(--text)}
+.sidebar-item.active{background:#eef0ff;color:var(--accent);font-weight:600}
+.sidebar-icon{font-size:16px;width:22px;text-align:center}
+.main{flex:1;padding:24px;overflow-x:hidden}
+#app{max-width:960px;margin:0 auto}
 
 /* ── BUTTONS ── */
-.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
-.btn:hover{background:#3451d1;box-shadow:0 4px 12px rgba(67,97,238,.3)}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn:hover{background:#3d5ae0}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-outline{background:var(--white);color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;padding:9px 18px;font-weight:600;font-size:13px;cursor:pointer}
-.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer}
-.btn-danger{background:#fff0f3;color:var(--danger);border:1px solid #ffc0cb;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer}
-.btn-success{background:var(--success);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:600;font-size:13px;cursor:pointer}
+.btn-sm{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-weight:600;font-size:12px;cursor:pointer}
+.btn-outline{background:var(--white);color:var(--accent);border:1.5px solid var(--accent);border-radius:9px;padding:8px 16px;font-weight:600;font-size:13px;cursor:pointer}
+.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer}
+.btn-ghost:hover{border-color:#aaa;color:var(--text)}
+.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ffdddd;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer}
 
 /* ── INPUTS ── */
-input,select,textarea{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-size:13px;width:100%;outline:none;transition:border-color .15s}
-input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(67,97,238,.1)}
-label.lbl{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px}
+input,select,textarea{background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,110,247,.1)}
+label.lbl{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:18px}
+.card-hover:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(79,110,247,.1);transform:translateY(-1px);cursor:pointer}
+.card-hover{transition:all .15s}
 
 /* ── TAGS ── */
-.tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
-.tag-blue{background:#eef0ff;color:var(--accent);border:1px solid #d5dbff}
+.tag{display:inline-flex;align-items:center;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600}
+.tag-blue{background:#eef0ff;color:#4f6ef7;border:1px solid #d5dbff}
 .tag-green{background:#e6faf4;color:#00a87a;border:1px solid #b3edd8}
-.tag-orange{background:#fff6e6;color:#d08000;border:1px solid #ffd98a}
-.tag-red{background:#fff0f3;color:var(--danger);border:1px solid #ffc0cb}
-.tag-gray{background:#f4f6fb;color:var(--muted);border:1px solid var(--border)}
+.tag-orange{background:#fff6e6;color:#e08a00;border:1px solid #ffd98a}
+.tag-red{background:#fff0f0;color:#e53e3e;border:1px solid #ffcccc}
 
 /* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(3px);overflow-y:auto}
-.modal{background:var(--white);border-radius:20px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18)}
-.modal-hd{padding:22px 24px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);border-radius:20px 20px 0 0;z-index:1}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(2px)}
+.modal{background:var(--white);border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-sm{max-width:420px}
+.modal-hd{padding:20px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1;border-radius:16px 16px 0 0}
 .modal-title{font-weight:800;font-size:18px}
-.modal-body{padding:20px 24px 24px}
-.modal-close{background:#f4f6fb;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);cursor:pointer}
+.modal-close{background:#f5f6fa;border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;color:var(--muted);display:flex;align-items:center;justify-content:center}
 .modal-close:hover{background:#fee;color:var(--danger)}
+.modal-body{padding:20px 22px 24px}
 
-/* ── EJERCICIOS VIDEO CARD ── */
-.ex-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .15s}
-.ex-card:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(67,97,238,.1)}
-.ex-thumb{position:relative;width:100%;padding-bottom:56.25%;background:#1a1d2e;overflow:hidden}
-.ex-thumb iframe,.ex-thumb img{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover}
-.ex-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s}
-.ex-play-overlay:hover{background:rgba(0,0,0,.5)}
-.play-btn{width:50px;height:50px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
+/* ── VIDEO ── */
+.video-thumb{position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer}
+.video-thumb img{width:100%;display:block}
+.video-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)}
+.video-play-btn{width:50px;height:50px;background:rgba(79,110,247,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.video-iframe{position:relative;padding-bottom:56.25%;border-radius:10px;overflow:hidden;background:#000}
+.video-iframe iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-/* ── GRID ── */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+/* ── EX CARDS ── */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.ex-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .15s}
+.ex-card:hover{border-color:#c5cbf9;box-shadow:0 4px 16px rgba(79,110,247,.1);transform:translateY(-1px)}
+.ex-thumb{position:relative;height:120px;background:#f0f2ff;overflow:hidden}
+.ex-thumb img{width:100%;height:100%;object-fit:cover}
+.ex-thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px}
+.ex-play-icon{position:absolute;top:8px;right:8px;background:rgba(79,110,247,.9);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.ex-tags{position:absolute;bottom:6px;left:6px;display:flex;gap:3px;flex-wrap:wrap}
+.ex-body{padding:10px 12px}
+.ex-name{font-weight:700;font-size:13px;margin-bottom:5px}
 
 /* ── MISC ── */
-.spinner{width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
-.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.section-title{font-weight:800;font-size:18px}
-.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.section-title{font-weight:800;font-size:17px;margin-bottom:14px}
 .flex{display:flex;align-items:center;gap:8px}
 .flex-between{display:flex;align-items:center;justify-content:space-between}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .hidden{display:none!important}
-.empty{text-align:center;padding:50px;color:var(--muted)}
-.empty-icon{font-size:40px;margin-bottom:12px}
-.client-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0}
-.msg-bubble{background:#f0f2ff;border-radius:12px 12px 12px 4px;padding:12px 14px;font-size:13px;line-height:1.6;max-width:85%;margin-bottom:8px;color:var(--text)}
-.msg-bubble.mine{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:12px 12px 4px 12px;margin-left:auto}
-.macro-box{background:#f9faff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
-.macro-val{font-size:22px;font-weight:800;margin-bottom:2px}
-.macro-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+
+/* ── MACRO CARDS ── */
+.macro-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.macro-card{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:11px;text-align:center}
+.macro-val{font-size:19px;font-weight:800}
+.macro-lbl{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── TRAINING ── */
+.day-block{background:#f9fafb;border:1px solid var(--border);border-radius:11px;margin-bottom:12px;overflow:hidden}
+.day-hd{background:var(--accent);color:#fff;padding:10px 14px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:space-between}
+.ex-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.ex-row:last-child{border-bottom:none}
+.ex-row-info{flex:1}
+.ex-row-name{font-weight:600;font-size:13px;margin-bottom:2px}
+.ex-row-meta{font-size:11px;color:var(--muted)}
+
+/* ── MESSAGES ── */
+.msg-bubble{max-width:80%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;margin-bottom:8px}
+.msg-trainer{background:#eef0ff;color:var(--accent);border-radius:14px 14px 14px 4px;align-self:flex-start}
+.msg-system{background:#f9fafb;color:var(--muted);border-radius:10px;font-size:12px;text-align:center;padding:6px 12px;margin:8px auto}
 
 /* ── LOGIN ── */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0f2ff 0%,#e8f4ff 100%)}
-.login-card{background:var(--white);border-radius:22px;padding:40px;width:360px;box-shadow:0 8px 40px rgba(67,97,238,.15)}
-.login-logo{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
-
-/* ── TRAINING VIEW ── */
-.training-day{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
-.training-day-hd{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px 18px;font-weight:700;font-size:15px}
-.training-ex{padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
-.training-ex:last-child{border-bottom:none}
-.training-ex:hover{background:#f9faff}
-.training-ex.done{opacity:.5}
-.training-ex-expanded{padding:0 18px 16px;background:#f9faff;border-bottom:1px solid var(--border)}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eef0ff,#f5f6fa)}
+.login-card{background:var(--white);border-radius:18px;padding:36px;width:350px;box-shadow:0 8px 32px rgba(79,110,247,.12)}
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
+<div id="topbar" class="topbar hidden">
+  <span class="logo">i-Motion</span>
+  <div class="topbar-right" id="topbar-right"></div>
+</div>
+
+<!-- LAYOUT -->
+<div id="layout" class="layout hidden">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main"><div id="app"></div></main>
+</div>
+
 <!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-logo">i-Motion</div>
-      <div style="color:var(--muted);font-size:12px;margin-bottom:28px;font-weight:500">EMS PERSONAL TRAINER</div>
-      <div style="margin-bottom:14px">
-        <label class="lbl">Email</label>
-        <input id="l-email" type="email" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div style="margin-bottom:20px">
-        <label class="lbl">Contraseña</label>
-        <input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div id="l-err" style="color:var(--danger);font-size:12px;margin-bottom:12px;text-align:center"></div>
-      <button class="btn" style="width:100%;justify-content:center;padding:12px" id="l-btn" onclick="doLogin()">Iniciar sesión</button>
-      <div style="margin-top:18px;text-align:center;font-size:11px;color:var(--muted);line-height:1.9">
-        trainer@imotion.com · imotion2024<br>carlos@demo.com / maria@demo.com · 1234
-      </div>
+<div id="login-page" class="login-wrap">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:26px;font-weight:800;color:var(--accent);letter-spacing:-1px">i-Motion</div>
+      <div style="color:var(--muted);font-size:12px;margin-top:4px">EMS Personal Training</div>
+    </div>
+    <div style="margin-bottom:12px"><label class="lbl">Email</label><input id="l-email" type="email" placeholder="trainer@imotion.com"/></div>
+    <div style="margin-bottom:20px"><label class="lbl">Contraseña</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div id="l-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;text-align:center"></div>
+    <button class="btn" style="width:100%;justify-content:center;padding:11px" id="l-btn" onclick="doLogin()">Entrar</button>
+    <div style="margin-top:18px;text-align:center;font-size:11px;color:var(--muted);line-height:1.9">
+      trainer@imotion.com · imotion2024<br>carlos@demo.com / maria@demo.com · 1234
     </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app-screen" class="hidden">
-  <nav class="nav" id="main-nav"></nav>
-  <div class="page" id="main-page"></div>
-</div>
-
 <script>
-// ── CONFIG ────────────────────────────────────────────────
+// ═══════════════ CONFIG ═══════════════
 const API="https://script.google.com/macros/s/AKfycbw9zUMlHGIbwZclvRmVQU1mSWQib2c5W44cUR4RXvO-h2waJr1WLc1l61Iz123HgA8tGA/exec";
-let U=null, TAB=null;
-let _clients=[], _routines=[], _nutrition=[];
 
-// ── API ───────────────────────────────────────────────────
+// ═══════════════ STATE ═══════════════
+let USER=null,TAB=null;
+let CLIENTS=[],ROUTINES=[],NUTRITION=[];
+
+// ═══════════════ API ═══════════════
 async function api(params){
   const r=await fetch(API+"?"+new URLSearchParams(params));
   const j=await r.json();
@@ -157,14 +172,15 @@ async function api(params){
   return j.data;
 }
 
-// ── UTILS ─────────────────────────────────────────────────
-function render(html){document.getElementById("main-page").innerHTML=html;}
+// ═══════════════ UTILS ═══════════════
+function render(h){document.getElementById("app").innerHTML=h;}
 function spin(t="Cargando…"){return`<div style="text-align:center;padding:60px"><div class="spinner"></div><div style="color:var(--muted);margin-top:14px;font-size:13px">${t}</div></div>`;}
 function closeModal(id){document.getElementById(id)?.remove();}
-function ytId(url){return url?.match(/embed\/([^?]+)/)?.[1]||"";}
+function ytId(url){return(url||"").match(/(?:embed\/|v=|youtu\.be\/)([^?&\s]+)/)?.[1]||"";}
 function ytThumb(url){const id=ytId(url);return id?`https://img.youtube.com/vi/${id}/mqdefault.jpg`:"";}
+function ytEmbed(url){const id=ytId(url);return id?`https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`:"";}
 
-// ── LOGIN ─────────────────────────────────────────────────
+// ═══════════════ LOGIN ═══════════════
 async function doLogin(){
   const email=document.getElementById("l-email").value.trim();
   const pass=document.getElementById("l-pass").value;
@@ -173,183 +189,151 @@ async function doLogin(){
   if(!email||!pass)return;
   btn.disabled=true;btn.textContent="Verificando…";err.textContent="";
   try{
-    U=await api({action:"login",email,password:pass});
-    document.getElementById("login-screen").classList.add("hidden");
-    document.getElementById("app-screen").classList.remove("hidden");
-    TAB=U.rol==="trainer"?"clientes":"entrenamiento";
-    renderNav();renderTab();
-  }catch(e){
-    err.textContent=e.message;
-    btn.disabled=false;btn.textContent="Iniciar sesión";
-  }
+    const u=await api({action:"login",email,password:pass});
+    USER=u;
+    TAB=u.rol==="trainer"?"clients":"training";
+    document.getElementById("login-page").classList.add("hidden");
+    document.getElementById("topbar").classList.remove("hidden");
+    document.getElementById("layout").classList.remove("hidden");
+    renderTopbar();renderSidebar();renderTab();
+  }catch(e){err.textContent=e.message;btn.disabled=false;btn.textContent="Entrar";}
 }
 
 function logout(){
-  U=null;TAB=null;
-  document.getElementById("app-screen").classList.add("hidden");
-  document.getElementById("login-screen").classList.remove("hidden");
-  document.getElementById("l-email").value="";
-  document.getElementById("l-pass").value="";
+  USER=null;
+  document.getElementById("login-page").classList.remove("hidden");
+  document.getElementById("topbar").classList.add("hidden");
+  document.getElementById("layout").classList.add("hidden");
 }
 
-// ── NAV ───────────────────────────────────────────────────
-function renderNav(){
-  const trainerTabs=[
-    {id:"clientes",label:"👥 Clientes"},
-    {id:"rutinas",label:"⚡ Rutinas"},
-    {id:"nutricion",label:"🥗 Nutrición"},
-    {id:"mensajes",label:"💬 Mensajes"},
-  ];
-  const clientTabs=[
-    {id:"entrenamiento",label:"💪 Mi Entrenamiento"},
-    {id:"nutricion_c",label:"🥗 Mi Nutrición"},
-    {id:"mensajes_c",label:"💬 Mensajes"},
-    {id:"progreso",label:"📈 Mi Progreso"},
-  ];
-  const tabs=U.rol==="trainer"?trainerTabs:clientTabs;
-  document.getElementById("main-nav").innerHTML=`
-    <span class="nav-logo">i-Motion</span>
-    ${tabs.map(t=>`<button class="nav-btn${TAB===t.id?" active":""}" onclick="goTab('${t.id}')">${t.label}</button>`).join("")}
-    <div class="nav-right">
-      <div class="avatar">${U.nombre[0]}</div>
-      <span style="font-size:12px;color:var(--muted)">${U.nombre}</span>
-      <button class="btn-ghost" onclick="logout()">Salir</button>
-    </div>`;
+// ═══════════════ TOPBAR ═══════════════
+function renderTopbar(){
+  document.getElementById("topbar-right").innerHTML=`
+    <span style="font-size:12px;color:var(--muted)">${USER.nombre}</span>
+    <div class="avatar">${USER.nombre[0]}</div>
+    <button class="btn-ghost" onclick="logout()">Salir</button>`;
 }
 
-function goTab(t){TAB=t;renderNav();renderTab();}
+// ═══════════════ SIDEBAR ═══════════════
+function renderSidebar(){
+  const trainerItems=[
+    {id:"clients",icon:"👥",label:"Clientes"},
+    {id:"routines",icon:"⚡",label:"Rutinas"},
+    {id:"nutrition",icon:"🥗",label:"Nutrición"},
+    {id:"exercises",icon:"📚",label:"Ejercicios"},
+  ];
+  const clientItems=[
+    {id:"training",icon:"💪",label:"Mi Entrenamiento"},
+    {id:"mynutrition",icon:"🥗",label:"Mi Nutrición"},
+    {id:"messages",icon:"💬",label:"Mensajes"},
+  ];
+  const items=USER.rol==="trainer"?trainerItems:clientItems;
+  document.getElementById("sidebar").innerHTML=`
+    <div class="sidebar-section">Menú</div>
+    ${items.map(it=>`
+      <button class="sidebar-item${TAB===it.id?" active":""}" onclick="setTab('${it.id}')">
+        <span class="sidebar-icon">${it.icon}</span>${it.label}
+      </button>`).join("")}`;
+}
+
+function setTab(t){TAB=t;renderSidebar();renderTab();}
 function renderTab(){
-  if(U.rol==="trainer"){
-    if(TAB==="clientes")renderClients();
-    else if(TAB==="rutinas")renderRoutines();
-    else if(TAB==="nutricion")renderNutricion();
-    else if(TAB==="mensajes")renderMensajes();
-  }else{
-    if(TAB==="entrenamiento")renderEntrenamiento();
-    else if(TAB==="nutricion_c")renderNutricionCliente();
-    else if(TAB==="mensajes_c")renderMensajesCliente();
-    else if(TAB==="progreso")renderProgreso();
-  }
+  const map={
+    clients:renderClients,routines:renderRoutines,
+    nutrition:renderNutrition,exercises:renderExercises,
+    training:renderTraining,mynutrition:renderMyNutrition,
+    messages:renderMessages,
+  };
+  (map[TAB]||renderClients)();
 }
 
-// ════════════════════════════════════════════════════════
-// TRAINER VIEWS
-// ════════════════════════════════════════════════════════
-
-// ── CLIENTES ─────────────────────────────────────────────
+// ═══════════════════════════════════════
+// TRAINER — CLIENTES
+// ═══════════════════════════════════════
 async function renderClients(){
   render(spin("Cargando clientes…"));
-  [_clients,_routines,_nutrition]=await Promise.all([
-    api({action:"clients"}),
-    api({action:"routines"}),
-    api({action:"nutrition"}),
+  [CLIENTS,ROUTINES,NUTRITION]=await Promise.all([
+    api({action:"clients"}),api({action:"routines"}),api({action:"nutrition"})
   ]);
   render(`
-    <div class="section-hd">
-      <div class="section-title">Clientes (${_clients.length})</div>
+    <div class="flex-between" style="margin-bottom:18px">
+      <div class="section-title" style="margin-bottom:0">Clientes</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
-      ${_clients.map(c=>{
-        const r=_routines.find(r=>String(r.clienteId)===String(c.id));
-        const n=_nutrition.find(n=>String(n.clienteId)===String(c.id));
-        return `<div class="card card-hover" onclick="openClientProfile('${c.id}')">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      ${CLIENTS.map(c=>{
+        const r=ROUTINES.find(r=>String(r.clienteId)===String(c.id));
+        const n=NUTRITION.find(n=>String(n.clienteId)===String(c.id));
+        return `<div class="card card-hover" onclick="openClient('${c.id}')">
           <div class="flex" style="margin-bottom:14px">
-            <div class="client-av">${c.nombre[0]}</div>
+            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0">${c.nombre[0]}</div>
             <div>
               <div style="font-weight:700;font-size:15px">${c.nombre}</div>
               <div style="font-size:12px;color:var(--muted)">${c.email}</div>
             </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:7px">
-            <div class="flex-between">
-              <span style="font-size:12px;color:var(--muted)">Rutina</span>
-              ${r?`<span class="tag tag-green">${r.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}
-            </div>
-            <div class="flex-between">
-              <span style="font-size:12px;color:var(--muted)">Nutrición</span>
-              ${n?`<span class="tag tag-green">${n.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}
-            </div>
+            <div class="flex-between"><span style="font-size:12px;color:var(--muted)">Rutina</span>${r?`<span class="tag tag-green">${r.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}</div>
+            <div class="flex-between"><span style="font-size:12px;color:var(--muted)">Nutrición</span>${n?`<span class="tag tag-green">${n.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}</div>
           </div>
-          <button class="btn" style="width:100%;justify-content:center;margin-top:14px;font-size:12px;padding:8px">Ver perfil →</button>
         </div>`;
       }).join("")}
     </div>`);
 }
 
-async function openClientProfile(clientId){
-  const c=_clients.find(c=>String(c.id)===String(clientId));
-  const assigned=_routines.find(r=>String(r.clienteId)===String(clientId));
-  const nutri=_nutrition.find(n=>String(n.clienteId)===String(clientId));
-
-  // Build routine days HTML
-  let rutinaHtml="";
-  if(assigned){
-    rutinaHtml=`<div style="font-weight:600;color:var(--accent);margin-bottom:10px">${assigned.nombre}</div>`;
-    (assigned.days||[]).forEach(d=>{
-      rutinaHtml+=`<div style="margin-bottom:8px">
-        <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px">📅 ${d.dia}</div>
-        ${(d.exercises||[]).map(ex=>`<div style="font-size:12px;padding:2px 0 2px 12px;color:#444">• ${ex.nombre||"Ejercicio"} — ${ex.series}×${ex.reps}</div>`).join("")}
-      </div>`;
-    });
-  }
+async function openClient(clientId){
+  const c=CLIENTS.find(c=>String(c.id)===String(clientId));
+  const r=ROUTINES.find(r=>String(r.clienteId)===String(clientId));
+  const n=NUTRITION.find(n=>String(n.clienteId)===String(clientId));
 
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="cp-modal" onclick="if(event.target===this)closeModal('cp-modal')">
-      <div class="modal" style="max-width:680px">
+    <div class="modal-bg" id="cm" onclick="if(event.target===this)closeModal('cm')">
+      <div class="modal" style="max-width:640px">
         <div class="modal-hd">
           <div class="flex" style="gap:12px">
-            <div class="client-av" style="width:48px;height:48px;font-size:18px">${c.nombre[0]}</div>
-            <div>
-              <div class="modal-title">${c.nombre}</div>
-              <div style="font-size:12px;color:var(--muted)">${c.email}</div>
-            </div>
+            <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px">${c.nombre[0]}</div>
+            <div><div class="modal-title">${c.nombre}</div><div style="font-size:12px;color:var(--muted)">${c.email}</div></div>
           </div>
-          <button class="modal-close" onclick="closeModal('cp-modal')">✕</button>
+          <button class="modal-close" onclick="closeModal('cm')">✕</button>
         </div>
+
+        <!-- TABS -->
+        <div style="display:flex;border-bottom:1px solid var(--border);padding:0 22px">
+          ${[["ct-train","💪 Entrenamiento"],["ct-nutri","🥗 Nutrición"],["ct-msg","💬 Mensaje"]].map(([id,lbl],i)=>`
+            <button id="${id}" onclick="clientTab('${id}')" style="background:none;border:none;border-bottom:2px solid ${i===0?'var(--accent)':'transparent'};color:${i===0?'var(--accent)':'var(--muted)'};padding:10px 14px;font-size:13px;font-weight:${i===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">${lbl}</button>`).join("")}
+        </div>
+
         <div class="modal-body">
 
-          <!-- TABS -->
-          <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:18px">
-            ${["💪 Rutina","🥗 Nutrición","💬 Mensaje"].map((t,i)=>`
-              <button id="cptab-${i}" onclick="switchCPTab(${i})" style="background:none;border:none;border-bottom:2px solid ${i===0?'var(--accent)':'transparent'};color:${i===0?'var(--accent)':'var(--muted)'};padding:8px 16px;font-size:13px;font-weight:${i===0?700:500};cursor:pointer;font-family:'Inter',sans-serif">${t}</button>`).join("")}
+          <!-- ENTRENAMIENTO -->
+          <div id="ct-train-c">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Rutina asignada</div>
+            ${ROUTINES.map(rt=>`
+              <div onclick="assignRoutine('${rt.id}','${clientId}')" style="border:1.5px solid ${r?.id==rt.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:10px 14px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:${r?.id==rt.id?'#f5f7ff':'var(--white)'}">
+                <div><div style="font-weight:600;font-size:13px">${rt.nombre}</div><div style="font-size:11px;color:var(--muted)">${rt.days?.length||0} días</div></div>
+                ${r?.id==rt.id?'<span class="tag tag-blue">✓ Asignada</span>':'<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>'}
+              </div>`).join("")}
+            ${ROUTINES.length===0?`<div style="color:var(--muted);font-size:13px;margin-bottom:12px">No hay rutinas. Créalas en la pestaña Rutinas.</div>`:""}
+            <button class="btn-outline" onclick="closeModal('cm');setTab('routines')" style="width:100%;justify-content:center;font-size:12px;margin-top:4px">+ Crear nueva rutina</button>
           </div>
 
-          <!-- TAB 0: RUTINA -->
-          <div id="cp-tab-0">
-            <div style="margin-bottom:14px">
-              <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Rutina actual</div>
-              ${assigned?`<div class="card" style="background:#f9faff;padding:14px">${rutinaHtml}</div>`:`<div style="color:var(--muted);font-size:13px;margin-bottom:10px">Sin rutina asignada.</div>`}
-            </div>
-            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Asignar rutina</div>
-            ${_routines.map(r=>`
-              <div onclick="assignRutina('${r.id}','${clientId}')" style="background:#f9faff;border:1.5px solid ${assigned?.id==r.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <div style="font-weight:600">${r.nombre}</div>
-                  <div style="font-size:11px;color:var(--muted)">${r.days?.length||0} días</div>
-                </div>
-                ${assigned?.id==r.id?`<span class="tag tag-blue">✓ Asignada</span>`:`<span style="font-size:12px;color:var(--accent);font-weight:600">Asignar →</span>`}
-              </div>`).join("")||`<div style="color:var(--muted);font-size:13px">No hay rutinas creadas aún.</div>`}
+          <!-- NUTRICIÓN -->
+          <div id="ct-nutri-c" class="hidden">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Plan nutricional</div>
+            ${n?`<div class="card" style="margin-bottom:14px;background:#f9fafb">
+              <div style="font-weight:700;margin-bottom:4px">${n.nombre}</div>
+              <div style="font-size:12px;color:var(--muted)">${n.kcal} kcal · P:${n.proteina}g · C:${n.carbos}g · G:${n.grasas}g</div>
+            </div>`:""}
+            <button class="btn" onclick="closeModal('cm');setTab('nutrition')" style="width:100%;justify-content:center">
+              ${n?"Cambiar plan nutricional":"+ Asignar plan nutricional"}
+            </button>
           </div>
 
-          <!-- TAB 1: NUTRICIÓN -->
-          <div id="cp-tab-1" class="hidden">
-            ${nutri?`<div class="card" style="background:#f9faff;padding:14px;margin-bottom:14px">
-              <div style="font-weight:600;margin-bottom:8px">${nutri.nombre}</div>
-              <div class="grid-4" style="margin-bottom:0">
-                <div class="macro-box"><div class="macro-val" style="color:#e08a00">${nutri.kcal}</div><div class="macro-lbl">kcal</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${nutri.proteina}g</div><div class="macro-lbl">prot</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:#00a87a">${nutri.carbos}g</div><div class="macro-lbl">carbs</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${nutri.grasas}g</div><div class="macro-lbl">grasas</div></div>
-              </div>
-            </div>`:`<div style="color:var(--muted);font-size:13px;margin-bottom:14px">Sin plan asignado.</div>`}
-            <button class="btn" onclick="closeModal('cp-modal');goTab('nutricion')">🥗 Gestionar nutrición →</button>
-          </div>
-
-          <!-- TAB 2: MENSAJE -->
-          <div id="cp-tab-2" class="hidden">
-            <label class="lbl">Escribir mensaje a ${c.nombre}</label>
-            <textarea id="msg-text-${clientId}" placeholder="Instrucciones, motivación, feedback…" style="min-height:120px;resize:vertical;margin-bottom:12px"></textarea>
-            <button class="btn-success" style="width:100%;justify-content:center" onclick="sendMsg('${clientId}')">📤 Enviar mensaje</button>
+          <!-- MENSAJE -->
+          <div id="ct-msg-c" class="hidden">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Enviar mensaje a ${c.nombre}</div>
+            <textarea id="msg-text" placeholder="Escribe aquí tu mensaje, indicaciones o motivación…" style="min-height:120px;resize:vertical;margin-bottom:10px"></textarea>
+            <button class="btn" style="width:100%;justify-content:center" onclick="sendMsg('${clientId}')">📤 Enviar mensaje</button>
+            <div id="msg-status" style="margin-top:8px;font-size:12px;text-align:center"></div>
           </div>
 
         </div>
@@ -357,213 +341,139 @@ async function openClientProfile(clientId){
     </div>`);
 }
 
-function switchCPTab(idx){
-  [0,1,2].forEach(i=>{
-    const btn=document.getElementById(`cptab-${i}`);
-    const tab=document.getElementById(`cp-tab-${i}`);
-    btn.style.borderBottomColor=i===idx?'var(--accent)':'transparent';
-    btn.style.color=i===idx?'var(--accent)':'var(--muted)';
-    btn.style.fontWeight=i===idx?'700':'500';
-    tab?.classList.toggle("hidden",i!==idx);
+function clientTab(id){
+  ["ct-train","ct-nutri","ct-msg"].forEach(t=>{
+    const btn=document.getElementById(t);
+    const con=document.getElementById(t+"-c");
+    const active=t===id;
+    if(btn){btn.style.borderBottomColor=active?"var(--accent)":"transparent";btn.style.color=active?"var(--accent)":"var(--muted)";btn.style.fontWeight=active?"700":"500";}
+    if(con)con.classList.toggle("hidden",!active);
   });
 }
 
-async function assignRutina(routineId,clientId){
+async function assignRoutine(routineId,clientId){
   await api({action:"assignRoutine",routineId,clienteId:clientId});
-  closeModal("cp-modal");
-  renderClients();
+  closeModal("cm");renderClients();
 }
 
 async function sendMsg(clientId){
-  const text=document.getElementById(`msg-text-${clientId}`)?.value?.trim();
+  const text=document.getElementById("msg-text").value.trim();
   if(!text)return;
-  await api({action:"saveComment",clienteId:clientId,comentario:text});
-  const btn=event.target;
-  btn.textContent="✅ Enviado";
-  setTimeout(()=>{btn.textContent="📤 Enviar mensaje";},2000);
-  document.getElementById(`msg-text-${clientId}`).value="";
+  const status=document.getElementById("msg-status");
+  status.textContent="Enviando…";status.style.color="var(--muted)";
+  try{
+    await api({action:"saveComment",clienteId:clientId,comentario:text});
+    status.textContent="✓ Mensaje enviado";status.style.color="var(--success)";
+    document.getElementById("msg-text").value="";
+  }catch(e){status.textContent="Error: "+e.message;status.style.color="var(--danger)";}
 }
 
-// ── RUTINAS ───────────────────────────────────────────────
+// ═══════════════════════════════════════
+// TRAINER — RUTINAS
+// ═══════════════════════════════════════
 async function renderRoutines(){
   render(spin("Cargando rutinas…"));
-  _routines=await api({action:"routines"});
-
+  ROUTINES=await api({action:"routines"});
   render(`
-    <div class="section-hd">
-      <div class="section-title">Rutinas (${_routines.length})</div>
-      <button class="btn" onclick="showCreateRoutine()">+ Nueva rutina</button>
+    <div class="flex-between" style="margin-bottom:18px">
+      <div class="section-title" style="margin-bottom:0">Rutinas (${ROUTINES.length})</div>
+      <button class="btn" onclick="newRoutineModal()">+ Nueva rutina</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
-      ${_routines.map(r=>`
-        <div class="card card-hover" onclick="openRoutineEditor('${r.id}')">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px">
+      ${ROUTINES.map(r=>`
+        <div class="card card-hover" onclick="openRoutine('${r.id}')">
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">${r.nombre}</div>
           <div style="font-size:12px;color:var(--muted);margin-bottom:10px">${r.days?.length||0} días · ${(r.days||[]).reduce((a,d)=>a+(d.exercises?.length||0),0)} ejercicios</div>
           <div style="display:flex;flex-wrap:wrap;gap:4px">
             ${(r.days||[]).map(d=>`<span class="tag tag-blue">${d.dia}</span>`).join("")}
           </div>
         </div>`).join("")}
-    </div>`);
+    </div>
+    ${ROUTINES.length===0?`<div style="text-align:center;padding:60px;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">⚡</div><div style="font-weight:600">No hay rutinas</div><div style="font-size:13px;margin-top:6px">Crea tu primera rutina</div></div>`:""}
+  `);
 }
 
-function showCreateRoutine(){
+function newRoutineModal(){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="cr-modal" onclick="if(event.target===this)closeModal('cr-modal')">
-      <div class="modal" style="max-width:400px">
-        <div class="modal-hd">
-          <div class="modal-title">Nueva rutina</div>
-          <button class="modal-close" onclick="closeModal('cr-modal')">✕</button>
-        </div>
-        <div class="modal-body">
-          <label class="lbl">Nombre de la rutina</label>
-          <input id="rname" placeholder="Ej: Fuerza Full Body" style="margin-bottom:16px" onkeydown="if(event.key==='Enter')createRoutine()"/>
-          <button class="btn" style="width:100%;justify-content:center" onclick="createRoutine()">Crear rutina</button>
-        </div>
+    <div class="modal-bg" id="nrm" onclick="if(event.target===this)closeModal('nrm')">
+      <div class="modal modal-sm" style="padding:24px">
+        <div class="modal-title" style="margin-bottom:16px">Nueva rutina</div>
+        <label class="lbl">Nombre</label>
+        <input id="nr-name" placeholder="Ej: Rutina Fuerza A" style="margin-bottom:16px" onkeydown="if(event.key==='Enter')createRoutine()"/>
+        <button class="btn" style="width:100%;justify-content:center" onclick="createRoutine()">Crear rutina</button>
       </div>
     </div>`);
 }
 
 async function createRoutine(){
-  const n=document.getElementById("rname").value.trim();
+  const n=document.getElementById("nr-name")?.value.trim();
   if(!n)return;
   await api({action:"createRoutine",nombre:n,clienteId:""});
-  closeModal("cr-modal");
-  renderRoutines();
+  closeModal("nrm");renderRoutines();
 }
 
-async function openRoutineEditor(routineId){
-  const r=_routines.find(r=>String(r.id)===String(routineId));
+async function openRoutine(routineId){
+  ROUTINES=await api({action:"routines"});
+  const r=ROUTINES.find(r=>String(r.id)===String(routineId));
   const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
   const avail=DAYS.filter(d=>!(r.days||[]).find(x=>x.dia===d));
 
-  let daysHtml=(r.days||[]).map((d,di)=>`
-    <div style="background:#f9faff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px" id="day-${d.id}">
-      <div class="flex-between" style="margin-bottom:10px">
-        <div style="font-weight:700;color:var(--accent)">📅 ${d.dia}</div>
-        <button class="btn-danger" onclick="removeDay('${d.id}','${routineId}')">✕ Eliminar día</button>
-      </div>
-      <div id="exlist-${d.id}">
-        ${(d.exercises||[]).map(ex=>`
-          <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--border)" id="exrow-${ex.id}">
-            <div style="flex:1">
-              <div style="font-weight:600;font-size:13px">${ex.nombre||"Ejercicio"}</div>
-              <div style="font-size:11px;color:var(--muted)">${ex.series} series × ${ex.reps} · ${ex.descanso}</div>
-            </div>
-            <button class="btn-danger" onclick="removeEx('${ex.id}')">✕</button>
-          </div>`).join("")}
-      </div>
-      <button class="btn-outline" style="width:100%;justify-content:center;margin-top:10px;font-size:12px" onclick="showAddEx('${d.id}')">+ Añadir ejercicio</button>
-    </div>`).join("");
-
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="re-modal" style="align-items:flex-start;overflow-y:auto;padding:20px">
+    <div class="modal-bg" id="rom" style="align-items:flex-start;overflow-y:auto;padding:20px" onclick="">
       <div class="modal" style="max-width:640px;width:100%;margin:0 auto">
         <div class="modal-hd">
           <div class="modal-title">${r.nombre}</div>
-          <button class="modal-close" onclick="closeModal('re-modal');renderRoutines()">✕</button>
+          <button class="modal-close" onclick="closeModal('rom');renderRoutines()">✕</button>
         </div>
         <div class="modal-body">
-          <div class="flex" style="margin-bottom:16px">
-            <select id="new-day-sel" style="flex:1">
+          <!-- AÑADIR DÍA -->
+          <div class="flex" style="margin-bottom:18px;gap:8px">
+            <select id="new-day" style="flex:1">
               <option value="">+ Añadir día…</option>
               ${avail.map(d=>`<option>${d}</option>`).join("")}
             </select>
             <button class="btn" onclick="addDay('${routineId}')">Añadir</button>
           </div>
-          <div id="days-container">${daysHtml}</div>
+
+          <!-- DÍAS -->
+          ${(r.days||[]).map(d=>`
+            <div class="day-block">
+              <div class="day-hd">
+                <span>📅 ${d.dia}</span>
+                <button onclick="removeDay('${d.id}','${routineId}')" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer">✕ Eliminar</button>
+              </div>
+              <div id="exlist-${d.id}">
+                ${(d.exercises||[]).map(ex=>`
+                  <div class="ex-row" id="exrow-${ex.id}">
+                    <div class="ex-row-info">
+                      <div class="ex-row-name">${ex.nombre||"Ejercicio"}</div>
+                      <div class="ex-row-meta">${ex.series} series · ${ex.reps} reps · ${ex.descanso} descanso</div>
+                    </div>
+                    <button class="btn-danger" onclick="removeEx('${ex.id}')">✕</button>
+                  </div>`).join("")}
+              </div>
+              <div style="padding:10px 14px">
+                <button class="btn-sm" onclick="addExModal('${d.id}','${routineId}')">+ Añadir ejercicio</button>
+              </div>
+            </div>`).join("")}
+
+          ${(r.days||[]).length===0?`<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px">Añade días para empezar</div>`:""}
         </div>
       </div>
     </div>`);
 }
 
 async function addDay(routineId){
-  const dia=document.getElementById("new-day-sel")?.value;
+  const dia=document.getElementById("new-day")?.value;
   if(!dia)return;
   await api({action:"addDay",routineId,dia});
-  closeModal("re-modal");
-  _routines=await api({action:"routines"});
-  openRoutineEditor(routineId);
+  closeModal("rom");openRoutine(routineId);
 }
 
 async function removeDay(dayId,routineId){
   if(!confirm("¿Eliminar este día?"))return;
   await api({action:"removeDay",id:dayId});
-  closeModal("re-modal");
-  _routines=await api({action:"routines"});
-  openRoutineEditor(routineId);
-}
-
-function showAddEx(dayId){
-  document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="addex-modal" onclick="if(event.target===this)closeModal('addex-modal')">
-      <div class="modal" style="max-width:500px">
-        <div class="modal-hd">
-          <div class="modal-title">Añadir ejercicio</div>
-          <button class="modal-close" onclick="closeModal('addex-modal')">✕</button>
-        </div>
-        <div class="modal-body">
-          <div style="margin-bottom:12px">
-            <label class="lbl">Nombre del ejercicio</label>
-            <input id="ex-nombre" placeholder="Ej: Sentadilla con barra"/>
-          </div>
-          <div class="grid-2" style="margin-bottom:12px">
-            <div>
-              <label class="lbl">Series</label>
-              <input id="ex-series" type="number" value="3" min="1" max="20"/>
-            </div>
-            <div>
-              <label class="lbl">Repeticiones</label>
-              <input id="ex-reps" value="10"/>
-            </div>
-          </div>
-          <div style="margin-bottom:12px">
-            <label class="lbl">Descanso</label>
-            <select id="ex-descanso">
-              ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${t==="60s"?"selected":""}>${t}</option>`).join("")}
-            </select>
-          </div>
-          <div style="margin-bottom:16px">
-            <label class="lbl">Vídeo (URL YouTube o enlace directo)</label>
-            <input id="ex-video" placeholder="https://youtube.com/watch?v=... o https://drive.google.com/..."/>
-            <div style="font-size:11px;color:var(--muted);margin-top:5px">Puedes subir tu propio vídeo a YouTube o Google Drive y pegar el enlace aquí</div>
-          </div>
-          <button class="btn" style="width:100%;justify-content:center" onclick="addEx('${dayId}')">Añadir ejercicio</button>
-        </div>
-      </div>
-    </div>`);
-}
-
-async function addEx(dayId){
-  const nombre=document.getElementById("ex-nombre").value.trim();
-  if(!nombre){alert("Escribe el nombre del ejercicio");return;}
-  const series=document.getElementById("ex-series").value||"3";
-  const reps=document.getElementById("ex-reps").value||"10";
-  const descanso=document.getElementById("ex-descanso").value||"60s";
-  let video=document.getElementById("ex-video").value.trim();
-
-  // Convert YouTube watch URL to embed
-  if(video.includes("youtube.com/watch")){
-    const id=video.match(/[?&]v=([^&]+)/)?.[1];
-    if(id)video=`https://www.youtube.com/embed/${id}`;
-  }else if(video.includes("youtu.be/")){
-    const id=video.split("youtu.be/")[1]?.split("?")[0];
-    if(id)video=`https://www.youtube.com/embed/${id}`;
-  }
-
-  const {id}=await api({action:"addExercise",dayId,exerciseId:nombre,series,reps,descanso,nombre,video:video||""});
-
-  const container=document.getElementById(`exlist-${dayId}`);
-  if(container){
-    container.insertAdjacentHTML("beforeend",`
-      <div class="flex-between" style="padding:8px 0;border-bottom:1px solid var(--border)" id="exrow-${id}">
-        <div style="flex:1">
-          <div style="font-weight:600;font-size:13px">${nombre}</div>
-          <div style="font-size:11px;color:var(--muted)">${series} series × ${reps} · ${descanso}</div>
-        </div>
-        <button class="btn-danger" onclick="removeEx('${id}')">✕</button>
-      </div>`);
-  }
-  closeModal("addex-modal");
+  closeModal("rom");openRoutine(routineId);
 }
 
 async function removeEx(exId){
@@ -571,66 +481,94 @@ async function removeEx(exId){
   document.getElementById(`exrow-${exId}`)?.remove();
 }
 
-// ── NUTRICIÓN TRAINER ─────────────────────────────────────
+function addExModal(dayId,routineId){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="aem" onclick="if(event.target===this)closeModal('aem')">
+      <div class="modal modal-sm">
+        <div class="modal-hd">
+          <div class="modal-title">Añadir ejercicio</div>
+          <button class="modal-close" onclick="closeModal('aem')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="margin-bottom:12px"><label class="lbl">Nombre del ejercicio</label><input id="ae-name" placeholder="Ej: Sentadilla con barra"/></div>
+          <div class="grid-2" style="margin-bottom:12px">
+            <div><label class="lbl">Series</label><input id="ae-series" type="number" value="3" min="1" max="20" style="width:100%"/></div>
+            <div><label class="lbl">Reps</label><input id="ae-reps" value="10" style="width:100%"/></div>
+          </div>
+          <div style="margin-bottom:12px"><label class="lbl">Descanso</label>
+            <select id="ae-rest">
+              ${["30s","45s","60s","90s","120s","180s"].map(t=>`<option ${t==="60s"?"selected":""}>${t}</option>`).join("")}
+            </select>
+          </div>
+          <div style="margin-bottom:16px"><label class="lbl">Vídeo (URL de YouTube o Google Drive)</label>
+            <input id="ae-video" placeholder="https://youtu.be/... o https://drive.google.com/..."/>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Pega el enlace de tu propio vídeo o de YouTube</div>
+          </div>
+          <button class="btn" style="width:100%;justify-content:center" onclick="saveEx('${dayId}','${routineId}')">Añadir ejercicio</button>
+        </div>
+      </div>
+    </div>`);
+}
+
+async function saveEx(dayId,routineId){
+  const nombre=document.getElementById("ae-name")?.value.trim();
+  const series=document.getElementById("ae-series")?.value||"3";
+  const reps=document.getElementById("ae-reps")?.value||"10";
+  const descanso=document.getElementById("ae-rest")?.value||"60s";
+  const video=document.getElementById("ae-video")?.value.trim()||"";
+  if(!nombre){alert("Escribe el nombre del ejercicio");return;}
+  await api({action:"addExercise",dayId,exerciseId:nombre,series,reps,descanso,nombre,video});
+  closeModal("aem");closeModal("rom");openRoutine(routineId);
+}
+
+// ═══════════════════════════════════════
+// TRAINER — NUTRICIÓN
+// ═══════════════════════════════════════
 const NUTRI_TPLS=[
-  {nombre:"Pérdida de grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína 30g|Media mañana: Yogur griego + frutos secos|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Fruta + yogur|Cena: Pescado 180g + verduras"},
-  {nombre:"Volumen muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano|Comida: Ternera 250g + pasta 150g|Merienda: Arroz 80g + atún|Cena: Salmón 200g + boniato 200g"},
-  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral|Media mañana: Frutos secos + yogur|Comida: Pollo 180g + patata 150g|Merienda: Fruta + queso fresco|Cena: Pescado 180g + verduras + arroz"},
+  {nombre:"Pérdida de Grasa",kcal:1800,proteina:160,carbos:150,grasas:55,comidas:"Desayuno: Avena 60g + proteína + fruta|Media mañana: Yogur griego + frutos secos|Comida: Pollo 200g + arroz 80g + verduras|Merienda: Yogur + fruta|Cena: Pescado 180g + verduras"},
+  {nombre:"Volumen Muscular",kcal:3000,proteina:200,carbos:350,grasas:80,comidas:"Desayuno: Huevos 4 + avena 100g + plátano|Media mañana: Batido proteína + plátano|Comida: Ternera 250g + pasta 150g|Pre-entreno: Arroz 80g + atún|Cena: Salmón 200g + boniato"},
+  {nombre:"Mantenimiento",kcal:2200,proteina:170,carbos:220,grasas:65,comidas:"Desayuno: Tortilla 3 huevos + tostada integral|Media mañana: Fruta + frutos secos|Comida: Pollo 180g + patata + ensalada|Merienda: Yogur griego|Cena: Pescado 180g + verduras"},
 ];
 
-async function renderNutricion(){
+async function renderNutrition(){
   render(spin("Cargando…"));
-  const[clients,nutrition]=await Promise.all([api({action:"clients"}),api({action:"nutrition"})]);
+  const [clients,nutrition]=await Promise.all([api({action:"clients"}),api({action:"nutrition"})]);
   render(`
-    <div class="section-hd">
-      <div class="section-title">Nutrición</div>
-    </div>
+    <div class="section-title">Planes Nutricionales</div>
     ${clients.map(c=>{
       const plan=nutrition.find(n=>String(n.clienteId)===String(c.id));
       return `<div class="card" style="margin-bottom:14px">
         <div class="flex-between" style="margin-bottom:${plan?'14px':'0'}">
           <div class="flex">
-            <div class="client-av" style="width:36px;height:36px;font-size:14px">${c.nombre[0]}</div>
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${c.nombre[0]}</div>
             <div style="font-weight:700">${c.nombre}</div>
           </div>
-          <button class="btn" style="font-size:12px;padding:7px 14px" onclick="openNutriModal('${c.id}')">
-            ${plan?"Cambiar plan":"+ Asignar plan"}
-          </button>
+          <button class="btn-sm" onclick="assignNutriModal('${c.id}')">${plan?"Cambiar":"+ Asignar"}</button>
         </div>
         ${plan?`
-          <div class="grid-4" style="margin-bottom:12px">
-            <div class="macro-box"><div class="macro-val" style="color:#e08a00">${plan.kcal}</div><div class="macro-lbl">kcal</div></div>
-            <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${plan.proteina}g</div><div class="macro-lbl">prot</div></div>
-            <div class="macro-box"><div class="macro-val" style="color:#00a87a">${plan.carbos}g</div><div class="macro-lbl">carbs</div></div>
-            <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${plan.grasas}g</div><div class="macro-lbl">grasas</div></div>
+          <div class="macro-row">
+            ${[{l:"Kcal",v:plan.kcal,c:"#e08a00"},{l:"Prot",v:plan.proteina+"g",c:"#4f6ef7"},{l:"Carb",v:plan.carbos+"g",c:"#00a87a"},{l:"Gras",v:plan.grasas+"g",c:"#7c5cbf"}]
+              .map(x=>`<div class="macro-card"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">${plan.nombre}</div>
-          ${String(plan.comidas).split("|").map((m,i)=>`<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${i+1}</span><span>${m}</span></div>`).join("")}
-        `:""}
+          ${(plan.comidas?String(plan.comidas).split("|"):[]).map((m,i)=>`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${i+1}</span><span>${m}</span></div>`).join("")}
+        `:`<div style="color:var(--muted);font-size:13px;margin-top:10px">Sin plan asignado.</div>`}
       </div>`;
     }).join("")}`);
 }
 
-function openNutriModal(clientId){
+function assignNutriModal(clientId){
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="nutri-modal" onclick="if(event.target===this)closeModal('nutri-modal')">
-      <div class="modal" style="max-width:440px">
-        <div class="modal-hd">
-          <div class="modal-title">Seleccionar plan</div>
-          <button class="modal-close" onclick="closeModal('nutri-modal')">✕</button>
-        </div>
-        <div class="modal-body">
-          ${NUTRI_TPLS.map((t,i)=>`
-            <div onclick="assignNutri('${clientId}',${i})" class="card card-hover" style="margin-bottom:10px;padding:14px">
-              <div style="font-weight:700;margin-bottom:10px">${t.nombre}</div>
-              <div class="grid-4">
-                <div class="macro-box"><div class="macro-val" style="color:#e08a00;font-size:16px">${t.kcal}</div><div class="macro-lbl">kcal</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:var(--accent);font-size:16px">${t.proteina}g</div><div class="macro-lbl">prot</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:#00a87a;font-size:16px">${t.carbos}g</div><div class="macro-lbl">carbs</div></div>
-                <div class="macro-box"><div class="macro-val" style="color:#9b59b6;font-size:16px">${t.grasas}g</div><div class="macro-lbl">grasas</div></div>
-              </div>
-            </div>`).join("")}
-        </div>
+    <div class="modal-bg" id="anm" onclick="if(event.target===this)closeModal('anm')">
+      <div class="modal modal-sm" style="padding:24px">
+        <div class="modal-title" style="margin-bottom:16px">Seleccionar plan</div>
+        ${NUTRI_TPLS.map((t,i)=>`
+          <div onclick="assignNutri('${clientId}',${i})" class="card card-hover" style="margin-bottom:10px;padding:14px">
+            <div style="font-weight:700;margin-bottom:8px">${t.nombre}</div>
+            <div class="macro-row" style="margin-bottom:0">
+              ${[{l:"Kcal",v:t.kcal,c:"#e08a00"},{l:"Prot",v:t.proteina+"g",c:"#4f6ef7"},{l:"Carb",v:t.carbos+"g",c:"#00a87a"},{l:"Gras",v:t.grasas+"g",c:"#7c5cbf"}]
+                .map(x=>`<div class="macro-card" style="padding:8px"><div class="macro-val" style="color:${x.c};font-size:15px">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
+            </div>
+          </div>`).join("")}
       </div>
     </div>`);
 }
@@ -638,174 +576,257 @@ function openNutriModal(clientId){
 async function assignNutri(clientId,idx){
   const t=NUTRI_TPLS[idx];
   await api({action:"saveNutrition",clienteId:clientId,...t});
-  closeModal("nutri-modal");
-  renderNutricion();
+  closeModal("anm");renderNutrition();
 }
 
-// ── MENSAJES TRAINER ──────────────────────────────────────
-async function renderMensajes(){
-  render(spin("Cargando…"));
-  if(!_clients.length)_clients=await api({action:"clients"});
+// ═══════════════════════════════════════
+// TRAINER — EJERCICIOS
+// ═══════════════════════════════════════
+async function renderExercises(){
+  render(spin("Cargando ejercicios…"));
+  // Load from sheet
+  let exercises=[];
+  try{exercises=await api({action:"exercises"});}catch(e){}
+
   render(`
-    <div class="section-title" style="margin-bottom:18px">Mensajes</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
-      ${_clients.map(c=>`
-        <div class="card card-hover" onclick="openChat('${c.id}')">
-          <div class="flex">
-            <div class="client-av">${c.nombre[0]}</div>
-            <div>
-              <div style="font-weight:700">${c.nombre}</div>
-              <div style="font-size:12px;color:var(--muted)">Abrir conversación →</div>
-            </div>
-          </div>
-        </div>`).join("")}
-    </div>`);
+    <div class="flex-between" style="margin-bottom:18px">
+      <div><div class="section-title" style="margin-bottom:2px">Ejercicios</div>
+      <div style="color:var(--muted);font-size:13px">${exercises.length} ejercicios en tu biblioteca</div></div>
+      <button class="btn" onclick="addCustomExModal()">+ Añadir ejercicio</button>
+    </div>
+    <div style="position:relative;margin-bottom:16px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)">🔍</span>
+      <input id="ex-search" placeholder="Buscar ejercicio…" oninput="filterExercises()" style="padding-left:36px;background:#f5f6fa;border-color:transparent"/>
+    </div>
+    <div class="ex-grid" id="ex-grid">
+      ${exercises.map(e=>exCard(e)).join("")}
+    </div>
+    ${exercises.length===0?`<div style="text-align:center;padding:60px;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">📚</div><div style="font-weight:600">Sin ejercicios</div><div style="font-size:13px;margin-top:6px">Añade ejercicios con tus propios vídeos</div></div>`:""}
+  `);
+
+  // Store for filtering
+  window._exercises=exercises;
 }
 
-async function openChat(clientId){
-  const c=_clients.find(c=>String(c.id)===String(clientId));
+function exCard(e){
+  const thumb=e.video?ytThumb(e.video):"";
+  return `<div class="ex-card" onclick="openExDetail('${e.id}')">
+    <div class="ex-thumb">
+      ${thumb?`<img src="${thumb}" alt="${e.nombre||e.nombre}" loading="lazy"/>`:`<div class="ex-thumb-placeholder">🏋️</div>`}
+      <div class="ex-play-icon">▶</div>
+      <div class="ex-tags">
+        ${e.categoria?`<span style="background:rgba(0,0,0,.6);color:#fff;border-radius:20px;padding:2px 7px;font-size:9px;font-weight:600">${e.categoria}</span>`:""}
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-name">${e.nombre||e.nombre}</div>
+      <div style="font-size:11px;color:var(--muted)">${e.musculo||""}</div>
+    </div>
+  </div>`;
+}
+
+function filterExercises(){
+  const q=document.getElementById("ex-search")?.value.toLowerCase()||"";
+  const filtered=(window._exercises||[]).filter(e=>(e.nombre||"").toLowerCase().includes(q));
+  const grid=document.getElementById("ex-grid");
+  if(grid)grid.innerHTML=filtered.map(e=>exCard(e)).join("");
+}
+
+function openExDetail(id){
+  const e=(window._exercises||[]).find(e=>String(e.id)===String(id));
+  if(!e)return;
+  const embedUrl=ytEmbed(e.video)||e.video;
   document.body.insertAdjacentHTML("beforeend",`
-    <div class="modal-bg" id="chat-modal" onclick="if(event.target===this)closeModal('chat-modal')">
-      <div class="modal" style="max-width:500px">
+    <div class="modal-bg" id="edm" onclick="if(event.target===this)closeModal('edm')">
+      <div class="modal">
         <div class="modal-hd">
-          <div class="modal-title">💬 ${c.nombre}</div>
-          <button class="modal-close" onclick="closeModal('chat-modal')">✕</button>
+          <div class="modal-title">${e.nombre}</div>
+          <button class="modal-close" onclick="closeModal('edm')">✕</button>
         </div>
         <div class="modal-body">
-          <label class="lbl">Mensaje para ${c.nombre}</label>
-          <textarea id="chat-txt-${clientId}" placeholder="Escribe aquí tu mensaje…" style="min-height:120px;resize:vertical;margin-bottom:12px"></textarea>
-          <button class="btn-success" style="width:100%;justify-content:center" onclick="sendChatMsg('${clientId}')">📤 Enviar</button>
+          ${embedUrl?`<div class="video-iframe" style="margin-bottom:16px"><iframe src="${embedUrl}" allowfullscreen></iframe></div>`:""}
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+            ${e.categoria?`<span class="tag tag-blue">${e.categoria}</span>`:""}
+            ${e.musculo?`<span class="tag tag-blue">${e.musculo}</span>`:""}
+          </div>
+          ${e.descripcion?`<div style="font-size:13px;color:#555;line-height:1.6">${e.descripcion}</div>`:""}
         </div>
       </div>
     </div>`);
 }
 
-async function sendChatMsg(clientId){
-  const text=document.getElementById(`chat-txt-${clientId}`)?.value?.trim();
-  if(!text)return;
-  await api({action:"saveComment",clienteId:clientId,comentario:text});
-  document.getElementById(`chat-txt-${clientId}`).value="";
-  const btn=event.target;
-  btn.textContent="✅ Enviado";
-  setTimeout(()=>btn.textContent="📤 Enviar",2000);
+function addCustomExModal(){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="cem" onclick="if(event.target===this)closeModal('cem')">
+      <div class="modal modal-sm">
+        <div class="modal-hd">
+          <div class="modal-title">Añadir ejercicio</div>
+          <button class="modal-close" onclick="closeModal('cem')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="margin-bottom:12px"><label class="lbl">Nombre</label><input id="ce-name" placeholder="Nombre del ejercicio"/></div>
+          <div class="grid-2" style="margin-bottom:12px">
+            <div><label class="lbl">Músculo</label><input id="ce-muscle" placeholder="Pecho, Espalda…"/></div>
+            <div><label class="lbl">Categoría</label>
+              <select id="ce-cat">
+                <option>Peso corporal</option><option>Barra</option><option>Mancuernas</option>
+                <option>Máquina</option><option>Cable/Polea</option><option>Banda elástica</option>
+                <option>TRX</option><option>Cardio</option><option>Movilidad</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="lbl">URL del vídeo</label>
+            <input id="ce-video" placeholder="https://youtu.be/... o https://drive.google.com/..."/>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">YouTube, Google Drive o cualquier enlace de vídeo</div>
+          </div>
+          <div style="margin-bottom:16px"><label class="lbl">Descripción / instrucciones</label>
+            <textarea id="ce-desc" placeholder="Cómo realizar el ejercicio correctamente…" style="min-height:80px;resize:vertical"></textarea>
+          </div>
+          <button class="btn" style="width:100%;justify-content:center" onclick="saveCustomEx()">Guardar ejercicio</button>
+        </div>
+      </div>
+    </div>`);
 }
 
-// ════════════════════════════════════════════════════════
-// CLIENT VIEWS
-// ════════════════════════════════════════════════════════
+async function saveCustomEx(){
+  const nombre=document.getElementById("ce-name")?.value.trim();
+  const musculo=document.getElementById("ce-muscle")?.value.trim();
+  const categoria=document.getElementById("ce-cat")?.value;
+  const video=document.getElementById("ce-video")?.value.trim();
+  const descripcion=document.getElementById("ce-desc")?.value.trim();
+  if(!nombre){alert("Escribe el nombre");return;}
+  // Save to sheet EXERCISES
+  await api({action:"addCustomExercise",nombre,musculo,categoria,video,descripcion});
+  closeModal("cem");renderExercises();
+}
 
-// ── MI ENTRENAMIENTO ──────────────────────────────────────
-async function renderEntrenamiento(){
+// ═══════════════════════════════════════
+// CLIENTE — ENTRENAMIENTO
+// ═══════════════════════════════════════
+async function renderTraining(){
   render(spin("Cargando entrenamiento…"));
-  const routines=await api({action:"routines",clientId:U.id});
-  const routine=routines[0];
-  if(!routine){
-    render(`<div class="empty"><div class="empty-icon">💪</div><div style="font-weight:700;font-size:16px">Sin rutina asignada</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará una rutina pronto.</div></div>`);
+  const routines=await api({action:"routines",clientId:USER.id});
+  const r=routines[0];
+  if(!r){
+    render(`<div style="text-align:center;padding:60px;color:var(--muted)"><div style="font-size:48px;margin-bottom:16px">💪</div><div style="font-weight:700;font-size:16px">Sin rutina asignada</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará una rutina pronto.</div></div>`);
     return;
   }
   render(`
-    <div style="margin-bottom:20px">
-      <div style="font-weight:800;font-size:22px;margin-bottom:4px">${routine.nombre}</div>
-      <div style="color:var(--muted);font-size:13px">${routine.days?.length||0} días · Toca un ejercicio para ver el vídeo</div>
-    </div>
-    ${(routine.days||[]).map((d,di)=>`
-      <div class="training-day">
-        <div class="training-day-hd">📅 ${d.dia}</div>
-        ${(d.exercises||[]).map((ex,ei)=>`
-          <div>
-            <div class="training-ex" id="tex-${di}-${ei}" onclick="toggleEx(${di},${ei})">
-              <div class="flex">
-                <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()" onchange="markDone(this,'tex-${di}-${ei}')"/>
-                <div style="flex:1">
-                  <div style="font-weight:600;font-size:14px">${ex.nombre||"Ejercicio"}</div>
-                  <div style="font-size:12px;color:var(--muted);margin-top:2px">${ex.series||3} series × ${ex.reps||10} · Descanso: ${ex.descanso||"60s"}</div>
-                </div>
-                <span id="arr-${di}-${ei}" style="color:var(--muted);font-size:18px;transition:transform .2s">›</span>
+    <div style="font-weight:800;font-size:20px;margin-bottom:4px">${r.nombre}</div>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:20px">${r.days?.length||0} días · Toca un ejercicio para ver el vídeo</div>
+    ${(r.days||[]).map((d,di)=>`
+      <div class="day-block" style="margin-bottom:16px">
+        <div class="day-hd"><span>📅 ${d.dia}</span></div>
+        ${(d.exercises||[]).map((ex,ei)=>{
+          const k=`${di}-${ei}`;
+          const videoUrl=ex.video||"";
+          const thumb=ytThumb(videoUrl);
+          return `<div class="ex-row" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px">
+            <div class="flex-between" style="width:100%">
+              <div>
+                <div class="ex-row-name" id="exn-${k}">${ex.nombre||ex.exerciseId}</div>
+                <div class="ex-row-meta">${ex.series} series · ${ex.reps} reps · ${ex.descanso} descanso</div>
+              </div>
+              <div class="flex" style="gap:8px">
+                <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer" onchange="toggleDone('${k}',this.checked)"/>
+                ${videoUrl?`<button class="btn-sm" onclick="playVideo('${k}','${encodeURIComponent(videoUrl)}')">▶ Ver</button>`:""}
               </div>
             </div>
-            <div id="exv-${di}-${ei}" class="training-ex-expanded hidden">
-              ${ex.video?`
-                <div style="position:relative;padding-bottom:56.25%;margin-bottom:10px;background:#000;border-radius:10px;overflow:hidden">
-                  <iframe src="${ex.video}?rel=0&modestbranding=1" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
-                </div>`:`<div style="background:#f4f6fb;border-radius:10px;padding:20px;text-align:center;color:var(--muted);margin-bottom:10px;font-size:13px">Sin vídeo asignado</div>`}
+            <!-- VIDEO PANEL -->
+            <div id="vid-${k}" class="hidden" style="width:100%">
+              <div class="video-iframe"><iframe id="iframe-${k}" src="" allowfullscreen></iframe></div>
             </div>
-          </div>`).join("")}
+          </div>`;
+        }).join("")}
       </div>`).join("")}`);
 }
 
-function toggleEx(di,ei){
-  const panel=document.getElementById(`exv-${di}-${ei}`);
-  const arr=document.getElementById(`arr-${di}-${ei}`);
-  const isOpen=!panel.classList.contains("hidden");
-  panel.classList.toggle("hidden",isOpen);
-  if(arr)arr.style.transform=isOpen?"":"rotate(90deg)";
+function toggleDone(k,checked){
+  const el=document.getElementById(`exn-${k}`);
+  if(el){el.style.textDecoration=checked?"line-through":"none";el.style.color=checked?"var(--muted)":"var(--text)";}
 }
 
-function markDone(cb,rowId){
-  const row=document.getElementById(rowId);
-  if(row)row.classList.toggle("done",cb.checked);
+function playVideo(k,encodedUrl){
+  const url=decodeURIComponent(encodedUrl);
+  const panel=document.getElementById(`vid-${k}`);
+  const iframe=document.getElementById(`iframe-${k}`);
+  if(!panel||!iframe)return;
+  if(!panel.classList.contains("hidden")){
+    panel.classList.add("hidden");iframe.src="";return;
+  }
+  // Handle different video types
+  let embedUrl="";
+  if(url.includes("youtube")||url.includes("youtu.be")){
+    embedUrl=ytEmbed(url);
+  }else if(url.includes("drive.google.com")){
+    // Google Drive: convert to embed
+    const fileId=url.match(/\/d\/([^/]+)/)?.[1]||url.match(/id=([^&]+)/)?.[1];
+    if(fileId)embedUrl=`https://drive.google.com/file/d/${fileId}/preview`;
+  }else{
+    embedUrl=url;
+  }
+  iframe.src=embedUrl;
+  panel.classList.remove("hidden");
+  panel.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
-// ── MI NUTRICIÓN ──────────────────────────────────────────
-async function renderNutricionCliente(){
+// ═══════════════════════════════════════
+// CLIENTE — NUTRICIÓN
+// ═══════════════════════════════════════
+async function renderMyNutrition(){
   render(spin("Cargando…"));
+  // Try full plan first
   let fullPlan=null;
-  try{fullPlan=await api({action:"getNutritionFull",clienteId:U.id});}catch(e){}
-  
-  if(fullPlan?.comidas){
-    const meals=fullPlan.comidas;
+  try{fullPlan=await api({action:"getNutritionFull",clienteId:USER.id});}catch(e){}
+
+  if(fullPlan&&fullPlan.comidas&&fullPlan.comidas.length>0){
     render(`
-      <div style="font-weight:800;font-size:22px;margin-bottom:4px">Mi Plan Nutricional</div>
-      <div style="color:var(--muted);font-size:13px;margin-bottom:20px">${fullPlan.kcal} kcal/día</div>
-      <div class="grid-4" style="margin-bottom:20px">
-        <div class="macro-box"><div class="macro-val" style="color:#e08a00">${fullPlan.kcal}</div><div class="macro-lbl">Calorías</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${fullPlan.proteina_g}g</div><div class="macro-lbl">Proteína</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:#00a87a">${fullPlan.carbos_g}g</div><div class="macro-lbl">Carbos</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${fullPlan.grasas_g}g</div><div class="macro-lbl">Grasas</div></div>
+      <div style="font-weight:800;font-size:20px;margin-bottom:4px">Mi Plan Nutricional</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:18px">${fullPlan.kcal} kcal/día</div>
+      <div class="macro-row" style="margin-bottom:18px">
+        ${[{l:"Calorías",v:fullPlan.kcal,c:"#e08a00"},{l:"Proteína",v:fullPlan.proteina_g+"g",c:"#4f6ef7"},{l:"Carbos",v:fullPlan.carbos_g+"g",c:"#00a87a"},{l:"Grasas",v:fullPlan.grasas_g+"g",c:"#7c5cbf"}]
+          .map(x=>`<div class="macro-card"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
       </div>
-      ${meals.map((meal,mi)=>`
+      ${fullPlan.comidas.map((meal,mi)=>`
         <div class="card" style="margin-bottom:14px">
-          <div class="flex" style="margin-bottom:12px">
-            <span style="font-size:20px">${meal.icono||"🍽️"}</span>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span style="font-size:22px">${meal.icono||"🍽️"}</span>
             <div>
-              <div style="font-weight:700;font-size:15px">${meal.nombre}</div>
+              <div style="font-weight:700;font-size:14px">${meal.nombre}</div>
               <div style="font-size:12px;color:var(--muted)">${meal.hora} · ~${meal.kcal} kcal</div>
             </div>
           </div>
-          <div style="display:flex;gap:6px;margin-bottom:10px">
-            ${(meal.variantes||[]).map((v,vi)=>`<button id="mvt-${mi}-${vi}" onclick="selectMealVariant(${mi},${vi},${(meal.variantes||[]).length})" style="background:${vi===0?'var(--accent)':'#f4f6fb'};color:${vi===0?'#fff':'var(--muted)'};border:1px solid ${vi===0?'var(--accent)':'var(--border)'};border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer">Opción ${v.letra}</button>`).join("")}
-          </div>
-          ${(meal.variantes||[]).map((v,vi)=>`
-            <div id="mvp-${mi}-${vi}" style="display:${vi===0?'block':'none'}">
-              <div style="font-weight:600;margin-bottom:6px">${v.nombre}</div>
-              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
-                ${(v.ing||[]).map(i=>`<span class="tag tag-blue">${i}</span>`).join("")}
-              </div>
-              <div style="background:#f9faff;border:1px solid var(--border);border-radius:10px;padding:12px">
-                ${(v.pasos||[]).map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:#444;line-height:1.5"><div style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${pi+1}</div><span>${p}</span></div>`).join("")}
-              </div>
-            </div>`).join("")}
+          ${(meal.variantes||[]).length>0?`
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              ${meal.variantes.map((v,vi)=>`<button id="mvt-${mi}-${vi}" onclick="selectMealVariant(${mi},${vi},${meal.variantes.length})" style="background:${vi===0?'var(--accent)':'#f0f2f5'};color:${vi===0?'#fff':'var(--muted)'};border:none;border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">Opción ${v.letra}</button>`).join("")}
+            </div>
+            ${meal.variantes.map((v,vi)=>`
+              <div id="mvp-${mi}-${vi}" style="display:${vi===0?'block':'none'}">
+                <div style="font-weight:600;margin-bottom:6px;font-size:13px">${v.nombre}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
+                  ${(v.ing||[]).map(i=>`<span class="tag tag-blue">${i}</span>`).join("")}
+                </div>
+                <div style="background:#f9fafb;border-radius:9px;padding:12px">
+                  ${(v.pasos||[]).map((p,pi)=>`<div style="display:flex;gap:8px;margin-bottom:6px;font-size:12px;line-height:1.5"><span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;margin-top:1px">${pi+1}</span><span>${p}</span></div>`).join("")}
+                </div>
+              </div>`).join("")}`:""}
         </div>`).join("")}`);
   }else{
-    const plans=await api({action:"nutrition",clientId:U.id}).catch(()=>[]);
+    const plans=await api({action:"nutrition",clientId:USER.id}).catch(()=>[]);
     if(!plans||!plans[0]){
-      render(`<div class="empty"><div class="empty-icon">🥗</div><div style="font-weight:700;font-size:16px">Sin plan asignado</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará un plan pronto.</div></div>`);
+      render(`<div style="text-align:center;padding:60px;color:var(--muted)"><div style="font-size:48px;margin-bottom:16px">🥗</div><div style="font-weight:700;font-size:16px">Sin plan nutricional</div><div style="font-size:13px;margin-top:6px">Tu entrenador te asignará un plan pronto.</div></div>`);
       return;
     }
     const p=plans[0];
-    const meals=String(p.comidas).split("|");
+    const meals=(p.comidas?String(p.comidas).split("|"):[]);
     render(`
-      <div style="font-weight:800;font-size:22px;margin-bottom:18px">Mi Plan Nutricional</div>
-      <div class="grid-4" style="margin-bottom:20px">
-        <div class="macro-box"><div class="macro-val" style="color:#e08a00">${p.kcal}</div><div class="macro-lbl">kcal</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:var(--accent)">${p.proteina}g</div><div class="macro-lbl">prot</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:#00a87a">${p.carbos}g</div><div class="macro-lbl">carbs</div></div>
-        <div class="macro-box"><div class="macro-val" style="color:#9b59b6">${p.grasas}g</div><div class="macro-lbl">grasas</div></div>
+      <div style="font-weight:800;font-size:20px;margin-bottom:18px">Mi Plan Nutricional</div>
+      <div class="macro-row">
+        ${[{l:"Calorías",v:p.kcal,c:"#e08a00"},{l:"Proteína",v:p.proteina+"g",c:"#4f6ef7"},{l:"Carbos",v:p.carbos+"g",c:"#00a87a"},{l:"Grasas",v:p.grasas+"g",c:"#7c5cbf"}]
+          .map(x=>`<div class="macro-card"><div class="macro-val" style="color:${x.c}">${x.v}</div><div class="macro-lbl">${x.l}</div></div>`).join("")}
       </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:12px">${p.nombre}</div>
-        ${meals.map((m,i)=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><div style="background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;min-width:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${i+1}</div><span>${m}</span></div>`).join("")}
-      </div>`);
+      ${meals.map((m,i)=>`<div style="display:flex;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px">${i+1}</span><span>${m}</span></div>`).join("")}`);
   }
 }
 
@@ -813,70 +834,42 @@ function selectMealVariant(mi,vi,total){
   for(let i=0;i<total;i++){
     const btn=document.getElementById(`mvt-${mi}-${i}`);
     const panel=document.getElementById(`mvp-${mi}-${i}`);
-    if(btn){btn.style.background=i===vi?'var(--accent)':'#f4f6fb';btn.style.color=i===vi?'#fff':'var(--muted)';btn.style.borderColor=i===vi?'var(--accent)':'var(--border)';}
-    if(panel)panel.style.display=i===vi?'block':'none';
+    if(btn){btn.style.background=i===vi?"var(--accent)":"#f0f2f5";btn.style.color=i===vi?"#fff":"var(--muted)";}
+    if(panel)panel.style.display=i===vi?"block":"none";
   }
 }
 
-// ── MENSAJES CLIENTE ──────────────────────────────────────
-async function renderMensajesCliente(){
-  render(spin("Cargando…"));
+// ═══════════════════════════════════════
+// CLIENTE — MENSAJES
+// ═══════════════════════════════════════
+async function renderMessages(){
+  render(spin("Cargando mensajes…"));
   let msg="";
   try{
-    const clients=await api({action:"clients"});
-    const me=clients.find(c=>String(c.id)===String(U.id));
-    msg=me?.comentario||"";
+    const users=await api({action:"clients"});
+    // Get comment from user data - need a getComment endpoint
+    msg=await api({action:"getComment",clienteId:USER.id}).catch(()=>"");
   }catch(e){}
+
   render(`
-    <div style="font-weight:800;font-size:22px;margin-bottom:18px">💬 Mensajes de tu entrenador</div>
-    ${msg?`
-      <div class="card" style="margin-bottom:14px">
-        <div class="flex" style="margin-bottom:10px">
-          <div class="client-av" style="background:linear-gradient(135deg,#4361ee,#3a0ca3)">R</div>
-          <div>
-            <div style="font-weight:700">Ric — i-Motion</div>
-            <div style="font-size:11px;color:var(--muted)">Tu entrenador personal</div>
-          </div>
-        </div>
-        <div class="msg-bubble">${msg}</div>
-      </div>`
-    :`<div class="empty"><div class="empty-icon">💬</div><div style="font-weight:700">Sin mensajes aún</div><div style="font-size:13px;margin-top:6px">Tu entrenador te enviará mensajes aquí.</div></div>`}
-  `);
+    <div style="font-weight:800;font-size:20px;margin-bottom:18px">💬 Mensajes</div>
+    <div class="card">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">Mensaje de tu entrenador</div>
+      ${msg?`
+        <div style="background:#eef0ff;border-radius:12px;padding:16px;font-size:14px;color:var(--text);line-height:1.6;border-left:3px solid var(--accent)">
+          <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:6px">✉️ De: Ric — i-Motion EMS</div>
+          ${msg}
+        </div>`:`
+        <div style="text-align:center;padding:30px;color:var(--muted)">
+          <div style="font-size:32px;margin-bottom:10px">📭</div>
+          <div style="font-size:13px">No tienes mensajes por ahora.</div>
+        </div>`}
+    </div>`);
 }
 
-// ── MI PROGRESO ───────────────────────────────────────────
-async function renderProgreso(){
-  render(spin("Cargando…"));
-  const records=await api({action:"progress",clientId:U.id});
-  render(`
-    <div style="font-weight:800;font-size:22px;margin-bottom:18px">📈 Mi Progreso</div>
-    <div class="card" style="margin-bottom:20px">
-      <div style="font-weight:700;margin-bottom:14px">Registrar hoy</div>
-      <div class="grid-2" style="margin-bottom:12px">
-        <div><label class="lbl">Peso (kg)</label><input id="p-peso" type="number" step="0.1" placeholder="75.5"/></div>
-        <div><label class="lbl">Notas</label><input id="p-notas" placeholder="Cómo me he sentido…"/></div>
-      </div>
-      <button class="btn" onclick="saveProgreso()">Guardar registro</button>
-    </div>
-    <div style="font-weight:700;font-size:15px;margin-bottom:12px">Historial (${records.length} registros)</div>
-    ${records.length===0?`<div class="empty"><div class="empty-icon">📊</div><div style="font-weight:700">Sin registros aún</div></div>`:""}
-    ${[...records].reverse().map(r=>`
-      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:14px">
-        <div>
-          <div style="font-weight:600">${r.fecha}</div>
-          ${r.notas?`<div style="font-size:12px;color:var(--muted)">${r.notas}</div>`:""}
-        </div>
-        <div style="font-size:26px;font-weight:800;color:var(--accent)">${r.peso}<span style="font-size:13px;color:var(--muted)"> kg</span></div>
-      </div>`).join("")}`);
-}
-
-async function saveProgreso(){
-  const peso=document.getElementById("p-peso").value;
-  const notas=document.getElementById("p-notas").value;
-  if(!peso)return;
-  await api({action:"saveProgress",clienteId:U.id,fecha:new Date().toLocaleDateString("es-ES"),peso,notas});
-  renderProgreso();
-}
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
 </script>
 </body>
 </html>
