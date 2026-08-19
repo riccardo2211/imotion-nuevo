@@ -255,29 +255,80 @@ async function renderClients(){
   [CLIENTS,ROUTINES,NUTRITION]=await Promise.all([
     api({action:"clients"}),api({action:"routines"}),api({action:"nutrition"})
   ]);
+
+  let clientSearch="";
+
+  function clientsHtml(){
+    const filtered=CLIENTS.filter(c=>
+      c.nombre.toLowerCase().includes(clientSearch.toLowerCase())||
+      c.email.toLowerCase().includes(clientSearch.toLowerCase())
+    );
+    return `
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border)">
+            <th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Cliente</th>
+            <th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Rutina</th>
+            <th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Nutrición</th>
+            <th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filtered.map(c=>{
+            const r=ROUTINES.find(r=>String(r.clienteId)===String(c.id));
+            const n=NUTRITION.find(n=>String(n.clienteId)===String(c.id));
+            const initials=c.nombre.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+            const colors=["#4f6ef7","#00c48c","#ff5c5c","#ffb648","#6c63ff","#e08a00"];
+            const color=colors[c.id%colors.length]||"#4f6ef7";
+            return `<tr style="border-bottom:1px solid var(--border);transition:background .15s" onmouseenter="this.style.background='#f9fafb'" onmouseleave="this.style.background=''">
+              <td style="padding:14px">
+                <div class="flex" style="gap:10px">
+                  <div style="width:38px;height:38px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">${initials}</div>
+                  <div>
+                    <div style="font-weight:600;font-size:14px">${c.nombre}</div>
+                    <div style="font-size:12px;color:var(--muted)">${c.email}</div>
+                  </div>
+                </div>
+              </td>
+              <td style="padding:14px">
+                ${r?`<span class="tag tag-green">✓ ${r.nombre}</span>`:`<span class="tag tag-orange">Sin rutina</span>`}
+              </td>
+              <td style="padding:14px">
+                ${n?`<span class="tag tag-green">✓ ${n.nombre}</span>`:`<span class="tag tag-orange">Sin plan</span>`}
+              </td>
+              <td style="padding:14px">
+                <button class="btn-sm" onclick="openClient('${c.id}')">Ver perfil →</button>
+              </td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+      ${filtered.length===0?`<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">No hay clientes que coincidan</div>`:""}`;
+  }
+
   render(`
-    <div class="flex-between" style="margin-bottom:18px">
-      <div class="section-title" style="margin-bottom:0">Clientes</div>
+    <div class="flex-between" style="margin-bottom:20px">
+      <div>
+        <div class="section-title" style="margin-bottom:2px">Clientes</div>
+        <div style="color:var(--muted);font-size:13px">${CLIENTS.length} clientes activos</div>
+      </div>
+      <button class="btn" onclick="addClientModal()">+ Añadir cliente</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
-      ${CLIENTS.map(c=>{
-        const r=ROUTINES.find(r=>String(r.clienteId)===String(c.id));
-        const n=NUTRITION.find(n=>String(n.clienteId)===String(c.id));
-        return `<div class="card card-hover" onclick="openClient('${c.id}')">
-          <div class="flex" style="margin-bottom:14px">
-            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6c63ff);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0">${c.nombre[0]}</div>
-            <div>
-              <div style="font-weight:700;font-size:15px">${c.nombre}</div>
-              <div style="font-size:12px;color:var(--muted)">${c.email}</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <div class="flex-between"><span style="font-size:12px;color:var(--muted)">Rutina</span>${r?`<span class="tag tag-green">${r.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}</div>
-            <div class="flex-between"><span style="font-size:12px;color:var(--muted)">Nutrición</span>${n?`<span class="tag tag-green">${n.nombre}</span>`:`<span class="tag tag-orange">Sin asignar</span>`}</div>
-          </div>
-        </div>`;
-      }).join("")}
+
+    <!-- BUSCADOR -->
+    <div style="position:relative;max-width:380px;margin-bottom:16px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)">🔍</span>
+      <input id="client-search" placeholder="Buscar cliente por nombre o email…" oninput="clientSearch=this.value;document.getElementById('client-table').innerHTML=clientsHtml()" style="padding-left:36px;background:#f5f6fa;border-color:transparent"/>
+    </div>
+
+    <!-- TABLA -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="client-table">${clientsHtml()}</div>
     </div>`);
+
+  // Make clientsHtml available in scope
+  window.clientsHtml=clientsHtml;
+  window.clientSearch="";
 }
 
 async function openClient(clientId){
@@ -391,6 +442,41 @@ async function renderRoutines(){
     </div>
     ${ROUTINES.length===0?`<div style="text-align:center;padding:60px;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">⚡</div><div style="font-weight:600">No hay rutinas</div><div style="font-size:13px;margin-top:6px">Crea tu primera rutina</div></div>`:""}
   `);
+}
+
+function addClientModal(){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div class="modal-bg" id="acm" onclick="if(event.target===this)closeModal('acm')">
+      <div class="modal modal-sm">
+        <div class="modal-hd">
+          <div class="modal-title">Añadir cliente</div>
+          <button class="modal-close" onclick="closeModal('acm')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="margin-bottom:12px"><label class="lbl">Nombre completo</label><input id="ac-name" placeholder="Nombre Apellido"/></div>
+          <div style="margin-bottom:12px"><label class="lbl">Email</label><input id="ac-email" type="email" placeholder="cliente@email.com"/></div>
+          <div style="margin-bottom:20px"><label class="lbl">Contraseña inicial</label><input id="ac-pass" type="password" placeholder="Contraseña"/></div>
+          <div style="background:#fff6e6;border:1px solid #ffd98a;border-radius:9px;padding:12px;font-size:12px;color:#a06000;margin-bottom:16px">
+            ⚠️ El cliente podrá acceder con este email y contraseña desde la app.
+          </div>
+          <button class="btn" style="width:100%;justify-content:center" onclick="saveNewClient()">Crear cliente</button>
+          <div id="ac-status" style="margin-top:8px;font-size:12px;text-align:center"></div>
+        </div>
+      </div>
+    </div>`);
+}
+
+async function saveNewClient(){
+  const nombre=document.getElementById("ac-name")?.value.trim();
+  const email=document.getElementById("ac-email")?.value.trim();
+  const pass=document.getElementById("ac-pass")?.value;
+  const status=document.getElementById("ac-status");
+  if(!nombre||!email||!pass){status.textContent="Rellena todos los campos";status.style.color="var(--danger)";return;}
+  try{
+    status.textContent="Creando cliente…";status.style.color="var(--muted)";
+    await api({action:"addClient",nombre,email,password:pass,rol:"client"});
+    closeModal("acm");renderClients();
+  }catch(e){status.textContent="Error: "+e.message;status.style.color="var(--danger)";}
 }
 
 function newRoutineModal(){
