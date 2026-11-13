@@ -51,76 +51,16 @@
       <div>
         <span class="tag" data-i18n="ct_form_tag">Escríbenos</span>
         <h2 style="margin-bottom:32px;" data-i18n="ct_form_title">Ponte en <span class="accent">contacto</span></h2>
-        <form class="contact-form" name="contacto" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/gracias.html">
-          <input type="hidden" name="form-name" value="contacto">
-          <p style="display:none;"><input name="bot-field"></p>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="nombre" data-i18n="ct_f_nombre">Nombre *</label>
-              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-            </div>
-            <div class="form-group">
-              <label for="apellidos" data-i18n="ct_f_apellidos">Apellidos</label>
-              <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email" data-i18n="ct_f_email">Email *</label>
-              <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-            </div>
-            <div class="form-group">
-              <label for="telefono" data-i18n="ct_f_tel">Teléfono</label>
-              <input type="tel" id="telefono" name="telefono" placeholder="600 000 000">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="programa" data-i18n="ct_f_programa">Programa de interés</label>
-            <select id="programa" name="programa">
-              <option value="" data-i18n="ct_select">Seleccionar...</option>
-              <option value="sport" data-i18n="ct_prog1">i-Motion Sport (rendimiento deportivo)</option>
-              <option value="esthetic" data-i18n="ct_prog2">i-Shape Esthetic (electroestimulación focalizada)</option>
-              <option value="ambos" data-i18n="ct_prog3">Ambos programas / No lo sé todavía</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fecha" data-i18n="ct_f_fecha">Fecha preferida (lunes a viernes)</label>
-              <input type="date" id="fecha" name="fecha">
-            </div>
-            <div class="form-group">
-              <label for="horario" data-i18n="ct_f_horario">Horario preferido</label>
-              <select id="horario" name="horario">
-                <option value="" data-i18n="ct_select">Seleccionar...</option>
-                <option value="manana" data-i18n="ct_h1">Mañana</option>
-                <option value="tarde" data-i18n="ct_h2">Tarde</option>
-                <option value="noche" data-i18n="ct_h3">Última hora de la tarde</option>
-                <option value="a_convenir" data-i18n="ct_h4">Horario a convenir</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="como" data-i18n="ct_f_como">¿Cómo nos conociste?</label>
-            <select id="como" name="como">
-              <option value="" data-i18n="ct_select">Seleccionar...</option>
-              <option value="instagram">Instagram</option>
-              <option value="facebook">Facebook</option>
-              <option value="google" data-i18n="ct_c3">Google / Búsqueda en internet</option>
-              <option value="recomendacion" data-i18n="ct_c4">Recomendación de un amigo o familiar</option>
-              <option value="pasando" data-i18n="ct_c5">Pasando por el centro</option>
-              <option value="otro" data-i18n="ct_c6">Otro</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="mensaje" data-i18n="ct_f_msg">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" data-i18n-placeholder="ct_f_msg_ph" placeholder="Cuéntanos tu objetivo o cualquier pregunta que tengas..."></textarea>
-          </div>
-          <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;">
-            <input type="checkbox" id="privacidad" name="privacidad" required style="width:18px;height:18px;flex-shrink:0;">
-            <label for="privacidad" style="font-size:0.82rem;color:rgba(255,255,255,0.5);cursor:pointer;" data-i18n="ct_f_privacy">Acepto la <a href="politica-privacidad.html" style="color:var(--accent);">política de privacidad</a> *</label>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" data-i18n="ct_submit">Enviar solicitud de reserva</button>
-        </form>
+        <form class="contact-form" data-whatsapp-request>
+  <div class="form-group"><label>Nombre <input name="nombre" required maxlength="80" autocomplete="given-name"></label></div>
+  <div class="form-group"><label>Programa <select name="programa" required>
+    <option value="">Selecciona un programa</option><option>i-Motion Sport</option><option>i-Shape Esthetic</option><option>Aún no lo sé</option>
+  </select></label></div>
+  <div class="form-group"><label>Preferencia de horario (opcional) <input name="horario" maxlength="120" placeholder="Por ejemplo, de lunes a viernes por la tarde"></label></div>
+  <p>Se abrirá WhatsApp con tu solicitud. Pulsa Enviar y te responderemos con una hora disponible.</p>
+  <button class="btn btn-primary" type="submit">Solicitar reserva por WhatsApp</button>
+</form>
+<script defer src="/js/whatsapp-request.js"></script>
       </div>
       <div>
         <span class="tag" data-i18n="ct_info_tag">Información</span>
