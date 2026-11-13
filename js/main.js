@@ -337,6 +337,3 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLang(saved);
 });
 
-const analyticsScript = document.createElement('script');
-analyticsScript.src = '/js/analytics.js';
-document.head.append(analyticsScript);
