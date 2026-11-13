@@ -380,6 +380,7 @@ async function confirmar(){
   }catch(e){console.log('Error al guardar reserva:',e);}
 
   const waMsg=encodeURIComponent(`⚡ NUEVA RESERVA — i-Motion EMS Tenerife\n\n👤 ${nombre} ${apellidos}\n📱 ${tel}\n📧 ${email}\n🎯 ${S.programa}\n📅 ${fechaFmt}\n⏰ ${S.hora}`+(notas?`\n📝 ${notas}`:''));
+  document.dispatchEvent(new Event('imotion:whatsapp-booking'));
   window.open(`https://wa.me/34643986544?text=${waMsg}`,'_blank');
 
   document.getElementById('okPrograma').textContent=S.programa;
@@ -396,5 +397,6 @@ if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.ser
 
 renderCal();
 </script>
+<script src="/js/analytics.js"></script>
 </body>
 </html>

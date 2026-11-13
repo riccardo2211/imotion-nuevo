@@ -336,3 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem('imotion_lang') || 'es';
   applyLang(saved);
 });
+
+const analyticsScript = document.createElement('script');
+analyticsScript.src = '/js/analytics.js';
+document.head.append(analyticsScript);
